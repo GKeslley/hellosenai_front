@@ -18,7 +18,7 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-[#2E7BEF]">
+    <header className="bg-[#2E7BEF] mb-10">
       <div className="bg-[url('assets/header/headerImage.png')] bg-center bg-fixed bg-no-repeat bg-cover h-80 grid grid-rows-2">
         <div className="flex flex-1 px-8 flex-wrap justify-between py-6 h-max items-center">
           <h1 className="font-semibold text-white">Hello Senai</h1>
