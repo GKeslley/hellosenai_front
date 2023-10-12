@@ -19,7 +19,7 @@ const Header = () => {
 
   return (
     <header className="bg-[#2E7BEF] mb-10">
-      <div className="bg-[url('assets/header/headerImage.png')] bg-center bg-fixed bg-no-repeat bg-cover h-80 grid grid-rows-2">
+      <div className="bg-[url('assets/header/headerImage.png')] bg-center bg-fixed bg-no-repeat bg-cover h-96 grid grid-rows-2">
         <div className="flex flex-1 px-8 flex-wrap justify-between py-6 h-max items-center">
           <h1 className="font-semibold text-white">Hello Senai</h1>
           <nav>
@@ -68,10 +68,10 @@ const Header = () => {
         </div>
 
         <div className="flex text-center flex-col pb-8 gap-2">
-          <Typography variant="h2" fontWeight="500" className="text-white font-bold">
+          <Typography variant="h2" fontWeight='800' fontSize='4rem' className="text-white font-bold">
             Bem Vindo
           </Typography>
-          <Typography variant="p" fontSize="1.2rem" className="text-white">
+          <Typography variant="p" fontWeight='500' fontSize="1.2rem" className="opacity-70 text-white">
             Criar, Compartilhar & Interagir
           </Typography>
         </div>
