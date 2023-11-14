@@ -1,10 +1,9 @@
-import React from 'react'
-import Icon from '../../Icon'
-import Subtitle from '../../Subtitle'
+import Icon from '../../Icon';
+import Subtitle from '../../Subtitle';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import Invite from './Invite/index'
-import { Box, Button } from '@mui/material';
+import Invite from './Invite/index';
+import { Box, Button, Container } from '@mui/material';
 import { useRef } from 'react';
 import useMedia from '../../../hooks/useMedia';
 
@@ -21,25 +20,27 @@ const Invites = () => {
   };
 
   return (
-    <div className='flex flex-col'>
-      <div className='flex justify-between items-center mb-10'>
+    <Container sx={{ display: 'grid' }}>
+      <div className="flex justify-between items-center mb-10">
         <Subtitle>Participe de Novos Projetos</Subtitle>
-        {!screenIsMobile && <div className='flex gap-4'>
-            <i onClick={handleLeftClick} className='cursor-pointer'>
+        {!screenIsMobile && (
+          <div className="flex gap-4">
+            <i onClick={handleLeftClick} className="cursor-pointer">
               <Icon icon={ArrowBackIosNewIcon} />
             </i>
-            <i onClick={handleRightClick} className='cursor-pointer'>
+            <i onClick={handleRightClick} className="cursor-pointer">
               <Icon icon={ArrowForwardIosIcon} />
             </i>
-        </div>}
+          </div>
+        )}
       </div>
-      <Box 
+      <Box
         ref={carouselRef}
         sx={{
           display: 'flex',
           gap: 1,
           py: 1,
-          overflow: 'auto',
+          overflow: 'hidden',
           width: '100%',
           scrollBehavior: 'smooth',
           marginBottom: '1rem',
@@ -48,17 +49,20 @@ const Invites = () => {
             scrollSnapAlign: 'center',
           },
           '::-webkit-scrollbar': { display: 'none' },
-        }}>
-          <Invite />
-          <Invite />
-          <Invite />
-          <Invite />
-          <Invite />
-          <Invite />
+        }}
+      >
+        <Invite />
+        <Invite />
+        <Invite />
+        <Invite />
+        <Invite />
+        <Invite />
       </Box>
-      <Button variant='contained' className='self-center max-w-max'>Mais Convites</Button>
-    </div>
-  )
-}
+      <Button variant="contained" className="justify-self-center max-w-max">
+        Mais Convites
+      </Button>
+    </Container>
+  );
+};
 
-export default Invites
+export default Invites;
