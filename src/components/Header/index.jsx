@@ -21,13 +21,13 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-gradient-to-r from-[#2E7BEF] to-blue-600 mb-10">
+    <Box component='header' className="bg-gradient-to-r from-[#2E7BEF] to-blue-600 mb-44 h-80 relative" >
       <div
-        className={` bg-center bg-fixed bg-no-repeat bg-cover ${
+        className={`bg-center bg-fixed bg-no-repeat bg-cover ${
           isOutOfHome ? 'auto' : 'h-96'
-        } grid ${isOutOfHome ? '' : 'grid-rows-2'}`}
+        } grid ${isOutOfHome ? '' : 'grid-rows-auto2'} gap-12`}
       >
-        <div className="flex flex-1 px-8 flex-wrap justify-between py-6 h-max items-center">
+        <div className="flex flex-1 flex-wrap justify-between h-max items-center p-8">
           <h1 className="font-semibold text-white">Hello Senai</h1>
           <nav>
             <ul className="flex gap-6 items-center">
@@ -75,21 +75,22 @@ const Header = () => {
         </div>
 
         {!isOutOfHome && (
-          <Box className="grid grid-cols-2">
-            <Box className="bg-gradient-to-l from-[#2E7BEF] to-blue-600">
-              <Paper
-                variant="elevation"
-                className="bg-[url('assets/earth.png')] bg-center bg-no-repeat bg-contain p-8 h-full"
+          <Box className="grid justify-items-center">
+          <Box className="grid grid-cols-autoColumns text-c text-[#2E7BEF] gap-3 px-8  absolute -bottom-32 
+          justify-center">
+            <Paper className="bg-gradient-to-l from-[#2E7BEF] to-blue-600 h-80" elevation={3} >
+              <Box
+                className="bg-[url('assets/test.png')] bg-center bg-no-repeat bg-contain p-8 h-full"
                 sx={{ backgroundColor: 'transparent' }}
-              ></Paper>
-            </Box>
+              ></Box>
+            </Paper>
 
-            <Box className="flex text-center flex-col pb-8 gap-2">
+            <Paper className="flex text-center flex-col pb-8 gap-2 bg-white max-w-md w-96" elevation={3}>
               <Typography
                 variant="h2"
                 fontWeight="800"
                 fontSize="4rem"
-                className="text-white font-bold"
+                className="font-bold"
               >
                 Bem Vindo
               </Typography>
@@ -97,15 +98,16 @@ const Header = () => {
                 variant="p"
                 fontWeight="500"
                 fontSize="1.2rem"
-                className="opacity-70 text-white"
+                className="opacity-70"
               >
                 Criar, Compartilhar & Interagir
               </Typography>
-            </Box>
+            </Paper>
+          </Box>
           </Box>
         )}
       </div>
-    </header>
+    </Box>
   );
 };
 
