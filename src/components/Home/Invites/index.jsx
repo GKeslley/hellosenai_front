@@ -1,67 +1,70 @@
-import Icon from '../../Icon';
-import Subtitle from '../../Subtitle';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import Invite from './Invite/index';
-import { Box, Button, Container } from '@mui/material';
-import { useRef } from 'react';
-import useMedia from '../../../hooks/useMedia';
+import React from 'react';
+import {
+  Typography,
+  Divider,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+} from '@mui/material';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { Link } from 'react-router-dom';
+
+const invites = [
+  {
+    label: 'Facebook',
+    autor: 'lekzin',
+  },
+  {
+    label: 'Google INOVA',
+    autor: 'filipe',
+  },
+  {
+    label: 'Classroom 2',
+    autor: 'madrugain',
+  },
+  {
+    label: 'FMAIL',
+    autor: 'peo',
+  },
+];
 
 const Invites = () => {
-  const carouselRef = useRef();
-  const screenIsMobile = useMedia('(max-width: 800px)');
-
-  const handleLeftClick = () => {
-    carouselRef.current.scrollLeft -= carouselRef.current.offsetWidth + 16;
-  };
-
-  const handleRightClick = () => {
-    carouselRef.current.scrollLeft += carouselRef.current.offsetWidth;
-  };
-
   return (
-    <Container sx={{ display: 'grid' }}>
-      <div className="flex justify-between items-center mb-10">
-        <Subtitle>Participe de Novos Projetos</Subtitle>
-        {!screenIsMobile && (
-          <div className="flex gap-4">
-            <i onClick={handleLeftClick} className="cursor-pointer">
-              <Icon icon={ArrowBackIosNewIcon} />
-            </i>
-            <i onClick={handleRightClick} className="cursor-pointer">
-              <Icon icon={ArrowForwardIosIcon} />
-            </i>
-          </div>
-        )}
-      </div>
-      <Box
-        ref={carouselRef}
-        sx={{
-          display: 'flex',
-          gap: 1,
-          py: 1,
-          overflow: 'hidden',
-          width: '100%',
-          scrollBehavior: 'smooth',
-          marginBottom: '1rem',
-          scrollSnapType: 'x mandatory',
-          '& > *': {
-            scrollSnapAlign: 'center',
-          },
-          '::-webkit-scrollbar': { display: 'none' },
-        }}
-      >
-        <Invite />
-        <Invite />
-        <Invite />
-        <Invite />
-        <Invite />
-        <Invite />
-      </Box>
-      <Button variant="contained" className="justify-self-center max-w-max">
+    <List
+      className="grid"
+      sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
+    >
+      {invites.map(({ autor, label }, i) => (
+        <>
+          <ListItem alignItems="flex-start">
+            <ListItemAvatar>
+              <AccountCircleIcon />
+            </ListItemAvatar>
+            <ListItemText
+              primary="Convite"
+              secondary={
+                <React.Fragment>
+                  <Typography
+                    sx={{ display: 'inline' }}
+                    component="span"
+                    variant="body2"
+                    color="text.primary"
+                  >
+                    {autor}
+                  </Typography>
+                  {` — ${label}...`}
+                </React.Fragment>
+              }
+            />
+          </ListItem>
+          {i != invites.length - 1 ? <Divider variant="inset" component="li" /> : ''}
+        </>
+      ))}
+      <Link className="block text-end py-1 px-5 color-blue-header underline w-max justify-self-end">
         Mais Convites
-      </Button>
-    </Container>
+      </Link>
+    </List>
   );
 };
 
