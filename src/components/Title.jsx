@@ -7,8 +7,8 @@ const Title = ({ children, sx }) => {
       variant="h1"
       fontSize="2.5rem"
       fontWeight="600"
-      sx={sx}
       className="text-stone-800 font-bold"
+      sx={sx}
     >
       {children}
     </Typography>

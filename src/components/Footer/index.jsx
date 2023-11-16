@@ -16,7 +16,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-[#2E7BEF] grid h-full text-white mt-10">
+    <footer className="bg-[#2E7BEF] grid h-full text-white">
       <Container sx={footerStyle} className="md:grid-columns-1">
         <Box
           sx={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row' }}

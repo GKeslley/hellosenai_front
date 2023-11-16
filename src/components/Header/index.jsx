@@ -21,7 +21,10 @@ const Header = () => {
   };
 
   return (
-    <Box component='header' className="bg-gradient-to-r from-[#2E7BEF] to-blue-600 mb-44 h-80 relative" >
+    <Box
+      component="header"
+      className="bg-gradient-to-r from-blue-header to-blue-600 mb-44 h-80 relative"
+    >
       <div
         className={`bg-center bg-fixed bg-no-repeat bg-cover ${
           isOutOfHome ? 'auto' : 'h-96'
@@ -76,34 +79,39 @@ const Header = () => {
 
         {!isOutOfHome && (
           <Box className="grid justify-items-center">
-          <Box className="grid grid-cols-autoColumns text-c text-[#2E7BEF] gap-3 px-8  absolute -bottom-32 
-          justify-center">
-            <Paper className="bg-gradient-to-l from-[#2E7BEF] to-blue-600 h-80" elevation={3} >
-              <Box
-                className="bg-[url('assets/test.png')] bg-center bg-no-repeat bg-contain p-8 h-full"
-                sx={{ backgroundColor: 'transparent' }}
-              ></Box>
-            </Paper>
+            <Box className="grid grid-cols-autoColumns text-c text-[#2E7BEF] gap-3 px-8 absolute -bottom-32 justify-center">
+              <Paper
+                className="bg-gradient-to-l from-[#2E7BEF] to-blue-600 h-80"
+                elevation={3}
+              >
+                <Box
+                  className="bg-[url('assets/test.png')] bg-center bg-no-repeat bg-contain p-8 h-full w-[32rem] w-"
+                  sx={{ backgroundColor: 'transparent' }}
+                ></Box>
+              </Paper>
 
-            <Paper className="flex text-center flex-col pb-8 gap-2 bg-white max-w-md w-96" elevation={3}>
-              <Typography
-                variant="h2"
-                fontWeight="800"
-                fontSize="4rem"
-                className="font-bold"
+              <Paper
+                className="flex text-center flex-col pb-8 gap-2 bg-white"
+                elevation={3}
               >
-                Bem Vindo
-              </Typography>
-              <Typography
-                variant="p"
-                fontWeight="500"
-                fontSize="1.2rem"
-                className="opacity-70"
-              >
-                Criar, Compartilhar & Interagir
-              </Typography>
-            </Paper>
-          </Box>
+                <Typography
+                  variant="h2"
+                  fontWeight="800"
+                  fontSize="4rem"
+                  className="font-bold"
+                >
+                  Bem Vindo
+                </Typography>
+                <Typography
+                  variant="p"
+                  fontWeight="500"
+                  fontSize="1.2rem"
+                  className="opacity-70"
+                >
+                  Criar, Compartilhar & Interagir
+                </Typography>
+              </Paper>
+            </Box>
           </Box>
         )}
       </div>

@@ -1,10 +1,11 @@
 import Subtitle from '../../Subtitle';
-import { Container, Paper } from '@mui/material';
+import { Box, Container, Paper } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import mundosenaiImage from '../../../assets/home/mundosenai.png';
 import senaiImage from '../../../assets/home/senai.png';
 import meusenaiImage from '../../../assets/home/meusenai.png';
 import { useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 const DemoPaper = styled(Paper)(({ theme }) => ({
   width: 100,
@@ -20,7 +21,7 @@ const DemoPaper = styled(Paper)(({ theme }) => ({
   },
 }));
 
-const Advertising = () => {
+const Advertising = ({ refAdvertising }) => {
   const navigate = useNavigate();
 
   const toPage = (url) => {
@@ -28,39 +29,45 @@ const Advertising = () => {
   };
 
   return (
-    <Container>
-      <Subtitle sx={{ marginBottom: '2.5rem' }}>Mais Senai</Subtitle>
-      <ul className="flex items-center gap-6 justify-between">
-        <li onClick={() => toPage('mundosenai.com')}>
-          <DemoPaper variant="elevation">
-            <img
-              src={mundosenaiImage}
-              alt="Logo do site mundo senai"
-              className="object-cover self-center"
-            />
-          </DemoPaper>
-        </li>
-        <li onClick={() => toPage('senai.com')}>
-          <DemoPaper variant="elevation">
-            <img
-              src={senaiImage}
-              alt="Logo do senai"
-              className="object-cover self-center"
-            />
-          </DemoPaper>
-        </li>
-        <li onClick={() => toPage('mundosenai.com')}>
-          <DemoPaper variant="elevation">
-            <img
-              src={meusenaiImage}
-              alt="Logo do site meu senai"
-              className="object-cover self-center"
-            />
-          </DemoPaper>
-        </li>
-      </ul>
+    <Container ref={refAdvertising}>
+      <Box>
+        <Subtitle sx={{ marginBottom: '2.5rem' }}>Mais Senai</Subtitle>
+        <ul className="flex items-center gap-6 justify-between">
+          <li onClick={() => toPage('mundosenai.com')}>
+            <DemoPaper variant="elevation">
+              <img
+                src={mundosenaiImage}
+                alt="Logo do site mundo senai"
+                className="object-cover self-center"
+              />
+            </DemoPaper>
+          </li>
+          <li onClick={() => toPage('senai.com')}>
+            <DemoPaper variant="elevation">
+              <img
+                src={senaiImage}
+                alt="Logo do senai"
+                className="object-cover self-center"
+              />
+            </DemoPaper>
+          </li>
+          <li onClick={() => toPage('mundosenai.com')}>
+            <DemoPaper variant="elevation">
+              <img
+                src={meusenaiImage}
+                alt="Logo do site meu senai"
+                className="object-cover self-center"
+              />
+            </DemoPaper>
+          </li>
+        </ul>
+      </Box>
     </Container>
   );
 };
 
 export default Advertising;
+
+Advertising.propTypes = {
+  refAdvertising: PropTypes.object,
+};
