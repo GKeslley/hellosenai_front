@@ -9,10 +9,12 @@ import MenuIcon from '@mui/icons-material/Menu';
 import NavLinkActive from '../NavLink/index';
 import { Box, Paper, useMediaQuery } from '@mui/material';
 import { useLocation } from 'react-router-dom';
+import Logo from '../../assets/header/logo.png'
 
 const Header = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const screenIsMobile = useMediaQuery('(max-width: 40rem)');
+  const screenIsMobile960 = useMediaQuery('(max-width: 960px)');
 
   const isOutOfHome = useLocation().pathname.slice(0, -1).length;
 
@@ -23,7 +25,7 @@ const Header = () => {
   return (
     <Box
       component="header"
-      className="bg-gradient-to-r from-blue-header to-blue-600 mb-44 h-80 relative"
+      className={`bg-gradient-to-r from-blue-header to-blue-600 ${!isOutOfHome ? 'h-80 mb-44' : 'h-auto mb-8'} relative`}
     >
       <div
         className={`bg-center bg-fixed bg-no-repeat bg-cover ${
@@ -31,7 +33,7 @@ const Header = () => {
         } grid ${isOutOfHome ? '' : 'grid-rows-auto2'} gap-12`}
       >
         <div className="flex flex-1 flex-wrap justify-between h-max items-center p-8">
-          <h1 className="font-semibold text-white">Hello Senai</h1>
+          <Box component='img' src={Logo} alt="Logo Hello Senai" className='max-w-[5rem]' />
           <nav>
             <ul className="flex gap-6 items-center">
               {!screenIsMobile && (
@@ -79,36 +81,47 @@ const Header = () => {
 
         {!isOutOfHome && (
           <Box className="grid justify-items-center">
-            <Box className="grid grid-cols-autoColumns text-c text-[#2E7BEF] gap-3 px-8 absolute -bottom-32 justify-center">
+            <Box className="grid grid-cols-auto-columns-2 text-c text-[#2E7BEF] gap-0 px-8 
+            absolute -bottom-32 justify-center min-[950px]:grid-cols-autoColumns min-[950px]:gap-3 max-[950px]:min-w-full">
               <Paper
-                className="bg-gradient-to-l from-[#2E7BEF] to-blue-600 h-80"
+                className="bg-gradient-to-l from-[#2E7BEF] to-blue-600 h-80 w-8 min-[950px]:w-full
+                max-[320px]:w-3"
                 elevation={3}
+                sx={{borderRadius: screenIsMobile960 ? '4px 0 0 4px' : '4px'}}
               >
                 <Box
-                  className="bg-[url('assets/test.png')] bg-center bg-no-repeat bg-contain p-8 h-full w-[32rem] w-"
+                  className="bg-none bg-center bg-no-repeat bg-contain p-8 
+                  h-full w-full min-[950px]:w-[32rem] min-[950px]:bg-[url('assets/test.png')]"
                   sx={{ backgroundColor: 'transparent' }}
                 ></Box>
               </Paper>
 
               <Paper
-                className="flex text-center flex-col pb-8 gap-2 bg-white"
+                className="flex flex-col p-8 gap-2 bg-white"
                 elevation={3}
+                sx={{borderRadius: screenIsMobile960 ? '0 4px 4px 0' : '4px'}}
               >
+                <Typography 
+                fontSize='0.8rem' 
+                sx={{fontWeight: 'bold', marginBottom: '1rem'}}
+                className='text-white bg-color-pattern-100 max-w-max p-1'>
+                  Hello Senai
+                </Typography>
+
                 <Typography
-                  variant="h2"
+                  variant="p"
                   fontWeight="800"
-                  fontSize="4rem"
-                  className="font-bold"
+                  className="text-2xl font-bold min-[960px]:text-4xl"
                 >
                   Bem Vindo
                 </Typography>
                 <Typography
                   variant="p"
                   fontWeight="500"
-                  fontSize="1.2rem"
-                  className="opacity-70"
+                  className="text-base opacity-70 leading-6 min-[960px]:text-xl"
+                  sx={{maxWidth: '35ch'}}
                 >
-                  Criar, Compartilhar & Interagir
+                  Conectando Alunos, Expandindo Horizontes: O Seu Espaço de Interatividade e Network!
                 </Typography>
               </Paper>
             </Box>
