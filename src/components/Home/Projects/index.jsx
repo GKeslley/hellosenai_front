@@ -29,7 +29,8 @@ const Projects = ({ refProject }) => {
             fontSize="2rem"
             fontWeight="600"
             marginBottom="0.325rem"
-            className="text-color-pattern mb-3"
+            marginTop='0.325rem'
+            className="text-color-pattern"
           >
             Projeto e-commerce
           </Typography>

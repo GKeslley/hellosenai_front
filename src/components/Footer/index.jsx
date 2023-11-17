@@ -1,5 +1,6 @@
 import { Box, Container, Typography, useMediaQuery } from '@mui/material';
 import { Link, NavLink } from 'react-router-dom';
+import Logo from '../../assets/header/logo.png'
 
 const Footer = () => {
   const isMobile = useMediaQuery('(max-width: 768px)');
@@ -16,15 +17,15 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-[#2E7BEF] grid h-full text-white">
+    <Box component='footer' className="bg-[#2E7BEF] grid h-full text-white">
       <Container sx={footerStyle} className="md:grid-columns-1">
         <Box
           sx={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row' }}
-          className="gap-9 w-full"
+          className="gap-5 w-full md:gap-20"
         >
-          <div>
-            <Typography>Hello Senai</Typography>
-          </div>
+          <Box className="grid justify-center">
+            <Box component='img' src={Logo} alt="Logo Hello Senai" className='max-w-[5rem]' />
+          </Box>
 
           <div className="grid grid-rows-footer">
             <Typography
@@ -102,7 +103,7 @@ const Footer = () => {
           </ul>
         </div>
       </Container>
-    </footer>
+    </Box>
   );
 };
 

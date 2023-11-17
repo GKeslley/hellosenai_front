@@ -15,10 +15,12 @@ import { useState } from 'react';
 import ModalComponent from '../../components/Modal';
 import MultiSelect from '../../components/Form/MultiSelect';
 import { CloudUpload } from '@mui/icons-material';
+import image from '../../assets/logo.png';
 
 const projects = [
   {
     autor: 'fulano',
+    apelido: 'fulano435',
     nome: 'facebook',
     descricao: 'dsadasdsadsa',
     participantes: [
@@ -30,12 +32,11 @@ const projects = [
       },
     ],
   },
-
   {
-    autor: 'fulano',
-    nome: 'Projeto Google Inovaaaaa',
-    descricao:
-      'Lorem ipsum dolor sit amet, cons ectetur adipiscing elit. Integer vel laoreet velit, at iaculis nulla. Cras aliquet purus augue, laoreet bibe ndum tortor malesuada eu Lorem ipsum dolor sit amet, cons ectetur adipiscing elit. Integer vel laoreet velit, at iaculis nulla. Cras aliquet purus augue, laoreet bibe ndum tortor malesuada eu Lorem ipsum dolor sit amet, cons ectetur adipiscing elit. Integer vel laoreet velit, at iaculis nulla. Cras aliquet purus augue, laoreet bibe ndum tortor malesuada eu',
+    autor: 'Guilherme',
+    apelido: 'guilherme43433',
+    nome: 'Sistema de Comunicação Social',
+    descricao: 'gfgfgfgf',
     participantes: [
       {
         nome: 'fulano2',
@@ -44,36 +45,7 @@ const projects = [
         nome: 'fulano3',
       },
     ],
-  },
-
-  {
-    autor: 'fulano',
-    nome: 'facebookaaaa',
-    descricao: 'dsadasdsadsa',
-    participantes: [
-      {
-        nome: 'fulano2',
-      },
-      {
-        nome: 'fulano3',
-      },
-    ],
-  },
-
-  {
-    autor: 'fulano',
-    nome: 'Projeto Google Inova',
-    descricao:
-      'Lorem ipsum dolor sit amet, cons ectetur adipiscing elit. Integer vel laoreet velit, at iaculis nulla. Cras aliquet purus augue, laoreet bibe ndum tortor malesuada eu Lorem ipsum dolor sit amet, cons ectetur adipiscing elit. Integer vel laoreet velit, at iaculis nulla. Cras aliquet purus augue, laoreet bibe ndum tortor malesuada eu Lorem ipsum dolor sit amet, cons ectetur adipiscing elit. Integer vel laoreet velit, at iaculis nulla. Cras aliquet purus augue, laoreet bibe ndum tortor malesuada eu',
-    participantes: [
-      {
-        nome: 'fulano2',
-      },
-      {
-        nome: 'fulano3',
-      },
-    ],
-  },
+  }
 ];
 
 const Project = () => {
@@ -107,24 +79,29 @@ const Project = () => {
         </Box>
 
         <Box component="ul" className="flex flex-col gap-5">
-          {projects.map(({ nome, autor }) => (
+          {projects.map(({ nome, autor, apelido }) => (
             <Box key={nome} component="li">
-              <Card sx={{ minWidth: 275 }} className="grid gap-5 max-w-full p-5">
+              <Card sx={{ minWidth: 275 }} className="grid gap-5 max-w-full p-5" elevation={0}>
+
                 <CardContent className="grid grid-rows-auto" sx={{ padding: '0' }}>
-                  <Box className="flex items-center gap-x-4 mb-6">
-                    <Avatar />
-                    <Typography fontSize="1.1rem">{autor}</Typography>
+
+                  <Box className="flex items-start gap-x-4 mb-6">
+                    <Avatar sx={{width: '50px', height: '50px'}} />
+                    <Box className='flex flex-col gap-1'>
+                      <Box className='flex gap-3 items-center'>
+                        <Typography fontSize="1.3rem" fontWeight='800'>{autor}</Typography>
+                        <Typography fontSize="0.9rem" className="text-gray-400">@{apelido}</Typography>
+                      </Box>
+                      <Typography fontSize="1rem">{nome}</Typography>
+                    </Box>
                   </Box>
-                  <Typography
-                    variant="p"
-                    fontWeight="400"
-                    fontSize="1.5rem"
-                    className="text-stone-700 font-bold"
-                    sx={{ marginLeft: 'calc(40px + 1rem)' }}
-                  >
-                    {nome}
-                  </Typography>
+
+                  <Box component='figure' sx={{padding: '0 calc(50px + 1rem)'}}>
+                    <Box component='img' src={image} alt="teste" sx={{borderRadius: '6px'}} />
+                  </Box>
+
                 </CardContent>
+
                 <ButtonComponent sx={{ justifySelf: 'right' }}>
                   Informações
                 </ButtonComponent>

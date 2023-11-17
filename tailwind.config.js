@@ -5,6 +5,10 @@ export default {
     extend: {
       colors: {
         'blue-header': '#2E7BEF',
+        'gray-400': '#7A8B93'
+      },
+      backgroundColor: {
+        'color-pattern-100': '#2E7BEF',
       },
       textColor: {
         'text-color-pattern': '#131B24',
@@ -18,6 +22,7 @@ export default {
       },
       gridTemplateColumns: {
         autoColumns: '1fr auto',
+        'auto-columns-2': 'auto 1fr',
         projects: 'repeat(12, calc((100% - 2rem * 11) / 12))',
       },
       gridColumn: {

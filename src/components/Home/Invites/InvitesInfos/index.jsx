@@ -15,7 +15,7 @@ const InvitesInfos = ({ refInvites }) => {
         <Wave />
         <Container className="mt-9">
           <Title sx={{ color: '#fff' }}>Conecte-se Com Outros Alunos Senai</Title>
-          <Box className="grid justify-items-center mt-9 items-center md:grid-cols-2 md:justify-items-start">
+          <Box className="grid justify-items-center mt-9 items-center md:grid-cols-2">
             <Box component="img" src={net} alt="test"></Box>
             <Invites />
           </Box>
