@@ -4,8 +4,11 @@ import {
   Button,
   Card,
   CardContent,
+  Chip,
   Container,
+  Divider,
   FormControl,
+  Paper,
   TextField,
   Typography,
 } from '@mui/material';
@@ -16,6 +19,7 @@ import ModalComponent from '../../components/Modal';
 import MultiSelect from '../../components/Form/MultiSelect';
 import { CloudUpload } from '@mui/icons-material';
 import image from '../../assets/logo.png';
+import ChatBubbleRoundedIcon from '@mui/icons-material/ChatBubbleRounded';
 
 const projects = [
   {
@@ -45,7 +49,7 @@ const projects = [
         nome: 'fulano3',
       },
     ],
-  }
+  },
 ];
 
 const Project = () => {
@@ -57,11 +61,13 @@ const Project = () => {
     <Container sx={{ flex: '1' }}>
       <Box
         component="section"
-        sx={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '2rem' }}
+        className="grid grid-cols-1 gap-8 md:grid-cols-auto-columns-2"
       >
-        <Box className="flex flex-col gap-8 pr-6">
-          <Title>Projetos</Title>
-          <ButtonComponent onClick={handleOpen}>Criar Projeto</ButtonComponent>
+        <Box className="flex justify-between gap-8 pr-6 items-center md:flex-col md:justify-normal">
+          <Box className="flex flex-col gap-3">
+            <Title>Projetos</Title>
+            <ButtonComponent onClick={handleOpen}>Criar Projeto</ButtonComponent>
+          </Box>
           <Box component="form">
             <TextField
               id="select-orderby"
@@ -78,37 +84,119 @@ const Project = () => {
           </Box>
         </Box>
 
-        <Box component="ul" className="flex flex-col gap-5">
+        <Paper
+          component="ul"
+          elevation={3}
+          sx={{ display: 'flex', flexDirection: 'column', flexShrink: '0' }}
+        >
           {projects.map(({ nome, autor, apelido }) => (
-            <Box key={nome} component="li">
-              <Card sx={{ minWidth: 275 }} className="grid gap-5 max-w-full p-5" elevation={0}>
+            <>
+              <Card
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  padding: '14px 16px',
+                  maxWidth: '100%',
+                }}
+                elevation={0}
+                component="li"
+              >
+                <Box sx={{ display: 'flex', position: 'relative', marginTop: '1.5rem' }}>
+                  <Avatar
+                    sx={{
+                      width: '50px',
+                      height: '50px',
+                      position: 'absolute',
+                      top: '0px',
+                      left: '0px',
+                    }}
+                  />
 
-                <CardContent className="grid grid-rows-auto" sx={{ padding: '0' }}>
+                  <CardContent
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      width: '100%',
+                      padding: '0 0 0 59px',
+                      gap: '0.3rem',
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        fontSize: '15px',
+                        whiteSpace: 'nowrap',
+                        gap: '0.8rem',
+                      }}
+                    >
+                      <Typography
+                        fontWeight="800"
+                        sx={{
+                          whiteSpace: 'nowrap',
+                          textOverflow: 'ellipsis',
+                          overflow: 'hidden',
+                          marginRight: '5px',
+                        }}
+                      >
+                        {autor}
+                      </Typography>
 
-                  <Box className="flex items-start gap-x-4 mb-6">
-                    <Avatar sx={{width: '50px', height: '50px'}} />
-                    <Box className='flex flex-col gap-1'>
-                      <Box className='flex gap-3 items-center'>
-                        <Typography fontSize="1.3rem" fontWeight='800'>{autor}</Typography>
-                        <Typography fontSize="0.9rem" className="text-gray-400">@{apelido}</Typography>
-                      </Box>
-                      <Typography fontSize="1rem">{nome}</Typography>
+                      <Typography
+                        className="text-gray-400"
+                        sx={{
+                          whiteSpace: 'nowrap',
+                          textOverflow: 'ellipsis',
+                          overflow: 'hidden',
+                        }}
+                      >
+                        @{apelido}
+                      </Typography>
+
+                      <Typography
+                        component="span"
+                        fontSize="0.5rem"
+                        className="bg-gray-400 h-1 w-1 rounded-full mx-2"
+                      ></Typography>
+
+                      <Typography
+                        component="time"
+                        fontSize="0.9rem"
+                        className="text-gray-400"
+                      >
+                        22h
+                      </Typography>
                     </Box>
-                  </Box>
 
-                  <Box component='figure' sx={{padding: '0 calc(50px + 1rem)'}}>
-                    <Box component='img' src={image} alt="teste" sx={{borderRadius: '6px'}} />
-                  </Box>
+                    <Typography fontSize="1rem">{nome}</Typography>
 
-                </CardContent>
+                    <Box
+                      component="figure"
+                      sx={{ height: 'min(285px, max(175px, 41vw))' }}
+                    >
+                      <Box
+                        component="img"
+                        src={image}
+                        alt="teste"
+                        sx={{
+                          borderRadius: '6px',
+                          height: '100%',
+                          objectFit: 'cover',
+                          width: '100%',
+                        }}
+                      />
+                    </Box>
 
-                <ButtonComponent sx={{ justifySelf: 'right' }}>
-                  Informações
-                </ButtonComponent>
+                    <Box className="flex items-center justify-between gap-5">
+                      <Chip icon={<ChatBubbleRoundedIcon />} label="5" />
+                    </Box>
+                  </CardContent>
+                </Box>
               </Card>
-            </Box>
+              <Divider variant="middle" />
+            </>
           ))}
-        </Box>
+        </Paper>
       </Box>
       <ModalComponent handleClose={handleClose} openModal={openModal}>
         <FormControl sx={{ display: 'grid', gap: '1.5rem' }}>

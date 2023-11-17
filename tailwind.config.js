@@ -5,7 +5,7 @@ export default {
     extend: {
       colors: {
         'blue-header': '#2E7BEF',
-        'gray-400': '#7A8B93'
+        'gray-400': '#7A8B93',
       },
       backgroundColor: {
         'color-pattern-100': '#2E7BEF',
