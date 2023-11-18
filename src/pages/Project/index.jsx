@@ -1,253 +1,79 @@
-import {
-  Avatar,
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Chip,
-  Container,
-  Divider,
-  FormControl,
-  Paper,
-  TextField,
-  Typography,
-} from '@mui/material';
+import React from 'react'
+import { Avatar, Box, Container, Divider, TextField, Typography } from '@mui/material'
+import teste2 from '../../assets/logo2.png';
 import Title from '../../components/Title';
+import Subtitle from '../../components/Subtitle';
+import Accordion from '../../components/Accordion';
+import GitHubIcon from '@mui/icons-material/GitHub';
 import ButtonComponent from '../../components/Button';
-import { useState } from 'react';
-import ModalComponent from '../../components/Modal';
-import MultiSelect from '../../components/Form/MultiSelect';
-import { CloudUpload } from '@mui/icons-material';
-import image from '../../assets/logo.png';
-import ChatBubbleRoundedIcon from '@mui/icons-material/ChatBubbleRounded';
-
-const projects = [
-  {
-    autor: 'fulano',
-    apelido: 'fulano435',
-    nome: 'facebook',
-    descricao: 'dsadasdsadsa',
-    participantes: [
-      {
-        nome: 'fulano2',
-      },
-      {
-        nome: 'fulano3',
-      },
-    ],
-  },
-  {
-    autor: 'Guilherme',
-    apelido: 'guilherme43433',
-    nome: 'Sistema de Comunicação Social',
-    descricao: 'gfgfgfgf',
-    participantes: [
-      {
-        nome: 'fulano2',
-      },
-      {
-        nome: 'fulano3',
-      },
-    ],
-  },
-];
+import Comment from '../../components/Comment';
 
 const Project = () => {
-  const [openModal, setOpenModal] = useState(false);
-  const handleOpen = () => setOpenModal(true);
-  const handleClose = () => setOpenModal(false);
-
   return (
-    <Container sx={{ flex: '1' }}>
-      <Box
-        component="section"
-        className="grid grid-cols-1 gap-8 md:grid-cols-auto-columns-2"
-      >
-        <Box className="flex justify-between gap-8 pr-6 items-center md:flex-col md:justify-normal">
-          <Box className="flex flex-col gap-3">
-            <Title>Projetos</Title>
-            <ButtonComponent onClick={handleOpen}>Criar Projeto</ButtonComponent>
+    <Container sx={{marginBottom: '2rem'}}>
+      <Box component='img' src={teste2} alt='facebook' 
+      sx={{maxHeight: '20rem', objectFit: 'cover', width: '100%', marginBottom: '1.5rem'}} />
+      <Container>
+        <Title sx={{marginBottom: '3rem'}}>Projeto E-commerce</Title>
+        <Box 
+        component='ul' 
+        sx={{display: 'flex', flexDirection: 'column', gap: '2.5rem'}}>
+          <Box component='li'>
+            <Subtitle sx={{marginBottom: '1rem'}}>Descrição</Subtitle>
+            <Typography sx={{whiteSpace: 'break-spaces'}}>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vel laoreet velit, at iaculis nulla. 
+              Cras aliquet purus augue, laoreet bibendum tortor malesuada eu. Praesent mi enim, vestibulum
+              eu dolor quis, volutpat dapibus velit. Sed sit amet commodo lacus. Morbi rutrum eleifend mollis. 
+              Nulla vulputate in nulla non hendrerit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+              Aliquam facilisis congue orci hendrerit congue. Integer placerat ultrices auctor. Nullam arcu 
+              eros, mattis quis aliquam vitae, interdum vel mi. Proin at tempor ipsum, at feugiat tellus.
+              Donec purus eros, egestas nec finibus nec, tempor a nisl. Nunc lacus mauris, ornare ultricies 
+              velit aliquet, ullamcorper commodo felis.
+            </Typography>
           </Box>
-          <Box component="form">
-            <TextField
-              id="select-orderby"
-              select
-              label="Organizar por:"
-              variant="filled"
-              SelectProps={{
-                native: true,
-              }}
-            >
-              <option value="mais recentes">Mais Recentes</option>
-              <option value="mais antigos">Mais Antigos</option>
-            </TextField>
+
+          <Box component='li'>
+            <Subtitle sx={{marginBottom: '1rem'}}>Participantes</Subtitle>
+            <Typography>Fulano | www.github.com</Typography>
+            <Typography>Fulano | www.github.com</Typography>
+            <Typography>Fulano | www.github.com</Typography>
           </Box>
+
+          <Box component='li'>
+            <Subtitle sx={{marginBottom: '1rem'}}>Sobre</Subtitle>
+            <Box sx={{display: 'flex', gap: '1rem', alignItems: 'center'}}>
+              <GitHubIcon />
+              <Typography>www.github.com</Typography>
+            </Box>
+          </Box>
+
+          <Box component='li'>
+            <Subtitle sx={{marginBottom: '1rem'}}>Informações</Subtitle>
+            <Box sx={{display: 'flex', flexDirection: 'column', gap: '1rem'}}>
+              <Accordion title='Como Utilizar o Github' idVideo='UbJLOn1PAKw' />
+              <Accordion title='Github Para Clonar Repositórios' idVideo='OlArEishhQg' />
+            </Box>
+          </Box>
+
+          <Divider />
+
+          <Box component='li'>
+            <Subtitle sx={{marginBottom: '1rem'}}>Comentários</Subtitle>
+            <Box sx={{display: 'flex', gap: '1rem', flexWrap: 'wrap', marginBottom: '1.5rem'}}>
+              <Avatar sx={{width: '30px', height: '30px'}} />
+              <TextField placeholder='Deixe um comentário...' sx={{flexGrow: '1', minWidth: '1rem'}} />
+            </Box>
+
+            <Box component='ul' sx={{display: 'flex', flexDirection: 'column', gap: '1rem'}}>
+                <Comment />
+                <Comment />
+            </Box>
+          </Box>
+
         </Box>
-
-        <Paper
-          component="ul"
-          elevation={3}
-          sx={{ display: 'flex', flexDirection: 'column', flexShrink: '0' }}
-        >
-          {projects.map(({ nome, autor, apelido }) => (
-            <>
-              <Card
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  padding: '14px 16px',
-                  maxWidth: '100%',
-                }}
-                elevation={0}
-                component="li"
-              >
-                <Box sx={{ display: 'flex', position: 'relative', marginTop: '1.5rem' }}>
-                  <Avatar
-                    sx={{
-                      width: '50px',
-                      height: '50px',
-                      position: 'absolute',
-                      top: '0px',
-                      left: '0px',
-                    }}
-                  />
-
-                  <CardContent
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      width: '100%',
-                      padding: '0 0 0 59px',
-                      gap: '0.3rem',
-                    }}
-                  >
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        fontSize: '15px',
-                        whiteSpace: 'nowrap',
-                        gap: '0.8rem',
-                      }}
-                    >
-                      <Typography
-                        fontWeight="800"
-                        sx={{
-                          whiteSpace: 'nowrap',
-                          textOverflow: 'ellipsis',
-                          overflow: 'hidden',
-                          marginRight: '5px',
-                        }}
-                      >
-                        {autor}
-                      </Typography>
-
-                      <Typography
-                        className="text-gray-400"
-                        sx={{
-                          whiteSpace: 'nowrap',
-                          textOverflow: 'ellipsis',
-                          overflow: 'hidden',
-                        }}
-                      >
-                        @{apelido}
-                      </Typography>
-
-                      <Typography
-                        component="span"
-                        fontSize="0.5rem"
-                        className="bg-gray-400 h-1 w-1 rounded-full mx-2"
-                      ></Typography>
-
-                      <Typography
-                        component="time"
-                        fontSize="0.9rem"
-                        className="text-gray-400"
-                      >
-                        22h
-                      </Typography>
-                    </Box>
-
-                    <Typography fontSize="1rem">{nome}</Typography>
-
-                    <Box
-                      component="figure"
-                      sx={{ height: 'min(285px, max(175px, 41vw))' }}
-                    >
-                      <Box
-                        component="img"
-                        src={image}
-                        alt="teste"
-                        sx={{
-                          borderRadius: '6px',
-                          height: '100%',
-                          objectFit: 'cover',
-                          width: '100%',
-                        }}
-                      />
-                    </Box>
-
-                    <Box className="flex items-center justify-between gap-5">
-                      <Chip icon={<ChatBubbleRoundedIcon />} label="5" />
-                    </Box>
-                  </CardContent>
-                </Box>
-              </Card>
-              <Divider variant="middle" />
-            </>
-          ))}
-        </Paper>
-      </Box>
-      <ModalComponent handleClose={handleClose} openModal={openModal}>
-        <FormControl sx={{ display: 'grid', gap: '1.5rem' }}>
-          <Box sx={{ display: 'grid', gap: '1.5rem', gridTemplateColumns: '1fr auto' }}>
-            <Box sx={{ display: 'grid', gap: '1.5rem' }}>
-              <TextField
-                required
-                id="outlined-required"
-                label="Nome"
-                sx={{ width: '100%' }}
-              />
-              <TextField
-                id="outlined-multiline-static"
-                label="Descrição"
-                multiline
-                rows={4}
-                sx={{ width: '100%' }}
-              />
-              <MultiSelect />
-              <TextField
-                required
-                id="github-link"
-                label="Github"
-                placeholder="www.github.com"
-                sx={{ width: '100%' }}
-              />
-            </Box>
-
-            <Box sx={{ display: 'flex', flexDirection: 'column', paddingLeft: '1rem' }}>
-              <Typography variant="p" sx={{ marginBottom: '1rem' }}>
-                Adicione uma imagem do seu projeto
-              </Typography>
-              <Button
-                component="label"
-                variant="contained"
-                disableElevation
-                startIcon={<CloudUpload />}
-              >
-                Imagem
-                <input type="file" accept="image/*" hidden />
-              </Button>
-            </Box>
-          </Box>
-
-          <ButtonComponent variant="outlined" sx={{ justifySelf: 'right' }} size="large">
-            Criar
-          </ButtonComponent>
-        </FormControl>
-      </ModalComponent>
+      </Container>
     </Container>
-  );
-};
+  )
+}
 
-export default Project;
+export default Project
