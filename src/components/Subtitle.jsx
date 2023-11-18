@@ -5,9 +5,9 @@ const Subtitle = ({ children, sx }) => {
   return (
     <Typography
       variant="h2"
-      fontSize="2.3rem"
+      fontSize="2rem"
       fontWeight="400"
-      sx={{ ...sx, fontWeight: '800', marginBottom: '2.5rem' }}
+      sx={{ fontWeight: '800', marginBottom: '2.5rem', ...sx }}
       className="text-[#131B24]"
     >
       {children}

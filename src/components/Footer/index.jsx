@@ -38,16 +38,16 @@ const Footer = () => {
             </Typography>
             <ul className="text-white">
               <li className="flex flex-col gap-y-2">
-                <Typography>guilherme.k.santos@ba.estudante.senai.br</Typography>
+                <Typography sx={{wordBreak: 'break-word'}}>guilherme.k.santos@ba.estudante.senai.br</Typography>
               </li>
               <li>
-                <Typography>juliana.m@ba.estudante.senai.br</Typography>
+                <Typography sx={{wordBreak: 'break-word'}}>juliana.m@ba.estudante.senai.br</Typography>
               </li>
               <li>
-                <Typography>lucas.rabelo@ba.estudante.senai.br</Typography>
+                <Typography sx={{wordBreak: 'break-word'}}>lucas.rabelo@ba.estudante.senai.br</Typography>
               </li>
               <li>
-                <Typography>luiz.h@ba.estudante.senai.br</Typography>
+                <Typography sx={{wordBreak: 'break-word'}}>luiz.h@ba.estudante.senai.br</Typography>
               </li>
             </ul>
           </div>

@@ -1,13 +1,13 @@
 import Typography from '@mui/material/Typography';
 import PropTypes from 'prop-types';
 
-const Title = ({ children, sx }) => {
+const Title = ({ children, className, sx }) => {
   return (
     <Typography
       variant="h1"
-      fontSize="2.5rem"
+      fontSize="3rem"
       fontWeight="600"
-      className="text-stone-800 font-bold"
+      className={`text-stone-800 font-bold ${className}`}
       sx={sx}
     >
       {children}
