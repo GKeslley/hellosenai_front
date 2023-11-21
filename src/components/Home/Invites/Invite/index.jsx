@@ -1,28 +1,46 @@
-import { Avatar, Button, Card, CardContent } from '@mui/material';
+import {
+  Avatar,
+  Card,
+  CardContent,
+  CardActionArea,
+  CardActions,
+  Box,
+} from '@mui/material';
 import Typography from '@mui/material/Typography';
 import './styles.css';
+import ButtonComponent from '../../../Button';
+import PropTypes from 'prop-types';
 
-const Invite = () => {
+const Invite = ({ modalAccessInvite }) => {
   return (
-    <Card variant="outlined" sx={{ minWidth: 275 }} className="grid gap-5 max-w-full">
-      <CardContent className="grid grid-rows-auto">
-        <div className="flex items-center gap-x-4 mb-4">
-          <Avatar />
-          <p>Fulano</p>
-        </div>
-        <Typography variant="body1" fontWeight="500" className="text-stone-500 font-bold">
-          Facebook
-        </Typography>
-        <Button
+    <Card sx={{ minWidth: 245, flex: '1' }}>
+      <CardActionArea>
+        <CardContent>
+          <Box className="flex items-center gap-x-4 mb-4">
+            <Avatar sx={{ width: '30px', height: '30px' }} />
+            <Typography>Fulano</Typography>
+          </Box>
+          <Typography gutterBottom variant="h5" fontWeight="500">
+            Facebook
+          </Typography>
+        </CardContent>
+      </CardActionArea>
+      <CardActions>
+        <ButtonComponent
           variant="outlined"
-          size="small"
           sx={{ justifySelf: 'right', maxWidth: 'max-content' }}
+          onClick={modalAccessInvite}
+          size="small"
         >
           Acessar
-        </Button>
-      </CardContent>
+        </ButtonComponent>
+      </CardActions>
     </Card>
   );
+};
+
+Invite.propTypes = {
+  modalAccessInvite: PropTypes.func,
 };
 
 export default Invite;

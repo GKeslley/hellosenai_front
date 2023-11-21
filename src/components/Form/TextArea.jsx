@@ -2,7 +2,7 @@ import { TextareaAutosize as BaseTextareaAutosize } from '@mui/base/TextareaAuto
 import { FormControl } from '@mui/material';
 import { styled } from '@mui/system';
 
-const TextArea = () => {
+const TextArea = ({ ...props }) => {
   const Textarea = styled(BaseTextareaAutosize)(
     () => `
     width: 320px;
@@ -30,8 +30,8 @@ const TextArea = () => {
   );
 
   return (
-    <FormControl>
-      <Textarea aria-label="minimum height" minRows={3} id="textarea" />
+    <FormControl sx={{ width: '100%' }}>
+      <Textarea aria-label="minimum height" minRows={5} id="textarea" {...props} />
     </FormControl>
   );
 };

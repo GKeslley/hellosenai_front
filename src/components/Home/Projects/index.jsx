@@ -2,20 +2,26 @@ import Typography from '@mui/material/Typography';
 import Subtitle from '../../Subtitle';
 import teste from '../../../assets/logo.png';
 import teste2 from '../../../assets/logo2.png';
-import { Box, Container } from '@mui/material';
+import { Box, Container, useMediaQuery } from '@mui/material';
 import PropTypes from 'prop-types';
 
+const styleImageTransition = {
+  transition: 'transform .5s ease',
+  ':hover': { transform: 'scale(1.03)' },
+};
+
 const Projects = ({ refProject }) => {
-  const styleImageTransition = {
-    transition: 'transform .5s ease',
-    ':hover': { transform: 'scale(1.03)' },
-  };
+  const isSmallSmartphone = useMediaQuery('(min-width: 400px)');
 
   return (
     <Container ref={refProject}>
       <Subtitle>Projetos Recentes</Subtitle>
       <Box className="flex flex-col gap-8 md:grid md:grid-cols-projects">
-        <li className="min-w-[20rem] row-span-3 col-column-1-13 h-full lg:col-column-1-9">
+        <Box
+          component="li"
+          className="row-span-3 col-column-1-13 h-full lg:col-column-1-9"
+          sx={{ minWidth: !isSmallSmartphone ? '10rem' : '20rem' }}
+        >
           <Box className="grid overflow-hidden md:min-h-[65%]">
             <Box
               component="img"
@@ -26,10 +32,10 @@ const Projects = ({ refProject }) => {
             />
           </Box>
           <Typography
-            fontSize="2rem"
+            fontSize={!isSmallSmartphone ? '1.5rem' : '2rem'}
             fontWeight="600"
             marginBottom="0.325rem"
-            marginTop='0.325rem'
+            marginTop="0.325rem"
             className="text-color-pattern"
           >
             Projeto e-commerce
@@ -38,9 +44,13 @@ const Projects = ({ refProject }) => {
             Lorem ipsum dolor sit amet, cons ectetur adipiscing elit. Integer vel
             laoreet...
           </Typography>
-        </li>
+        </Box>
 
-        <li className="min-w-[20rem] col-column-7-13 lg:col-column-9-13">
+        <Box
+          component="li"
+          className="col-column-7-13 lg:col-column-9-13"
+          sx={{ minWidth: !isSmallSmartphone ? '10rem' : '20rem' }}
+        >
           <Box className="grid overflow-hidden">
             <Box
               component="img"
@@ -52,7 +62,7 @@ const Projects = ({ refProject }) => {
           </Box>
 
           <Typography
-            fontSize="2rem"
+            fontSize={!isSmallSmartphone ? '1.5rem' : '2rem'}
             fontWeight="600"
             marginBottom="0.325rem"
             className="text-color-pattern mb-3"
@@ -63,9 +73,13 @@ const Projects = ({ refProject }) => {
             Lorem ipsum dolor sit amet, cons ectetur adipiscing elit. Integer vel
             laoreet...
           </Typography>
-        </li>
+        </Box>
 
-        <li className="min-w-[20rem] col-column-1-7 row-start-4 lg:row-start-2 lg:col-column-9-13">
+        <Box
+          component="li"
+          className="col-column-1-7 row-start-4 lg:row-start-2 lg:col-column-9-13"
+          sx={{ minWidth: !isSmallSmartphone ? '10rem' : '20rem' }}
+        >
           <Box className="grid overflow-hidden">
             <Box
               component="img"
@@ -77,7 +91,7 @@ const Projects = ({ refProject }) => {
           </Box>
 
           <Typography
-            fontSize="2rem"
+            fontSize={!isSmallSmartphone ? '1.5rem' : '2rem'}
             fontWeight="600"
             marginBottom="0.325rem"
             className="text-color-pattern mb-3"
@@ -88,7 +102,7 @@ const Projects = ({ refProject }) => {
             Lorem ipsum dolor sit amet, cons ectetur adipiscing elit. Integer vel
             laoreet...
           </Typography>
-        </li>
+        </Box>
       </Box>
     </Container>
   );

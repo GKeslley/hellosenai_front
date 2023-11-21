@@ -1,5 +1,6 @@
 import { Check } from '@mui/icons-material';
 import { Autocomplete, MenuItem, TextField } from '@mui/material';
+import PropTypes from 'prop-types';
 
 const names = [
   'Humaira Sims',
@@ -14,10 +15,11 @@ const names = [
   'Harris Glenn',
 ];
 
-const MultiSelect = () => {
+const MultiSelect = ({ label, placeholder }) => {
   return (
     <Autocomplete
       multiple
+      fullWidth
       options={names}
       getOptionLabel={(option) => option}
       disableCloseOnSelect
@@ -26,8 +28,8 @@ const MultiSelect = () => {
         <TextField
           {...params}
           variant="outlined"
-          label="Participantes"
-          placeholder="Participante"
+          label={label}
+          placeholder={placeholder}
         />
       )}
       renderOption={(props, option, { selected }) => (
@@ -43,6 +45,11 @@ const MultiSelect = () => {
       )}
     />
   );
+};
+
+MultiSelect.propTypes = {
+  label: PropTypes.string,
+  placeholder: PropTypes.string,
 };
 
 export default MultiSelect;

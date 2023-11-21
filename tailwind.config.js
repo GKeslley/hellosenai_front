@@ -17,7 +17,7 @@ export default {
       },
       gridTemplateRows: {
         auto: 'auto auto 1fr',
-        footer: '0.4fr 1fr',
+        footer: 'auto 1fr',
         auto2: 'auto 1fr',
       },
       gridTemplateColumns: {

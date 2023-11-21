@@ -7,7 +7,7 @@ const Subtitle = ({ children, sx }) => {
       variant="h2"
       fontSize="2rem"
       fontWeight="400"
-      sx={{ fontWeight: '800', marginBottom: '2.5rem', ...sx }}
+      sx={{ fontWeight: '800', marginBottom: '2rem', ...sx }}
       className="text-[#131B24]"
     >
       {children}
