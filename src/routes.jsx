@@ -2,13 +2,21 @@ import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Project from './pages/Project';
 import Projects from './pages/Projects';
+import Invites from './pages/Invites';
+import Profile from './pages/Profile';
+import Login from './pages/Login';
+import LoginStudent from './pages/Login/LoginStudent';
 
 const CreateRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />}></Route>
+      <Route path="/login" element={<Login />}></Route>
+      <Route path="/login/aluno" element={<LoginStudent />}></Route>
       <Route path="/projetos" element={<Projects />}></Route>
       <Route path="/projetos/:slug" element={<Project />}></Route>
+      <Route path="/convites" element={<Invites />}></Route>
+      <Route path="/perfil/*" element={<Profile />}></Route>
     </Routes>
   );
 };
