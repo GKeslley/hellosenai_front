@@ -12,7 +12,7 @@ const CreateRoutes = () => {
     <Routes>
       <Route path="/" element={<Home />}></Route>
       <Route path="/login" element={<Login />}></Route>
-      <Route path="/login/aluno" element={<LoginStudent />}></Route>
+      <Route path="/login/aluno/*" element={<LoginStudent />}></Route>
       <Route path="/projetos" element={<Projects />}></Route>
       <Route path="/projetos/:slug" element={<Project />}></Route>
       <Route path="/convites" element={<Invites />}></Route>

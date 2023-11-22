@@ -36,7 +36,7 @@ const Advertising = ({ refAdvertising }) => {
           <li onClick={() => toPage('mundosenai.com')}>
             <DemoPaper
               variant="elevation"
-              sx={{ width: !isSmallSmartphone ? '100%' : 'auto' }}
+              sx={{ width: !isSmallSmartphone ? '100%' : 'none'}}
             >
               <Box
                 component="img"
@@ -46,7 +46,7 @@ const Advertising = ({ refAdvertising }) => {
                 sx={{
                   width: '100%',
                   height: '100%',
-                  objectFit: !isSmallSmartphone ? 'contain' : 'cover',
+                  objectFit: isSmallSmartphone ? 'contain' : 'cover',
                 }}
               />
             </DemoPaper>
@@ -64,7 +64,7 @@ const Advertising = ({ refAdvertising }) => {
                 sx={{
                   width: '100%',
                   height: '100%',
-                  objectFit: !isSmallSmartphone ? 'contain' : 'cover',
+                  objectFit: isSmallSmartphone ? 'contain' : 'cover',
                 }}
               />
             </DemoPaper>
@@ -72,7 +72,7 @@ const Advertising = ({ refAdvertising }) => {
           <li onClick={() => toPage('mundosenai.com')}>
             <DemoPaper
               variant="elevation"
-              sx={{ width: !isSmallSmartphone ? '100%' : 'auto' }}
+              sx={{ width: !isSmallSmartphone ? '100%' : 'none'}}
             >
               <Box
                 component="img"
@@ -82,7 +82,7 @@ const Advertising = ({ refAdvertising }) => {
                 sx={{
                   width: '100%',
                   height: '100%',
-                  objectFit: !isSmallSmartphone ? 'contain' : 'cover',
+                  objectFit: isSmallSmartphone ? 'contain' : 'cover',
                 }}
               />
             </DemoPaper>
