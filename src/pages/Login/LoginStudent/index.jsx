@@ -1,19 +1,25 @@
-import { Box, Container } from '@mui/material';
-import Title from '../../../components/Title';
+import { Box, Container, useMediaQuery } from '@mui/material';
 import studentsImage from '../../../assets/login/students.png';
+import LoginForm from '../../../components/Login/LoginForm';
+import RegisterForm from '../../../components/Login/RegisterForm';
+import { Route, Routes } from 'react-router-dom';
 
 const LoginStudent = () => {
+  const isMobile = useMediaQuery('(min-width: 768px)');
+
   return (
     <Container
       component="section"
-      sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}
+      sx={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr 1fr' : '1fr', gap: '1rem', marginBottom: '2rem' }}
     >
-      <Box component="figure">
+      {isMobile && <Box component="figure">
         <Box component="img" src={studentsImage} alt="Estudantes" />
-      </Box>
-      <Box sx={{ justifyContent: 'center' }}>
-        <Title sx={{ textAlign: 'center' }}>Bem Vindo(a)</Title>
-      </Box>
+      </Box>}
+
+      <Routes>
+        <Route path='/' element={<LoginForm />} />
+        <Route path='registro' element={<RegisterForm />} />
+      </Routes>
     </Container>
   );
 };

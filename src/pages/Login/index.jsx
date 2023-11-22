@@ -27,7 +27,9 @@ const Login = () => {
             >
               <Avatar
                 src={teacherImage}
-                sx={{ objectPosition: 'top', width: '120px', height: '120px' }}
+                sx={{ objectPosition: 'top', width: '120px', height: '120px', '& .MuiAvatar-img': {
+                  objectPosition: 'top'
+                } }}
               />
               <Typography fontSize="1.5rem" fontWeight="500">
                 Sou Professor
@@ -53,6 +55,7 @@ const Login = () => {
                   objectPosition: 'top',
                   width: '120px',
                   height: '120px',
+                  '& .MuiAvatar-img': {objectPosition: 'top'}
                 }}
               />
               <Typography fontSize="1.5rem" fontWeight="500">
