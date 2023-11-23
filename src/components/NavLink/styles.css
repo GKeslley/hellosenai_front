@@ -1,7 +1,0 @@
-.navlink:hover::after {
-  width: 100%;
-}
-
-.navlink.active::after {
-  width: 100%;
-}
