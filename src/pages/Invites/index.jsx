@@ -90,7 +90,7 @@ const Invites = () => {
       <ModalCreateInvite
         openModal={openModalCreateInvite}
         setOpenModal={setOpenModalCreateInvite}
-        title="Criar Projeto"
+        title="Criar Convite"
         buttonTitle="Criar"
       />
 

@@ -6,7 +6,7 @@ import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import MenuMobile from './MenuMobile';
 import MenuIcon from '@mui/icons-material/Menu';
-import NavLinkActive from '../NavLink/index';
+import NavLinkActive from '../NavLink';
 import { Box, Paper, useMediaQuery } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 import Logo from '../../assets/header/logo.png';
