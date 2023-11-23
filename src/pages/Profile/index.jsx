@@ -128,24 +128,40 @@ const Profile = () => {
             <NavLinkActive
               to="/perfil"
               end={true}
-              color="black"
-              className="w-full text-center"
+              color="#000"
+              background="#000"
+              sx={{ width: '100%', textAlign: 'center' }}
             >
               Minha Conta
             </NavLinkActive>
           </ListItem>
           <ListItem sx={{ justifyContent: 'center', padding: '0', minWidth: '10rem' }}>
-            <NavLinkActive to="projetos" color="black" className="w-full text-center">
+            <NavLinkActive
+              to="/perfil/projetos"
+              color="#000"
+              background="#000"
+              sx={{ width: '100%', textAlign: 'center' }}
+            >
               Meus Projetos
             </NavLinkActive>
           </ListItem>
           <ListItem sx={{ justifyContent: 'center', padding: '0', minWidth: '10rem' }}>
-            <NavLinkActive to="/perfil/convites" className="w-full text-center">
+            <NavLinkActive
+              to="/perfil/convites"
+              color="#000"
+              background="#000"
+              sx={{ width: '100%', textAlign: 'center' }}
+            >
               Meus Convites
             </NavLinkActive>
           </ListItem>
           <ListItem sx={{ justifyContent: 'center', padding: '0', minWidth: '10rem' }}>
-            <NavLinkActive to="/perfil/configuracoes" className="w-full text-center">
+            <NavLinkActive
+              to="/perfil/configuracoes"
+              color="#000"
+              background="#000"
+              sx={{ width: '100%', textAlign: 'center' }}
+            >
               Configurações
             </NavLinkActive>
           </ListItem>
