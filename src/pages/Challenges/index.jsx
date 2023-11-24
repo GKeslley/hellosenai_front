@@ -1,12 +1,64 @@
-import { Avatar, Box, Container, Divider, List, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material';
-import Title from '../../components/Title';
+import { Box, Container, Drawer } from '@mui/material';
 import Challenge from './Challenge';
+import SideberInfos from './SidebarInfos';
+import { useState } from 'react';
+
+const drawerWidth = 240;
 
 const Challenges = () => {
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+
   return (
-    <Container component='section' sx={{ display: 'grid', gridTemplateColumns: '1fr auto', 
-    marginBottom: '2rem', gap: '1rem' }}>
-      <Box sx={{display: 'flex', flexWrap: 'wrap' }}>
+    <Box
+      component="section"
+      sx={{
+        display: 'grid',
+        gridTemplateColumns: 'auto 1fr',
+      }}
+    >
+      <Drawer
+        variant="temporary"
+        open={mobileOpen}
+        onClose={handleDrawerToggle}
+        ModalProps={{ keepMounted: true }}
+        sx={{
+          display: { xs: 'none', sm: 'block' },
+          '& .MuiDrawer-paper': {
+            boxSizing: 'border-box',
+            width: drawerWidth,
+          },
+        }}
+      >
+        <SideberInfos />
+      </Drawer>
+      <Drawer
+        variant="permanent"
+        sx={{
+          display: { xs: 'none', sm: 'block' },
+          '& .MuiDrawer-paper': {
+            boxSizing: 'border-box',
+            width: drawerWidth,
+            position: 'static',
+            padding: '1rem',
+          },
+        }}
+        open
+      >
+        <SideberInfos />
+      </Drawer>
+
+      <Container
+        sx={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          marginBottom: '2rem',
+          marginTop: '2rem',
+        }}
+      >
         <Challenge />
         <Challenge />
         <Challenge />
@@ -44,37 +96,8 @@ const Challenges = () => {
             marginTop: 0,
           }}
         ></Box>
-      </Box>  
-
-      <Box component='section' sx={{display: 'grid', gridTemplateRows: 'auto 1fr', background: '#f7f7f7',
-      padding: '1rem', maxHeight: 'max-content'}}>
-        <Typography>Novos Desafios</Typography>
-        <List sx={{width: '12rem', display: 'flex', flexDirection: 'column', gap: '0.3rem'}}>
-          <ListItem sx={{paddingLeft: '0'}}>
-            <ListItemAvatar sx={{minWidth: '3rem'}}>
-              <Avatar sx={{width: '30px', height: '30px'}} />
-            </ListItemAvatar>
-            <ListItemText
-              primary="Jogo da Velha"
-            />
-          </ListItem>
-
-          <Divider variant="middle" component="li" />
-
-
-          <ListItem sx={{paddingLeft: '0'}}>
-            <ListItemAvatar sx={{minWidth: '3rem'}}>
-              <Avatar sx={{width: '30px', height: '30px'}} />
-            </ListItemAvatar>
-            <ListItemText
-              primary="Jogo da Velha"
-            />
-          </ListItem>
-
-          <Divider variant="middle" component="li" />
-        </List>
-      </Box>
-    </Container>
+      </Container>
+    </Box>
   );
 };
 
