@@ -6,6 +6,7 @@ import {
   List,
   ListItem,
   Paper,
+  Snackbar,
   Typography,
   useMediaQuery,
 } from '@mui/material';
@@ -173,6 +174,14 @@ const Profile = () => {
           <Route path="convites" element={<ProfileInvites />}></Route>
         </Routes>
       </Box>
+
+      {/* <Snackbar
+        open={false}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        message="Note archived"
+        action={action}
+      /> */}
     </Container>
   );
 };
