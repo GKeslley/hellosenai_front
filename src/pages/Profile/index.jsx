@@ -28,6 +28,7 @@ const Profile = () => {
         gridTemplateColumns: !isMobile ? '1fr' : 'auto 1fr',
         gap: '2rem',
         marginBottom: '2rem',
+        marginTop: '2rem',
       }}
     >
       <Box

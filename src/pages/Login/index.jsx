@@ -7,7 +7,14 @@ import { Link } from 'react-router-dom';
 const Login = () => {
   return (
     <Container>
-      <Box sx={{ display: 'grid', justifyContent: 'center' }}>
+      <Box
+        sx={{
+          display: 'grid',
+          justifyContent: 'center',
+          marginTop: '2rem',
+          marginBottom: '2rem',
+        }}
+      >
         <Title sx={{ textAlign: 'center', marginBottom: '1.5rem' }}>
           Escolha seu papel:
         </Title>
@@ -27,9 +34,14 @@ const Login = () => {
             >
               <Avatar
                 src={teacherImage}
-                sx={{ objectPosition: 'top', width: '120px', height: '120px', '& .MuiAvatar-img': {
-                  objectPosition: 'top'
-                } }}
+                sx={{
+                  objectPosition: 'top',
+                  width: '120px',
+                  height: '120px',
+                  '& .MuiAvatar-img': {
+                    objectPosition: 'top',
+                  },
+                }}
               />
               <Typography fontSize="1.5rem" fontWeight="500">
                 Sou Professor
@@ -55,7 +67,7 @@ const Login = () => {
                   objectPosition: 'top',
                   width: '120px',
                   height: '120px',
-                  '& .MuiAvatar-img': {objectPosition: 'top'}
+                  '& .MuiAvatar-img': { objectPosition: 'top' },
                 }}
               />
               <Typography fontSize="1.5rem" fontWeight="500">

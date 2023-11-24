@@ -13,6 +13,7 @@ const LoginTeacher = () => {
         gridTemplateColumns: isMobile ? '1fr 1fr' : '1fr',
         gap: '1rem',
         marginBottom: '2rem',
+        marginTop: '2rem',
       }}
     >
       {isMobile && (

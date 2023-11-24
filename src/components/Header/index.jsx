@@ -26,7 +26,7 @@ const Header = () => {
     <Box
       component="header"
       className={`bg-gradient-to-r from-blue-header to-blue-600 ${
-        !isOutOfHome ? 'h-80 mb-44' : 'h-auto mb-8'
+        !isOutOfHome ? 'h-80 mb-44' : 'h-auto'
       } relative`}
     >
       <div

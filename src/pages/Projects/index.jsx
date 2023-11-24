@@ -88,7 +88,7 @@ const Projects = () => {
               display: 'flex',
               flexDirection: 'column',
               gap: '1rem',
-              marginTop: !isMobile && '1.5rem',
+              marginTop: '2rem',
             }}
           >
             <Typography component="h1" variant="h3" fontWeight="800">
@@ -132,7 +132,7 @@ const Projects = () => {
 
         <Paper
           component="ul"
-          elevation={3}
+          elevation={1}
           sx={{ display: 'flex', flexDirection: 'column', flexShrink: '0' }}
         >
           {projects.map(({ nome, autor, apelido }) => (

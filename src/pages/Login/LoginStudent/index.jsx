@@ -10,15 +10,23 @@ const LoginStudent = () => {
   return (
     <Container
       component="section"
-      sx={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr 1fr' : '1fr', gap: '1rem', marginBottom: '2rem' }}
+      sx={{
+        display: 'grid',
+        gridTemplateColumns: isMobile ? '1fr 1fr' : '1fr',
+        gap: '1rem',
+        marginBottom: '2rem',
+        marginTop: '2rem',
+      }}
     >
-      {isMobile && <Box component="figure">
-        <Box component="img" src={studentsImage} alt="Estudantes" />
-      </Box>}
+      {isMobile && (
+        <Box component="figure">
+          <Box component="img" src={studentsImage} alt="Estudantes" />
+        </Box>
+      )}
 
       <Routes>
-        <Route path='/' element={<LoginForm />} />
-        <Route path='registro' element={<RegisterForm />} />
+        <Route path="/" element={<LoginForm />} />
+        <Route path="registro" element={<RegisterForm />} />
       </Routes>
     </Container>
   );
