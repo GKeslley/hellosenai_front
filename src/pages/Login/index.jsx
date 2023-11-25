@@ -19,7 +19,8 @@ const Login = () => {
           Escolha seu papel:
         </Title>
 
-        <Box sx={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center', 
+        justifyContent: 'center' }}>
           <Link to="professor">
             <Paper
               sx={{
@@ -28,8 +29,8 @@ const Login = () => {
                 padding: '1rem 2rem',
                 alignItems: 'center',
                 gap: '1rem',
-                minWidth: '20rem',
-                maxWidth: '20rem',
+                minWidth: {xs: '15rem', sm: '20rem'},
+                maxWidth: {xs: '15rem', sm: '20rem'},
               }}
             >
               <Avatar
@@ -57,8 +58,8 @@ const Login = () => {
                 padding: '1rem 2rem',
                 alignItems: 'center',
                 gap: '1rem',
-                minWidth: '20rem',
-                maxWidth: '20rem',
+                minWidth: {xs: '15rem', sm: '20rem'},
+                maxWidth: {xs: '15rem', sm: '20rem'},
               }}
             >
               <Avatar
