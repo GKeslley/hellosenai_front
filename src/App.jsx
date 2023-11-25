@@ -3,7 +3,8 @@ import './App.css';
 import Header from './components/Header';
 import CreateRoutes from './routes';
 import Footer from './components/Footer';
-import { QueryClient, QueryClientProvider} from 'react-query'
+import { QueryClient, QueryClientProvider } from 'react-query';
+import UserContext from './contexts/UserContext';
 
 const queryClient = new QueryClient();
 
@@ -12,11 +13,13 @@ function App() {
     <>
       <BrowserRouter>
         <QueryClientProvider client={queryClient}>
+          <UserContext>
             <Header />
             <main className="flex-1">
               <CreateRoutes />
             </main>
             <Footer />
+          </UserContext>
         </QueryClientProvider>
       </BrowserRouter>
     </>
