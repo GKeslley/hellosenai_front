@@ -6,20 +6,23 @@ const RequestError = ({ mutation }) => {
 
   return (
     <>
-      {isError &&
-        (Object.keys(error.response.data.errors).length > 1 ? (
-          <Box>
-            {Object.values(error.response.data.errors).map((type) => (
-              <Typography color="red" fontSize="0.8rem" key={type}>
-                {type}
-              </Typography>
-            ))}
-          </Box>
-        ) : (
-          <Typography color="red" fontSize="0.8rem">
-            {error.response.data.message}
-          </Typography>
-        ))}
+      {isError && (
+        <>
+          {typeof error.response.data === 'object' ? (
+            <Box>
+              {Object.values(error.response.data.errors).map((type) => (
+                <Typography color="red" fontSize="0.8rem" key={type}>
+                  {type}
+                </Typography>
+              ))}
+            </Box>
+          ) : (
+            <Typography color="red" fontSize="0.8rem">
+              {error.response.data}
+            </Typography>
+          )}
+        </>
+      )}
     </>
   );
 };

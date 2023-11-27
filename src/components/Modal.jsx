@@ -48,7 +48,7 @@ const ModalComponent = ({ children, openModal, setOpenModal }) => {
 export default ModalComponent;
 
 ModalComponent.propTypes = {
-  children: PropTypes.string,
+  children: PropTypes.object,
   setOpenModal: PropTypes.func,
   openModal: PropTypes.bool,
   sx: PropTypes.object,

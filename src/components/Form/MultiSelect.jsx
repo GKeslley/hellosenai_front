@@ -15,7 +15,7 @@ const names = [
   'Harris Glenn',
 ];
 
-const MultiSelect = ({ label, placeholder }) => {
+const MultiSelect = ({ label, placeholder, ...props }) => {
   return (
     <Autocomplete
       multiple
@@ -43,6 +43,7 @@ const MultiSelect = ({ label, placeholder }) => {
           {selected ? <Check color="info" /> : null}
         </MenuItem>
       )}
+      {...props}
     />
   );
 };
@@ -50,6 +51,7 @@ const MultiSelect = ({ label, placeholder }) => {
 MultiSelect.propTypes = {
   label: PropTypes.string,
   placeholder: PropTypes.string,
+  props: PropTypes.object,
 };
 
 export default MultiSelect;

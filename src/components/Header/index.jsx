@@ -1,20 +1,21 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import MenuHeader from './Menu/index';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import MenuMobile from './MenuMobile';
-import MenuIcon from '@mui/icons-material/Menu';
 import NavLinkActive from '../NavLink';
 import { Box, Paper, useMediaQuery } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 import Logo from '../../assets/header/logo.png';
+import { UserGlobalContext } from '../../contexts/UserContext';
 
 const Header = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const screenIsMobile = useMediaQuery('(max-width: 40rem)');
   const screenIsMobile960 = useMediaQuery('(max-width: 960px)');
+  const { data } = useContext(UserGlobalContext);
 
   const isOutOfHome = useLocation().pathname.slice(0, -1).length;
 
@@ -72,7 +73,7 @@ const Header = () => {
                     aria-expanded={open ? 'true' : undefined}
                   >
                     <Avatar sx={{ width: 32, height: 32 }}>
-                      {!screenIsMobile ? 'M' : <MenuIcon />}
+                      {data ? data.nome.slice(0, 1).toUpperCase() : ''}
                     </Avatar>
                   </IconButton>
                 </Tooltip>

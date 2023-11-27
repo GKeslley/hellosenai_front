@@ -5,8 +5,34 @@ import LockIcon from '@mui/icons-material/Lock';
 import EmailIcon from '@mui/icons-material/Email';
 import ButtonComponent from '../../Button';
 import LinkComponent from '../../Link';
+import useForm from '../../../hooks/useForm';
+import axios from 'axios';
+import { useMutation } from 'react-query';
+import RequestError from '../../Helper/RequestError';
+import { Navigate } from 'react-router-dom';
 
 const LoginForm = () => {
+  const email = useForm('email');
+  const password = useForm('password');
+
+  const mutation = useMutation((dataLoginUser) => {
+    return axios.post('http://127.0.0.1:8000/api/auth/login', dataLoginUser);
+  });
+
+  const userLogin = () => {
+    if (email.validate() && password.validate()) {
+      mutation.mutate({
+        email: email.value,
+        senha: password.value,
+      });
+    }
+  };
+
+  if (mutation.isSuccess) {
+    localStorage.setItem('token', mutation.data.data.plainTextToken);
+    return <Navigate to="/" />;
+  }
+
   return (
     <Box sx={{ position: 'relative' }}>
       <Title sx={{ marginBottom: '1.5rem' }}>Log In</Title>
@@ -23,9 +49,14 @@ const LoginForm = () => {
             sx={{ color: 'action.active', my: 0.5, position: 'absolute', zIndex: '10' }}
           />
           <Input
+            error={email.error}
             required={true}
             id="email"
             fullWidth={true}
+            value={email.value}
+            onChange={email.onChange}
+            onBlur={email.onBlur}
+            helperText={email.error}
             label="Email"
             variant="standard"
             sx={{
@@ -40,9 +71,14 @@ const LoginForm = () => {
             sx={{ color: 'action.active', my: 0.5, position: 'absolute', zIndex: '10' }}
           />
           <Input
+            error={password.error}
             required={true}
             id="senha"
             fullWidth={true}
+            value={password.value}
+            onChange={password.onChange}
+            onBlur={password.onBlur}
+            helperText={password.error}
             label="Senha"
             variant="standard"
             type="password"
@@ -53,7 +89,10 @@ const LoginForm = () => {
           />
         </Box>
 
-        <ButtonComponent size="large">Log In</ButtonComponent>
+        <ButtonComponent size="large" onClick={userLogin} isLoading={mutation.isLoading}>
+          Log In
+        </ButtonComponent>
+        <RequestError mutation={mutation} />
       </FormControl>
 
       <Divider variant="inset" />

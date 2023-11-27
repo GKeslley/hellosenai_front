@@ -135,15 +135,13 @@ const RegisterForm = () => {
           />
         </Box>
 
-        {mutation.isLoading ? (
-          <ButtonComponent size="large" disabled aria-disabled={true}>
-            Carregando...
-          </ButtonComponent>
-        ) : (
-          <ButtonComponent size="large" onClick={registerUser}>
-            Registrar
-          </ButtonComponent>
-        )}
+        <ButtonComponent
+          size="large"
+          onClick={registerUser}
+          isLoading={mutation.isLoading}
+        >
+          Registrar
+        </ButtonComponent>
         <RequestError mutation={mutation} />
       </FormControl>
 

@@ -64,6 +64,7 @@ const Invites = () => {
             label="Ordenar por:"
             sx={{ width: '100%' }}
             variant={!isMobile ? 'outlined' : 'standard'}
+            value=""
           >
             <MenuItem value="recentes">Mais Recentes</MenuItem>
             <MenuItem value="antigos">Mais Antigos</MenuItem>
@@ -72,6 +73,7 @@ const Invites = () => {
             label="Tag:"
             sx={{ width: '100%' }}
             variant={!isMobile ? 'outlined' : 'standard'}
+            value=""
           >
             <MenuItem value="game">Game</MenuItem>
             <MenuItem value="web">Web</MenuItem>
