@@ -2,28 +2,19 @@ import { Check } from '@mui/icons-material';
 import { Autocomplete, MenuItem, TextField } from '@mui/material';
 import PropTypes from 'prop-types';
 
-const names = [
-  'Humaira Sims',
-  'Santiago Solis',
-  'Dawid Floyd',
-  'Mateo Barlow',
-  'Samia Navarro',
-  'Kaden Fields',
-  'Genevieve Watkins',
-  'Mariah Hickman',
-  'Rocco Richardson',
-  'Harris Glenn',
-];
-
-const MultiSelect = ({ label, placeholder, ...props }) => {
+const MultiSelect = ({ label, placeholder, options, isLoading, ...props }) => {
   return (
     <Autocomplete
       multiple
       fullWidth
-      options={names}
-      getOptionLabel={(option) => option}
+      options={options ? options : []}
+      getOptionLabel={(option) => option || ''}
+      filterSelectedOptions
+      includeInputInList
+      filterOptions={(x) => x}
       disableCloseOnSelect
-      loading={true}
+      clearOnBlur
+      loading={isLoading}
       renderInput={(params) => (
         <TextField
           {...params}
@@ -51,6 +42,8 @@ const MultiSelect = ({ label, placeholder, ...props }) => {
 MultiSelect.propTypes = {
   label: PropTypes.string,
   placeholder: PropTypes.string,
+  isLoading: PropTypes.bool,
+  options: PropTypes.array,
   props: PropTypes.object,
 };
 

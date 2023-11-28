@@ -20,7 +20,7 @@ const UserContext = ({ children }) => {
         .get('http://127.0.0.1:8000/api/auth/profile', config)
         .then((response) => response.data);
     },
-    { staleTime: 60000 },
+    { staleTime: 6000000 },
   );
 
   return (
