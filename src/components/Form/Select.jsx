@@ -10,11 +10,9 @@ const SelectComponent = ({
   variant = 'standard',
   size = 'small',
   sx,
+  onChange,
+  ...props
 }) => {
-  const handleChange = ({ target }) => {
-    setValue(target.value);
-  };
-
   return (
     <FormControl variant={variant} sx={{ minWidth: 140, ...sx }} size={size}>
       <InputLabel id="demo-select-small-label">{label}</InputLabel>
@@ -23,7 +21,8 @@ const SelectComponent = ({
         id="demo-select-small"
         value={value}
         label={label}
-        onChange={handleChange}
+        onChange={onChange}
+        {...props}
       >
         {children}
       </Select>

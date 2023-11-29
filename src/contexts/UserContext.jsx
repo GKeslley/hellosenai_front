@@ -6,12 +6,9 @@ import axios from 'axios';
 export const UserGlobalContext = createContext();
 
 const UserContext = ({ children }) => {
-  const config = useMemo(
-    () => ({
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-    }),
-    [],
-  );
+  const config = {
+    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+  }
 
   const { data, isLoading, error } = useQuery(
     'user',
@@ -20,7 +17,6 @@ const UserContext = ({ children }) => {
         .get('http://127.0.0.1:8000/api/auth/profile', config)
         .then((response) => response.data);
     },
-    { staleTime: 6000000 },
   );
 
   return (

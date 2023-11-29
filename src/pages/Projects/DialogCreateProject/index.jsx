@@ -17,8 +17,9 @@ import useForm from '../../../hooks/useForm';
 import SelectComponent from '../../../components/Form/Select';
 import { useState } from 'react';
 import axios from 'axios';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { useDebounce } from 'use-debounce';
+import { Snackbar } from '@mui/base';
 
 const fetchParticipants = async (username) => {
   const response = await axios
@@ -29,11 +30,14 @@ const fetchParticipants = async (username) => {
 
 const DialogCreateProject = ({ openModal, setOpenModal, title }) => {
   const [imagePreview, setImagePreview] = useState(null);
-  const [participants, setParticipants] = useState({ participants: [] });
-
   const [newUserValue, setNewUserValue] = useState('');
-
+  const [participants, setParticipants] = useState([]);
+  const name = useForm(true);
+  const description = useForm(true);
+  const status = useForm(true);
+  const github = useForm(true);
   const [value] = useDebounce(newUserValue, 400);
+
   let { data, isLoading } = useQuery(
     ['participants', value],
     () => fetchParticipants(value),
@@ -42,33 +46,47 @@ const DialogCreateProject = ({ openModal, setOpenModal, title }) => {
     },
   );
 
-  const name = useForm(true);
-  const description = useForm(true);
-  const github = useForm(true);
-
   const participantsForTheProject = (event, values) => {
-    setParticipants({ participants: values });
+    setParticipants(values);
   };
 
   const showImagePreview = ({ target }) => {
     setImagePreview({ raw: target.files[0] });
   };
 
+  const config = {
+    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+  }
+
+  const mutation = useMutation((dataProject) => {
+    return axios.post('http://127.0.0.1:8000/api/v1/projeto', dataProject, config);
+  });
+
   const createProject = () => {
-    console.log(imagePreview.raw);
+    if (name.validate() && description.validate() 
+    && status.validate() && github.validate() && imagePreview) {
+      const formData = new FormData()
+      formData.append('nomeProjeto', name.value)
+      formData.append('descricao', description.value)
+      formData.append('status', status.value)
+      formData.append('link', github.value)
+      formData.append('imagem', imagePreview.raw)
+      formData.append('participantes', participants.length ? JSON.stringify(participants) : null)
+      mutation.mutate(formData)
+    }
   };
+
+  console.log(status.error);
 
   if (data) {
     data = data.map(({ apelido }) => apelido);
   }
 
-  console.log(participants);
-
   return (
     <ModalComponent setOpenModal={setOpenModal} openModal={openModal}>
       <Container sx={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <ListItem>
-          <Typography variant="h4" fontWeight="500" fullWidth>
+          <Typography variant="h4" fontWeight="500">
             {title}
           </Typography>
         </ListItem>
@@ -101,7 +119,14 @@ const DialogCreateProject = ({ openModal, setOpenModal, title }) => {
               helperText={description.error}
             />
 
-            <SelectComponent label="Status" variant="outlined" size="large" value="">
+            <SelectComponent 
+              label="Status" variant="outlined" size="large" 
+              value={status.value} 
+              onChange={status.onChange} 
+              error={status.error ? true : false}
+              onBlur={status.onBlur}
+              helperText={status.error}
+            >
               <MenuItem value="construindo">Construindo</MenuItem>
               <MenuItem value="concluido">Concluido</MenuItem>
             </SelectComponent>
@@ -169,6 +194,12 @@ const DialogCreateProject = ({ openModal, setOpenModal, title }) => {
         >
           Criar
         </ButtonComponent>
+
+        <Snackbar
+          open={mutation.isSuccess}
+          autoHideDuration={6000}
+          message="Projeto Criado"
+      />
       </Container>
     </ModalComponent>
   );
