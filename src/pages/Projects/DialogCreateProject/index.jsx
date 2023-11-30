@@ -6,7 +6,6 @@ import {
   ListItem,
   TextField,
   Typography,
-  Container,
   MenuItem,
 } from '@mui/material';
 import MultiSelect from '../../../components/Form/MultiSelect';
@@ -56,23 +55,31 @@ const DialogCreateProject = ({ openModal, setOpenModal, title }) => {
 
   const config = {
     headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-  }
+  };
 
   const mutation = useMutation((dataProject) => {
     return axios.post('http://127.0.0.1:8000/api/v1/projeto', dataProject, config);
   });
 
   const createProject = () => {
-    if (name.validate() && description.validate() 
-    && status.validate() && github.validate() && imagePreview) {
-      const formData = new FormData()
-      formData.append('nomeProjeto', name.value)
-      formData.append('descricao', description.value)
-      formData.append('status', status.value)
-      formData.append('link', github.value)
-      formData.append('imagem', imagePreview.raw)
-      formData.append('participantes', participants.length ? JSON.stringify(participants) : null)
-      mutation.mutate(formData)
+    if (
+      name.validate() &&
+      description.validate() &&
+      status.validate() &&
+      github.validate() &&
+      imagePreview
+    ) {
+      const formData = new FormData();
+      formData.append('nomeProjeto', name.value);
+      formData.append('descricao', description.value);
+      formData.append('status', status.value);
+      formData.append('link', github.value);
+      formData.append('imagem', imagePreview.raw);
+      formData.append(
+        'participantes',
+        participants.length ? JSON.stringify(participants) : null,
+      );
+      mutation.mutate(formData);
     }
   };
 
@@ -84,7 +91,14 @@ const DialogCreateProject = ({ openModal, setOpenModal, title }) => {
 
   return (
     <ModalComponent setOpenModal={setOpenModal} openModal={openModal}>
-      <Container sx={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '1rem',
+          padding: '1rem 2rem',
+        }}
+      >
         <ListItem>
           <Typography variant="h4" fontWeight="500">
             {title}
@@ -100,11 +114,11 @@ const DialogCreateProject = ({ openModal, setOpenModal, title }) => {
               id="outlined-required"
               label="Nome"
               sx={{ width: '100%' }}
-              error={name.error}
+              error={name.error.isError}
               value={name.value}
               onChange={name.onChange}
               onBlur={name.onBlur}
-              helperText={name.error}
+              helperText={name.error.message}
             />
             <TextField
               id="outlined-multiline-static"
@@ -112,20 +126,22 @@ const DialogCreateProject = ({ openModal, setOpenModal, title }) => {
               multiline
               rows={4}
               sx={{ width: '100%' }}
-              error={description.error}
+              error={description.error.isError}
               value={description.value}
               onChange={description.onChange}
               onBlur={description.onBlur}
-              helperText={description.error}
+              helperText={description.error.message}
             />
 
-            <SelectComponent 
-              label="Status" variant="outlined" size="large" 
-              value={status.value} 
-              onChange={status.onChange} 
-              error={status.error ? true : false}
+            <SelectComponent
+              label="Status"
+              variant="outlined"
+              size="large"
+              value={status.value}
+              onChange={status.onChange}
+              error={status.error.isError}
               onBlur={status.onBlur}
-              helperText={status.error}
+              helperText={status.error.message}
             >
               <MenuItem value="construindo">Construindo</MenuItem>
               <MenuItem value="concluido">Concluido</MenuItem>
@@ -146,11 +162,11 @@ const DialogCreateProject = ({ openModal, setOpenModal, title }) => {
               label="Github"
               placeholder="www.github.com"
               sx={{ width: '100%' }}
-              error={github.error}
+              error={github.error.isError}
               value={github.value}
               onChange={github.onChange}
               onBlur={github.onBlur}
-              helperText={github.error}
+              helperText={github.error.message}
             />
           </Box>
 
@@ -199,8 +215,8 @@ const DialogCreateProject = ({ openModal, setOpenModal, title }) => {
           open={mutation.isSuccess}
           autoHideDuration={6000}
           message="Projeto Criado"
-      />
-      </Container>
+        />
+      </Box>
     </ModalComponent>
   );
 };
