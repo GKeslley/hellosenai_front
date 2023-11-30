@@ -7,6 +7,7 @@ const ButtonComponent = ({
   className,
   onClick,
   variant,
+  size = 'large',
   isLoading = false,
   ...props
 }) => {
@@ -14,11 +15,12 @@ const ButtonComponent = ({
     <>
       {isLoading ? (
         <Button
-          size="large"
+          size={size}
           disabled
           aria-disabled={true}
           variant={`${variant ? variant : 'contained'}`}
           className={`justify-self-center max-w-max ${className}`}
+          sx={sx}
         >
           Carregando...
         </Button>
@@ -27,6 +29,7 @@ const ButtonComponent = ({
           variant={`${variant ? variant : 'contained'}`}
           onClick={onClick}
           className={`justify-self-center max-w-max ${className}`}
+          size={size}
           sx={sx}
           {...props}
         >
@@ -45,5 +48,6 @@ ButtonComponent.propTypes = {
   onClick: PropTypes.func,
   variant: PropTypes.string,
   isLoading: PropTypes.bool,
+  size: PropTypes.string,
   className: PropTypes.string,
 };

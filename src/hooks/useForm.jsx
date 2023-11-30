@@ -13,11 +13,11 @@ const types = {
 
 const useForm = (type) => {
   const [value, setValue] = useState('');
-  const [error, setError] = useState(false);
+  const [error, setError] = useState({ isError: false, message: null });
 
   const onChange = ({ target }) => {
     setValue(target.value);
-    if (error) {
+    if (error.isError) {
       validate(value);
     }
   };
@@ -25,18 +25,19 @@ const useForm = (type) => {
   const validate = (value) => {
     if (type === false) return true;
     if (value.length < 1) {
-      setError('Preencha um valor');
+      setError({ isError: true, message: 'Preencha um valor' });
     } else if (types[type] && !types[type].regex.test(value)) {
-      setError(types[type].message);
+      setError({ isError: true, message: types[type].message });
       return false;
     } else {
-      setError(null);
+      setError({ isError: false, message: null });
       return true;
     }
   };
 
   return {
     value,
+    setValue,
     onChange,
     error,
     validate: () => validate(value),
