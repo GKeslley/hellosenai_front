@@ -14,7 +14,7 @@ const Challenge = () => {
     <Card
       variant="outlined"
       sx={{
-        width: '15.75rem',
+        minWidth: '18.75rem',
         height: '18.375rem',
         position: 'relative',
         display: 'grid',

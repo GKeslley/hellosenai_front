@@ -6,7 +6,6 @@ import Input from '../../../components/Form/Input';
 import useForm from '../../../hooks/useForm';
 import { useMutation } from 'react-query';
 import axios from 'axios';
-import RequestError from '../../../components/Helper/RequestError';
 
 const ModalCreateInvite = ({ openModal, setOpenModal, title, buttonTitle }) => {
   const titleInput = useForm(true);
@@ -46,7 +45,7 @@ const ModalCreateInvite = ({ openModal, setOpenModal, title, buttonTitle }) => {
           padding: '1rem 2rem',
         }}
       >
-        <ListItem sx={{ padding: '0.5rem 0 0 0' }}>
+        <ListItem>
           <Typography variant="h4" fontWeight="500" fullWidth>
             {title}
           </Typography>
@@ -93,7 +92,6 @@ const ModalCreateInvite = ({ openModal, setOpenModal, title, buttonTitle }) => {
         >
           {buttonTitle}
         </ButtonComponent>
-        <RequestError mutation={mutation} />
       </Box>
     </ModalComponent>
   );

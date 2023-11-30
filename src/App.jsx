@@ -5,6 +5,7 @@ import CreateRoutes from './routes';
 import Footer from './components/Footer';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import UserContext from './contexts/UserContext';
+import { Box } from '@mui/material';
 
 const queryClient = new QueryClient();
 
@@ -15,9 +16,9 @@ function App() {
         <QueryClientProvider client={queryClient}>
           <UserContext>
             <Header />
-            <main className="flex-1">
+            <Box component='main' className="flex-1" sx={{minHeight: '100%', display: 'flex', flexDirection: 'column'}}>
               <CreateRoutes />
-            </main>
+            </Box>
             <Footer />
           </UserContext>
         </QueryClientProvider>
