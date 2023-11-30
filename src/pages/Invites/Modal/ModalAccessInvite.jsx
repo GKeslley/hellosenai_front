@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import ModalComponent from '../../../components/Modal';
-import { Container, ListItem, TextField, Typography } from '@mui/material';
+import { Box, Container, ListItem, TextField, Typography } from '@mui/material';
 import ButtonComponent from '../../../components/Button';
 
 const ModalAccessInvite = ({ openModalAccessInvite, setOpenModalAccessInvite }) => {
@@ -9,7 +9,7 @@ const ModalAccessInvite = ({ openModalAccessInvite, setOpenModalAccessInvite }) 
       openModal={openModalAccessInvite}
       setOpenModal={setOpenModalAccessInvite}
     >
-      <Container sx={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: '1rem', padding: '1rem 2rem' }}>
         <ListItem
           sx={{ flexDirection: 'column', alignItems: 'start', maxWidth: 'max-content' }}
         >
@@ -55,7 +55,7 @@ const ModalAccessInvite = ({ openModalAccessInvite, setOpenModalAccessInvite }) 
         </ListItem>
 
         <ButtonComponent sx={{ alignSelf: 'end' }}>Solicitar</ButtonComponent>
-      </Container>
+      </Box>
     </ModalComponent>
   );
 };

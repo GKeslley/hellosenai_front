@@ -1,5 +1,5 @@
 import ModalComponent from '../../../components/Modal';
-import { Container, Divider, ListItem, TextField, Typography } from '@mui/material';
+import { Box, Container, Divider, ListItem, TextField, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 import ButtonComponent from '../../../components/Button';
 import MultiSelect from '../../../components/Form/MultiSelect';
@@ -7,7 +7,7 @@ import MultiSelect from '../../../components/Form/MultiSelect';
 const ModalCreateInvite = ({ openModal, setOpenModal, title, buttonTitle }) => {
   return (
     <ModalComponent openModal={openModal} setOpenModal={setOpenModal}>
-      <Container sx={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: '1rem', padding: '1rem 2rem' }}>
         <ListItem>
           <Typography variant="h4" fontWeight="500" fullWidth>
             {title}
@@ -38,7 +38,7 @@ const ModalCreateInvite = ({ openModal, setOpenModal, title, buttonTitle }) => {
         <ButtonComponent sx={{ alignSelf: 'end' }} size="large">
           {buttonTitle}
         </ButtonComponent>
-      </Container>
+      </Box>
     </ModalComponent>
   );
 };

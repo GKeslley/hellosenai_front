@@ -25,7 +25,7 @@ const Invite = ({ modalAccessInvite }) => {
           </Typography>
         </CardContent>
       </CardActionArea>
-      <CardActions>
+      <CardActions sx={{justifyContent: 'end'}}>
         <ButtonComponent
           variant="outlined"
           sx={{ justifySelf: 'right', maxWidth: 'max-content' }}

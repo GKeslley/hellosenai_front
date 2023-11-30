@@ -3,25 +3,26 @@ import { Link, NavLink } from 'react-router-dom';
 import Logo from '../../assets/header/logo.png'
 
 const Footer = () => {
-  const isMobile = useMediaQuery('(max-width: 768px)');
+  const isMobile = useMediaQuery('(max-width: 830px)');
+  const largeScreen = useMediaQuery('(min-width: 1200px)');
 
   const footerStyle = {
-    display: 'grid',
-    gridTemplateColumns: isMobile ? 'rem' : '2fr 1fr 1fr',
+    display: 'flex',
+    flexWrap: 'wrap',
     gap: '1.25rem',
-    paddingTop: '2rem',
-    paddingBottom: '2rem',
+    padding: '2rem',
     alignItems: 'stretch',
     textAlign: isMobile ? 'center' : '',
-    justifyContent: isMobile ? 'center' : '',
+    justifyContent: isMobile ? 'center' : 'space-between',
+    flexDirection: isMobile ? 'column' : 'row'
   };
 
   return (
     <Box component='footer' className="bg-[#2E7BEF] grid h-full text-white">
-      <Container sx={footerStyle} className="md:grid-columns-1">
+      <Box sx={footerStyle} className="md:grid-columns-1">
         <Box
-          sx={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row' }}
-          className="gap-5 w-full md:gap-20"
+          sx={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: isMobile ? '1rem' : '5rem' }}
+          className="gap-5 md:gap-20"
         >
           <Box className="grid justify-center">
             <Box component='img' src={Logo} alt="Logo Hello Senai" className='max-w-[5rem]' />
@@ -53,7 +54,7 @@ const Footer = () => {
           </div>
         </Box>
 
-        <div className="grid w-full justify-center grid-rows-footer">
+        <div className="grid justify-center grid-rows-footer">
           <Typography
             variant="body1"
             fontSize="1.25rem"
@@ -81,7 +82,7 @@ const Footer = () => {
           </ul>
         </div>
 
-        <div className="grid w-full justify-center grid-rows-footer">
+        <div className="grid justify-center grid-rows-footer">
           <Typography
             variant="body1"
             fontSize="1.25rem"
@@ -102,7 +103,7 @@ const Footer = () => {
             </li>
           </ul>
         </div>
-      </Container>
+      </Box>
     </Box>
   );
 };

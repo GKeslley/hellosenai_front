@@ -8,6 +8,7 @@ import Login from './pages/Login';
 import LoginStudent from './pages/Login/LoginStudent';
 import LoginTeacher from './pages/Login/LoginTeacher';
 import Challenges from './pages/Challenges';
+import ChallengeInfos from './pages/Challenges/ChallengeInfos';
 
 const CreateRoutes = () => {
   return (
@@ -20,6 +21,7 @@ const CreateRoutes = () => {
       <Route path="/projetos/:slug" element={<Project />}></Route>
       <Route path="/convites" element={<Invites />}></Route>
       <Route path="/desafios" element={<Challenges />}></Route>
+      <Route path="/desafios/:usuario" element={<ChallengeInfos/>}></Route>
       <Route path="/perfil/*" element={<Profile />}></Route>
     </Routes>
   );

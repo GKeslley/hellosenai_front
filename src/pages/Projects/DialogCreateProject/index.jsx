@@ -84,7 +84,7 @@ const DialogCreateProject = ({ openModal, setOpenModal, title }) => {
 
   return (
     <ModalComponent setOpenModal={setOpenModal} openModal={openModal}>
-      <Container sx={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: '1rem', padding: '1rem 2rem' }}>
         <ListItem>
           <Typography variant="h4" fontWeight="500">
             {title}
@@ -200,7 +200,7 @@ const DialogCreateProject = ({ openModal, setOpenModal, title }) => {
           autoHideDuration={6000}
           message="Projeto Criado"
       />
-      </Container>
+      </Box>
     </ModalComponent>
   );
 };
