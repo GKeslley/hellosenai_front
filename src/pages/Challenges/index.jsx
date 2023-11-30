@@ -1,12 +1,14 @@
-import { Box, Container, Drawer } from '@mui/material';
+import { Box, Container, Drawer, useMediaQuery } from '@mui/material';
 import Challenge from './Challenge';
-import SideberInfos from './SidebarInfos';
+import SideberInfos from './Sidebar';
 import { useState } from 'react';
+import Sidebar from './Sidebar';
 
 const drawerWidth = 240;
 
 const Challenges = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -18,45 +20,19 @@ const Challenges = () => {
       sx={{
         display: 'grid',
         gridTemplateColumns: 'auto 1fr',
+        flexGrow: '1'
       }}
     >
-      <Drawer
-        variant="temporary"
-        open={mobileOpen}
-        onClose={handleDrawerToggle}
-        ModalProps={{ keepMounted: true }}
-        sx={{
-          display: { xs: 'none', sm: 'block' },
-          '& .MuiDrawer-paper': {
-            boxSizing: 'border-box',
-            width: drawerWidth,
-          },
-        }}
-      >
-        <SideberInfos />
-      </Drawer>
-      <Drawer
-        variant="permanent"
-        sx={{
-          display: { xs: 'none', sm: 'block' },
-          '& .MuiDrawer-paper': {
-            boxSizing: 'border-box',
-            width: drawerWidth,
-            position: 'static',
-            padding: '1rem',
-          },
-        }}
-        open
-      >
-        <SideberInfos />
-      </Drawer>
+      <Sidebar />
 
-      <Container
+      <Box
         sx={{
           display: 'flex',
           flexWrap: 'wrap',
           marginBottom: '2rem',
           marginTop: '2rem',
+          padding: isMobile ? '0 1rem' : '0 2rem',
+          alignSelf: 'flex-start'
         }}
       >
         <Challenge />
@@ -66,8 +42,8 @@ const Challenges = () => {
         <Box
           sx={{
             height: 0,
-            width: '15.75rem',
-            minWidth: '15.75rem',
+            width: '18.75rem',
+            minWidth: '18.75rem',
             flexGrow: '1',
             margin: '0 1% 24px',
             marginTop: 0,
@@ -77,8 +53,8 @@ const Challenges = () => {
         <Box
           sx={{
             height: 0,
-            width: '15.75rem',
-            minWidth: '15.75rem',
+            width: '18.75rem',
+            minWidth: '18.75rem',
             flexGrow: '1',
             margin: '0 1% 24px',
             marginBottom: 0,
@@ -88,15 +64,15 @@ const Challenges = () => {
         <Box
           sx={{
             height: 0,
-            width: '15.75rem',
-            minWidth: '15.75rem',
+            width: '18.75rem',
+            minWidth: '18.75rem',
             flexGrow: '1',
             margin: '0 1% 24px',
             marginBottom: 0,
             marginTop: 0,
           }}
         ></Box>
-      </Container>
+      </Box>
     </Box>
   );
 };
