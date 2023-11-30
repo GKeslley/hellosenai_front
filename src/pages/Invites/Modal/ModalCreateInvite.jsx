@@ -1,44 +1,100 @@
 import ModalComponent from '../../../components/Modal';
-import { Container, Divider, ListItem, TextField, Typography } from '@mui/material';
+import { Box, Divider, ListItem, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 import ButtonComponent from '../../../components/Button';
-import MultiSelect from '../../../components/Form/MultiSelect';
+import Input from '../../../components/Form/Input';
+import useForm from '../../../hooks/useForm';
+import { useMutation } from 'react-query';
+import axios from 'axios';
+import RequestError from '../../../components/Helper/RequestError';
 
 const ModalCreateInvite = ({ openModal, setOpenModal, title, buttonTitle }) => {
+  const titleInput = useForm(true);
+  const description = useForm(true);
+
+  const config = {
+    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+  };
+
+  const mutation = useMutation({
+    mutationFn: (dataInvite) => {
+      return axios.post('http://127.0.0.1:8000/api/v1/convite', dataInvite, config);
+    },
+    onSuccess: () => {
+      titleInput.setValue('');
+      description.setValue('');
+      setOpenModal(false);
+    },
+  });
+
+  const createInvite = () => {
+    if (titleInput.validate() && description.validate()) {
+      mutation.mutate({
+        titulo: titleInput.value,
+        descricao: description.value,
+      });
+    }
+  };
+
   return (
     <ModalComponent openModal={openModal} setOpenModal={setOpenModal}>
-      <Container sx={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-        <ListItem>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '1rem',
+          padding: '1rem 2rem',
+        }}
+      >
+        <ListItem sx={{ padding: '0.5rem 0 0 0' }}>
           <Typography variant="h4" fontWeight="500" fullWidth>
             {title}
           </Typography>
         </ListItem>
         <Divider />
 
-        <ListItem>
-          <TextField required id="title-required" fullWidth label="Título" />
+        <ListItem sx={{ padding: '0.5rem 0' }}>
+          <Input
+            required={true}
+            id="title-required"
+            fullWidth
+            label="Título"
+            isError={titleInput.error.isError}
+            value={titleInput.value}
+            onChange={titleInput.onChange}
+            onBlur={titleInput.onBlur}
+            helperText={titleInput.error.message}
+          />
         </ListItem>
 
-        <ListItem>
-          <TextField
+        <ListItem sx={{ padding: '0' }}>
+          <Input
             id="description-multiline"
             required
             fullWidth
             label="Descrição"
+            variant="outlined"
             multiline
             minRows={5}
-            variant="outlined"
+            isError={description.error.isError}
+            value={description.value}
+            onChange={description.onChange}
+            onBlur={description.onBlur}
+            helperText={description.error.message}
           />
         </ListItem>
 
-        <ListItem sx={{ width: '100%' }}>
-          <MultiSelect label="Tags" placeholder="Tag" />
-        </ListItem>
-
-        <ButtonComponent sx={{ alignSelf: 'end' }} size="large">
+        <ButtonComponent
+          sx={{ alignSelf: 'end' }}
+          size="large"
+          variant="outlined"
+          onClick={createInvite}
+          isLoading={mutation.isLoading}
+        >
           {buttonTitle}
         </ButtonComponent>
-      </Container>
+        <RequestError mutation={mutation} />
+      </Box>
     </ModalComponent>
   );
 };
