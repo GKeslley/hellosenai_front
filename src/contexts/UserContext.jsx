@@ -2,6 +2,7 @@ import { createContext } from 'react';
 import PropTypes from 'prop-types';
 import { useQuery } from 'react-query';
 import axios from 'axios';
+import { useContext } from 'react';
 
 export const UserGlobalContext = createContext();
 
