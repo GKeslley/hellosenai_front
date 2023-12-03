@@ -37,11 +37,13 @@ const ProfileProject = () => {
         </CardActions>
       </Card>
 
-      <DialogCreateProject
-        openModal={openDialog}
-        setOpenModal={setOpenDialog}
-        title="Editar Projeto"
-      />
+      {openDialog && (
+        <DialogCreateProject
+          openModal={openDialog}
+          setOpenModal={setOpenDialog}
+          title="Editar Projeto"
+        />
+      )}
     </>
   );
 };

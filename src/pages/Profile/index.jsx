@@ -6,7 +6,6 @@ import {
   List,
   ListItem,
   Paper,
-  Snackbar,
   Typography,
   useMediaQuery,
 } from '@mui/material';
@@ -16,9 +15,12 @@ import SenaiLogo from '../../assets/home/senai.png';
 import NavLinkActive from '../../components/NavLink';
 import ProfileProjects from './ProfileProjects';
 import ProfileInvites from './ProfileInvites';
+import { useContext } from 'react';
+import { UserGlobalContext } from '../../contexts/UserContext';
 
 const Profile = () => {
   const isMobile = useMediaQuery('(min-width: 768px)');
+  const { data } = useContext(UserGlobalContext);
 
   return (
     <Container
@@ -72,12 +74,14 @@ const Profile = () => {
           }}
         >
           <ListItem sx={{ justifyContent: 'center', padding: '0px', marginTop: '8rem' }}>
-            <Typography sx={{ fontSize: '1.5rem', fontWeight: '600' }}>Fulano</Typography>
+            <Typography sx={{ fontSize: '1.5rem', fontWeight: '600' }}>
+              {data.nome}
+            </Typography>
           </ListItem>
           <ListItem
             sx={{ justifyContent: 'center', padding: '0px', marginBottom: '1rem' }}
           >
-            <Typography component="time">Criado em: 23/08/2015</Typography>
+            <Typography component="time">Criado em: {data.dataCriacao}</Typography>
           </ListItem>
           <Divider sx={{ marginBottom: '1rem' }} />
           <ListItem
