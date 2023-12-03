@@ -1,15 +1,13 @@
 import SidebarInfos from './SidebarInfos';
-import {
-  Drawer
-} from '@mui/material';
+import { Drawer } from '@mui/material';
+import PropTypes from 'prop-types';
 
 const drawerWidth = 240;
 
-
-const Sidebar = ({mobileOpen, handleDrawerToggle}) => {
+const Sidebar = ({ mobileOpen, handleDrawerToggle }) => {
   return (
     <>
-    <Drawer
+      <Drawer
         variant="temporary"
         open={mobileOpen}
         onClose={handleDrawerToggle}
@@ -39,8 +37,13 @@ const Sidebar = ({mobileOpen, handleDrawerToggle}) => {
       >
         <SidebarInfos />
       </Drawer>
-      </>
+    </>
   );
+};
+
+Sidebar.propTypes = {
+  mobileOpen: PropTypes.bool,
+  handleDrawerToggle: PropTypes.func,
 };
 
 export default Sidebar;

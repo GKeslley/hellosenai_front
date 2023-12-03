@@ -1,10 +1,7 @@
-import { Box, Container, Drawer, useMediaQuery } from '@mui/material';
+import { Box, useMediaQuery } from '@mui/material';
 import Challenge from './Challenge';
-import SideberInfos from './Sidebar';
 import { useState } from 'react';
 import Sidebar from './Sidebar';
-
-const drawerWidth = 240;
 
 const Challenges = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -20,10 +17,10 @@ const Challenges = () => {
       sx={{
         display: 'grid',
         gridTemplateColumns: 'auto 1fr',
-        flexGrow: '1'
+        flexGrow: '1',
       }}
     >
-      <Sidebar />
+      <Sidebar mobileOpen={mobileOpen} handleDrawerToggle={handleDrawerToggle} />
 
       <Box
         sx={{
@@ -32,7 +29,7 @@ const Challenges = () => {
           marginBottom: '2rem',
           marginTop: '2rem',
           padding: isMobile ? '0 1rem' : '0 2rem',
-          alignSelf: 'flex-start'
+          alignSelf: 'flex-start',
         }}
       >
         <Challenge />
