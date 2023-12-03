@@ -19,6 +19,7 @@ import axios from 'axios';
 import { useMutation, useQuery } from 'react-query';
 import { useDebounce } from 'use-debounce';
 import { Snackbar } from '@mui/base';
+import RequestError from '../../../components/Helper/RequestError';
 
 const fetchParticipants = async (username) => {
   const response = await axios
@@ -27,7 +28,7 @@ const fetchParticipants = async (username) => {
   return response.data;
 };
 
-const DialogCreateProject = ({ openModal, setOpenModal, title }) => {
+const DialogCreateProject = ({ openModal, setOpenModal, title, challenge }) => {
   const [imagePreview, setImagePreview] = useState(null);
   const [newUserValue, setNewUserValue] = useState('');
   const [participants, setParticipants] = useState([]);
@@ -75,10 +76,14 @@ const DialogCreateProject = ({ openModal, setOpenModal, title }) => {
       formData.append('status', status.value);
       formData.append('link', github.value);
       formData.append('imagem', imagePreview.raw);
-      formData.append(
-        'participantes',
-        participants.length ? JSON.stringify(participants) : null,
-      );
+
+      if (participants.length) {
+        formData.append('participantes', JSON.stringify(participants));
+      }
+
+      if (challenge) {
+        formData.append('desafio', challenge);
+      }
       mutation.mutate(formData);
     }
   };
@@ -99,10 +104,13 @@ const DialogCreateProject = ({ openModal, setOpenModal, title }) => {
           padding: '1rem 2rem',
         }}
       >
-        <ListItem>
+        <ListItem
+          sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}
+        >
           <Typography variant="h4" fontWeight="500">
             {title}
           </Typography>
+          {challenge && <Typography>Desafio: {challenge}</Typography>}
         </ListItem>
 
         <Divider />
@@ -122,6 +130,7 @@ const DialogCreateProject = ({ openModal, setOpenModal, title }) => {
             />
             <TextField
               id="outlined-multiline-static"
+              required={true}
               label="Descrição"
               multiline
               rows={4}
@@ -136,6 +145,7 @@ const DialogCreateProject = ({ openModal, setOpenModal, title }) => {
             <SelectComponent
               label="Status"
               variant="outlined"
+              required={true}
               size="large"
               value={status.value}
               onChange={status.onChange}
@@ -202,14 +212,18 @@ const DialogCreateProject = ({ openModal, setOpenModal, title }) => {
           </Box>
         </ListItem>
 
-        <ButtonComponent
-          variant="outlined"
-          sx={{ alignSelf: 'end' }}
-          size="large"
-          onClick={createProject}
-        >
-          Criar
-        </ButtonComponent>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
+          <ButtonComponent
+            variant="outlined"
+            sx={{ alignSelf: 'end' }}
+            size="large"
+            onClick={createProject}
+            isLoading={mutation.isLoading}
+          >
+            Criar
+          </ButtonComponent>
+          <RequestError mutation={mutation} />
+        </Box>
 
         <Snackbar
           open={mutation.isSuccess}
@@ -225,6 +239,7 @@ DialogCreateProject.propTypes = {
   openModal: PropTypes.bool,
   setOpenModal: PropTypes.func,
   title: PropTypes.string,
+  challenge: PropTypes.string,
 };
 
 export default DialogCreateProject;
