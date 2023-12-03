@@ -9,6 +9,8 @@ const LinkComponent = ({
   color = '#fff',
   decoration = 'none',
   animation = true,
+  after,
+  sx,
 }) => {
   return (
     <Box
@@ -34,8 +36,10 @@ const LinkComponent = ({
           transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
           transitionDuration: '150ms',
           background: color,
+          ...after,
         },
         ':hover:after': animation && { background: 'red', width: '100%' },
+        ...sx,
       }}
     >
       {children}
@@ -50,6 +54,8 @@ LinkComponent.propTypes = {
   color: PropTypes.string,
   decoration: PropTypes.string,
   animation: PropTypes.bool,
+  after: PropTypes.object,
+  sx: PropTypes.object,
 };
 
 export default LinkComponent;

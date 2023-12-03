@@ -4,21 +4,23 @@ import PropTypes from 'prop-types';
 const RequestError = ({ mutation }) => {
   const { isError, error } = mutation;
 
+  console.log(mutation);
+
   return (
     <>
       {isError && (
         <>
-          {typeof error.response.data === 'object' ? (
+          {error.response.data?.errors !== undefined ? (
             <Box>
-              {Object.values(error.response.data.errors).map((type) => (
-                <Typography color="red" fontSize="0.8rem" key={type}>
+              {Object.values(error.response.data?.errors).map((type) => (
+                <Typography color="red" fontSize="0.8rem" key={type} textAlign="right">
                   {type}
                 </Typography>
               ))}
             </Box>
           ) : (
-            <Typography color="red" fontSize="0.8rem">
-              {error.response.data}
+            <Typography color="red" fontSize="0.8rem" textAlign="right">
+              {error.response.data.message}
             </Typography>
           )}
         </>

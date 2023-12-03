@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 const SelectComponent = ({
   children,
   value,
-  setValue,
   label,
   variant = 'standard',
   size = 'small',
@@ -38,6 +37,7 @@ SelectComponent.propTypes = {
   variant: PropTypes.string,
   isMobile: PropTypes.bool,
   size: PropTypes.string,
+  onChange: PropTypes.func,
   sx: PropTypes.object,
 };
 

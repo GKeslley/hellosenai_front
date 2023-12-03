@@ -21,7 +21,7 @@ const CreateRoutes = () => {
       <Route path="/projetos/:slug" element={<Project />}></Route>
       <Route path="/convites" element={<Invites />}></Route>
       <Route path="/desafios" element={<Challenges />}></Route>
-      <Route path="/desafios/:usuario" element={<ChallengeInfos/>}></Route>
+      <Route path="/desafios/:user" element={<ChallengeInfos />}></Route>
       <Route path="/perfil/*" element={<Profile />}></Route>
     </Routes>
   );
