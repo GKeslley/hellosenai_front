@@ -1,17 +1,33 @@
 import { Avatar, Box, Container, Divider, TextField, Typography } from '@mui/material';
-import teste2 from '../../assets/logo2.png';
 import Title from '../../components/Title';
 import Subtitle from '../../components/Subtitle';
 import Accordion from '../../components/Accordion';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import Comment from '../../components/Comment';
+import { useParams } from 'react-router-dom';
+import { useQuery } from 'react-query';
+import axios from 'axios';
+import Loading from '../../components/Helper/Loading';
+import LinkComponent from '../../components/Link';
 
 const Project = () => {
+  const params = useParams();
+
+  const { data, isLoading, error } = useQuery('project', () => {
+    return axios
+      .get(`http://127.0.0.1:8000/api/v1/projeto/${params.slug}`)
+      .then((response) => response.data);
+  });
+
+  console.log(data);
+
+  if (isLoading) return <Loading />;
+  if (error) return null;
   return (
     <Container sx={{ marginBottom: '2rem', marginTop: '2rem' }}>
       <Box
         component="img"
-        src={teste2}
+        src={`http://127.0.0.1:8000${data.data.imagem}`}
         alt="facebook"
         sx={{
           maxHeight: '20rem',
@@ -21,33 +37,30 @@ const Project = () => {
         }}
       />
       <Container>
-        <Title sx={{ marginBottom: '3rem' }}>Projeto E-commerce</Title>
+        <Title sx={{ marginBottom: '3rem' }}>{data.data.nomeProjeto}</Title>
         <Box
           component="ul"
           sx={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}
         >
           <Box component="li">
             <Subtitle sx={{ marginBottom: '1rem' }}>Descrição</Subtitle>
-            <Typography sx={{ whiteSpace: 'break-spaces' }}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vel laoreet
-              velit, at iaculis nulla. Cras aliquet purus augue, laoreet bibendum tortor
-              malesuada eu. Praesent mi enim, vestibulum eu dolor quis, volutpat dapibus
-              velit. Sed sit amet commodo lacus. Morbi rutrum eleifend mollis. Nulla
-              vulputate in nulla non hendrerit. Lorem ipsum dolor sit amet, consectetur
-              adipiscing elit. Aliquam facilisis congue orci hendrerit congue. Integer
-              placerat ultrices auctor. Nullam arcu eros, mattis quis aliquam vitae,
-              interdum vel mi. Proin at tempor ipsum, at feugiat tellus. Donec purus eros,
-              egestas nec finibus nec, tempor a nisl. Nunc lacus mauris, ornare ultricies
-              velit aliquet, ullamcorper commodo felis.
-            </Typography>
+            <Typography sx={{ whiteSpace: 'pre-line' }}>{data.data.descricao}</Typography>
           </Box>
 
-          <Box component="li">
-            <Subtitle sx={{ marginBottom: '1rem' }}>Participantes</Subtitle>
-            <Typography>Fulano | www.github.com</Typography>
-            <Typography>Fulano | www.github.com</Typography>
-            <Typography>Fulano | www.github.com</Typography>
-          </Box>
+          {data.data.participantes.length > 0 && (
+            <Box component="li">
+              <Subtitle sx={{ marginBottom: '1rem' }}>Participantes</Subtitle>
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                {data.data.participantes.map(({ nome, apelido }) => (
+                  <>
+                    <LinkComponent to={`/usuario/${apelido}`} animation={false}>
+                      {nome}
+                    </LinkComponent>
+                  </>
+                ))}
+              </Box>
+            </Box>
+          )}
 
           <Box component="li">
             <Subtitle sx={{ marginBottom: '1rem' }}>Sobre</Subtitle>
