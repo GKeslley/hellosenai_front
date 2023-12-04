@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 const drawerWidth = 240;
 
-const Sidebar = ({ mobileOpen, handleDrawerToggle }) => {
+const Sidebar = ({ mobileOpen, handleDrawerToggle, data }) => {
   return (
     <>
       <Drawer
@@ -35,7 +35,7 @@ const Sidebar = ({ mobileOpen, handleDrawerToggle }) => {
         }}
         open
       >
-        <SidebarInfos />
+        <SidebarInfos data={data} />
       </Drawer>
     </>
   );
@@ -44,6 +44,7 @@ const Sidebar = ({ mobileOpen, handleDrawerToggle }) => {
 Sidebar.propTypes = {
   mobileOpen: PropTypes.bool,
   handleDrawerToggle: PropTypes.func,
+  data: PropTypes.object,
 };
 
 export default Sidebar;

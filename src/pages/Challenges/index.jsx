@@ -2,15 +2,29 @@ import { Box, useMediaQuery } from '@mui/material';
 import Challenge from './Challenge';
 import { useState } from 'react';
 import Sidebar from './Sidebar';
+import { useQuery } from 'react-query';
+import axios from 'axios';
+import Loading from '../../components/Helper/Loading';
 
 const Challenges = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const isMobile = useMediaQuery('(max-width: 768px)');
+  const { data, isLoading, error } = useQuery(
+    'teachers',
+    () => {
+      return axios
+        .get('http://127.0.0.1:8000/api/v1/professor')
+        .then((response) => response.data);
+    },
+    { refetchOnWindowFocus: false },
+  );
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
+  if (isLoading) return <Loading />;
+  if (error) return null;
   return (
     <Box
       component="section"
@@ -20,7 +34,11 @@ const Challenges = () => {
         flexGrow: '1',
       }}
     >
-      <Sidebar mobileOpen={mobileOpen} handleDrawerToggle={handleDrawerToggle} />
+      <Sidebar
+        mobileOpen={mobileOpen}
+        handleDrawerToggle={handleDrawerToggle}
+        data={data}
+      />
 
       <Box
         sx={{
@@ -32,10 +50,15 @@ const Challenges = () => {
           alignSelf: 'flex-start',
         }}
       >
-        <Challenge />
-        <Challenge />
-        <Challenge />
-        <Challenge />
+        {data &&
+          data.data.map(({ nome, apelido, desafios }) => (
+            <Challenge
+              key={apelido}
+              name={nome}
+              username={apelido}
+              challenges={desafios}
+            />
+          ))}
         <Box
           sx={{
             height: 0,

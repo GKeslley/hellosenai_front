@@ -12,7 +12,7 @@ import Loading from '../../../components/Helper/Loading';
 
 const fetchChallengesByTeacher = async (username) => {
   const response = await axios
-    .get(`http://127.0.0.1:8000/api/v1/desafios/${username}`)
+    .get(`http://127.0.0.1:8000/api/v1/desafio/${username}`)
     .then((response) => response.data);
   return response.data;
 };
@@ -105,7 +105,7 @@ const ChallengeInfos = () => {
             </Paper>
 
             {data &&
-              data.map(({ desafio: { titulo, descricao, dataCriacao, slug, autor } }) => (
+              data.map(({ desafio: { titulo, descricao, dataCriacao, slug }, autor }) => (
                 <>
                   <Paper
                     sx={{

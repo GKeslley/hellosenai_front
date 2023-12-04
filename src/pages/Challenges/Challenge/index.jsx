@@ -8,8 +8,10 @@ import {
   ListItem,
   Typography,
 } from '@mui/material';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
-const Challenge = () => {
+const Challenge = ({ name, username, challenges }) => {
   return (
     <Card
       variant="outlined"
@@ -38,7 +40,9 @@ const Challenge = () => {
         <Typography fontWeight="800" fontSize="1.5rem" lineHeight="1">
           Desafios
         </Typography>
-        <Typography fontSize="0.9rem">Leonardo Lucena</Typography>
+        <Link to={`/desafios/${username}`} fontSize="0.9rem">
+          {name}
+        </Link>
       </Box>
 
       <CardContent
@@ -54,25 +58,24 @@ const Challenge = () => {
         <List
           sx={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', padding: '0' }}
         >
-          <ListItem sx={{ gap: '0.5rem', padding: '0' }}>
-            <Typography component="time">16h</Typography>
-            <Typography component="span">-</Typography>
-            <Typography>Sistema Senha</Typography>
-          </ListItem>
-          <ListItem sx={{ gap: '0.5rem', padding: '0' }}>
-            <Typography component="time">22h</Typography>
-            <Typography component="span">-</Typography>
-            <Typography>Jogo DOTS</Typography>
-          </ListItem>
-          <ListItem sx={{ gap: '0.5rem', padding: '0' }}>
-            <Typography component="time">16 dez</Typography>
-            <Typography component="span">-</Typography>
-            <Typography>Lista de Exercício</Typography>
-          </ListItem>
+          {challenges.length > 0 &&
+            challenges.map(({ desafio }) => (
+              <ListItem key={desafio.slug} sx={{ gap: '0.5rem', padding: '0' }}>
+                <Typography component="time">{desafio.dataCriacao}</Typography>
+                <Typography component="span">-</Typography>
+                <Typography>{desafio.titulo}</Typography>
+              </ListItem>
+            ))}
         </List>
       </CardContent>
     </Card>
   );
+};
+
+Challenge.propTypes = {
+  name: PropTypes.string,
+  username: PropTypes.string,
+  challenges: PropTypes.array,
 };
 
 export default Challenge;

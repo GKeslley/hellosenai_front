@@ -43,11 +43,13 @@ const CreateChallenge = ({ openModal, setOpenModal, title, buttonTitle }) => {
   };
 
   const createChallenge = () => {
-    if (titleInput.validate() && description.validate() && imagePreview) {
+    if (titleInput.validate() && description.validate()) {
       const formData = new FormData();
       formData.append('titulo', titleInput.value);
       formData.append('descricao', description.value);
-      formData.append('imagem', imagePreview.raw);
+      if (imagePreview) {
+        formData.append('imagem', imagePreview.raw);
+      }
       mutation.mutate(formData);
     }
   };
