@@ -2,18 +2,24 @@ import { Check } from '@mui/icons-material';
 import { Autocomplete, MenuItem, TextField } from '@mui/material';
 import PropTypes from 'prop-types';
 
-const MultiSelect = ({ label, placeholder, options, isLoading, ...props }) => {
+const MultiSelect = ({
+  label,
+  placeholder,
+  options,
+  isLoading,
+  defaultValue,
+  ...props
+}) => {
   return (
     <Autocomplete
       multiple
       fullWidth
-      options={options ? options : []}
-      getOptionLabel={(option) => option || ''}
-      filterSelectedOptions
-      includeInputInList
+      options={options}
+      getOptionLabel={(option) => option}
       filterOptions={(x) => x}
       disableCloseOnSelect
       clearOnBlur
+      value={defaultValue}
       loading={isLoading}
       renderInput={(params) => (
         <TextField
@@ -44,6 +50,7 @@ MultiSelect.propTypes = {
   placeholder: PropTypes.string,
   isLoading: PropTypes.bool,
   options: PropTypes.array,
+  defaultValue: PropTypes.array,
   props: PropTypes.object,
 };
 
