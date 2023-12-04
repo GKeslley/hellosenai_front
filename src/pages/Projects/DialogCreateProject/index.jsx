@@ -28,7 +28,13 @@ const fetchParticipants = async (username) => {
   return response.data;
 };
 
-const DialogCreateProject = ({ openModal, setOpenModal, title, challenge }) => {
+const DialogCreateProject = ({
+  openModal,
+  setOpenModal,
+  title,
+  challenge,
+  dataEditProject,
+}) => {
   const [imagePreview, setImagePreview] = useState(null);
   const [newUserValue, setNewUserValue] = useState('');
   const [participants, setParticipants] = useState([]);
@@ -62,7 +68,15 @@ const DialogCreateProject = ({ openModal, setOpenModal, title, challenge }) => {
     return axios.post('http://127.0.0.1:8000/api/v1/projeto', dataProject, config);
   });
 
-  const createProject = () => {
+  const mutationUpdate = useMutation((dataProject) => {
+    return axios.post(
+      `http://127.0.0.1:8000/api/v1/projeto/${dataEditProject.slug}?_method=PUT`,
+      dataProject,
+      config,
+    );
+  });
+
+  const createOrUpdateProject = () => {
     if (
       name.validate() &&
       description.validate() &&
@@ -84,11 +98,32 @@ const DialogCreateProject = ({ openModal, setOpenModal, title, challenge }) => {
       if (challenge) {
         formData.append('desafio', challenge);
       }
+
+      if (dataEditProject) {
+        mutationUpdate.mutate(formData);
+        return null;
+      }
+
       mutation.mutate(formData);
     }
   };
 
-  console.log(status.error);
+  console.log(dataEditProject);
+
+  if (dataEditProject && !status.value) {
+    name.setValue(dataEditProject.name);
+    description.setValue(dataEditProject.description);
+    status.setValue(dataEditProject.status);
+    setParticipants(() => {
+      const values = dataEditProject.participants.map(({ apelido }) => {
+        return apelido;
+      });
+      return values;
+    });
+    setImagePreview({
+      raw: { name: `http://127.0.0.1:8000${dataEditProject.image}` },
+    });
+  }
 
   if (data) {
     data = data.map(({ apelido }) => apelido);
@@ -157,14 +192,17 @@ const DialogCreateProject = ({ openModal, setOpenModal, title, challenge }) => {
               <MenuItem value="concluido">Concluido</MenuItem>
             </SelectComponent>
 
-            <MultiSelect
-              label="Participantes"
-              placeholder="Participante"
-              onChange={participantsForTheProject}
-              onInputChange={(event, value) => setNewUserValue(value)}
-              isLoading={isLoading}
-              options={data}
-            />
+            {!isLoading && (
+              <MultiSelect
+                label="Participantes"
+                placeholder="Participante"
+                onChange={participantsForTheProject}
+                onInputChange={(event, value) => setNewUserValue(value)}
+                isLoading={isLoading}
+                options={data}
+                defaultValue={participants}
+              />
+            )}
 
             <TextField
               required
@@ -205,7 +243,10 @@ const DialogCreateProject = ({ openModal, setOpenModal, title, challenge }) => {
             </Button>
 
             {imagePreview && (
-              <Box component="span" sx={{ marginTop: '0.5rem', fontSize: '0.8rem' }}>
+              <Box
+                component="span"
+                sx={{ marginTop: '0.5rem', fontSize: '0.8rem', wordWrap: 'break-word' }}
+              >
                 {imagePreview.raw.name}
               </Box>
             )}
@@ -217,12 +258,15 @@ const DialogCreateProject = ({ openModal, setOpenModal, title, challenge }) => {
             variant="outlined"
             sx={{ alignSelf: 'end' }}
             size="large"
-            onClick={createProject}
+            onClick={createOrUpdateProject}
             isLoading={mutation.isLoading}
           >
             Criar
           </ButtonComponent>
-          <RequestError mutation={mutation} />
+          {mutation.error ||
+            (mutationUpdate.error && (
+              <RequestError mutation={dataEditProject ? mutationUpdate : mutation} />
+            ))}
         </Box>
 
         <Snackbar
@@ -240,6 +284,7 @@ DialogCreateProject.propTypes = {
   setOpenModal: PropTypes.func,
   title: PropTypes.string,
   challenge: PropTypes.string,
+  dataEditProject: PropTypes.object,
 };
 
 export default DialogCreateProject;
