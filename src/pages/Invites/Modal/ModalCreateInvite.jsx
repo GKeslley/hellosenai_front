@@ -6,14 +6,23 @@ import Input from '../../../components/Form/Input';
 import useForm from '../../../hooks/useForm';
 import { useMutation } from 'react-query';
 import axios from 'axios';
+import { useEffect } from 'react';
 
-const ModalCreateInvite = ({ openModal, setOpenModal, title, buttonTitle }) => {
+const config = {
+  headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+};
+
+const ModalCreateInvite = ({
+  openModal,
+  setOpenModal,
+  title,
+  buttonTitle,
+  inviteTitle,
+  inviteDescription,
+  inviteSlug,
+}) => {
   const titleInput = useForm(true);
   const description = useForm(true);
-
-  const config = {
-    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-  };
 
   const mutation = useMutation({
     mutationFn: (dataInvite) => {
@@ -26,14 +35,47 @@ const ModalCreateInvite = ({ openModal, setOpenModal, title, buttonTitle }) => {
     },
   });
 
-  const createInvite = () => {
+  const mutationUpdate = useMutation({
+    mutationFn: (dataInvite) => {
+      return axios.put(
+        `http://127.0.0.1:8000/api/v1/convite/${inviteSlug}`,
+        dataInvite,
+        config,
+      );
+    },
+    onSuccess: () => {
+      titleInput.setValue('');
+      description.setValue('');
+      setOpenModal(false);
+    },
+  });
+
+  const createOrUpdateInvite = () => {
     if (titleInput.validate() && description.validate()) {
+      if (inviteTitle && inviteDescription) {
+        mutationUpdate.mutate({
+          titulo: titleInput.value,
+          descricao: description.value,
+        });
+        return null;
+      }
+
       mutation.mutate({
         titulo: titleInput.value,
         descricao: description.value,
       });
     }
   };
+
+  const { setValue: setTitleValue } = titleInput;
+  const { setValue: setDescriptionValue } = description;
+  useEffect(() => {
+    console.log('dsadsadsa');
+    if (inviteTitle && inviteDescription) {
+      setTitleValue(inviteTitle);
+      setDescriptionValue(inviteDescription);
+    }
+  }, [inviteTitle, inviteDescription, setTitleValue, setDescriptionValue]);
 
   return (
     <ModalComponent openModal={openModal} setOpenModal={setOpenModal}>
@@ -87,7 +129,7 @@ const ModalCreateInvite = ({ openModal, setOpenModal, title, buttonTitle }) => {
           sx={{ alignSelf: 'end' }}
           size="large"
           variant="outlined"
-          onClick={createInvite}
+          onClick={createOrUpdateInvite}
           isLoading={mutation.isLoading}
         >
           {buttonTitle}
@@ -102,6 +144,9 @@ ModalCreateInvite.propTypes = {
   setOpenModal: PropTypes.func,
   title: PropTypes.string,
   buttonTitle: PropTypes.string,
+  inviteTitle: PropTypes.string,
+  inviteDescription: PropTypes.string,
+  inviteSlug: PropTypes.string,
 };
 
 export default ModalCreateInvite;

@@ -1,19 +1,33 @@
-import { Box, Container, MenuItem, Typography, useMediaQuery } from '@mui/material';
+import { Box, Container, Grid, MenuItem, Typography, useMediaQuery } from '@mui/material';
 import Invite from '../../components/Home/Invites/Invite';
 import ButtonComponent from '../../components/Button';
 import SelectComponent from '../../components/Form/Select';
 import { useState } from 'react';
 import ModalCreateInvite from './Modal/ModalCreateInvite';
 import ModalAccessInvite from './Modal/ModalAccessInvite';
+import { useQuery } from 'react-query';
+import axios from 'axios';
+import Loading from '../../components/Helper/Loading';
 
 const Invites = () => {
   const [openModalCreateInvite, setOpenModalCreateInvite] = useState(false);
   const [openModalAccessInvite, setOpenModalAccessInvite] = useState(false);
-
+  const [dataInvite, setDataInvite] = useState(null);
   const modalCreateInvite = () => setOpenModalCreateInvite(true);
   const modalAccessInvite = () => setOpenModalAccessInvite(true);
   const isMobile = useMediaQuery('(min-width: 768px)');
 
+  const { data, isLoading } = useQuery(
+    'invites',
+    () => {
+      return axios
+        .get('http://127.0.0.1:8000/api/v1/convite')
+        .then((response) => response.data);
+    },
+    { refetchOnWindowFocus: false },
+  );
+
+  if (isLoading) return <Loading />;
   return (
     <Container
       sx={{
@@ -81,26 +95,37 @@ const Invites = () => {
           </SelectComponent>
         </Box>
       </Box>
-      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
-        <Invite modalAccessInvite={modalAccessInvite} />
-        <Invite modalAccessInvite={modalAccessInvite} />
-        <Invite modalAccessInvite={modalAccessInvite} />
-        <Invite modalAccessInvite={modalAccessInvite} />
-        <Invite modalAccessInvite={modalAccessInvite} />
-        <Invite modalAccessInvite={modalAccessInvite} />
-      </Box>
+      <Grid component="article" container alignItems="stretch" wrap="wrap" gap="1rem">
+        {data &&
+          data.data.map(({ titulo, descricao, dataCriacao, slug, autor }) => (
+            <Invite
+              key={slug}
+              modalAccessInvite={modalAccessInvite}
+              title={titulo}
+              description={descricao}
+              date={dataCriacao}
+              author={autor}
+              setDataInvite={setDataInvite}
+            />
+          ))}
+      </Grid>
 
-      <ModalCreateInvite
-        openModal={openModalCreateInvite}
-        setOpenModal={setOpenModalCreateInvite}
-        title="Criar Convite"
-        buttonTitle="Criar"
-      />
+      {openModalCreateInvite && (
+        <ModalCreateInvite
+          openModal={openModalCreateInvite}
+          setOpenModal={setOpenModalCreateInvite}
+          title="Criar Convite"
+          buttonTitle="Criar"
+        />
+      )}
 
-      <ModalAccessInvite
-        openModalAccessInvite={openModalAccessInvite}
-        setOpenModalAccessInvite={setOpenModalAccessInvite}
-      />
+      {openModalAccessInvite && (
+        <ModalAccessInvite
+          openModalAccessInvite={openModalAccessInvite}
+          setOpenModalAccessInvite={setOpenModalAccessInvite}
+          dataInvite={dataInvite}
+        />
+      )}
     </Container>
   );
 };
