@@ -1,10 +1,18 @@
-import { Card, CardActions, CardContent, IconButton, Typography } from '@mui/material';
+import {
+  Card,
+  CardActions,
+  CardContent,
+  Grid,
+  IconButton,
+  Typography,
+} from '@mui/material';
 import { useState } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ModalCreateInvite from '../../../Invites/Modal/ModalCreateInvite';
+import PropTypes from 'prop-types';
 
-const ProfileInvite = () => {
+const ProfileInvite = ({ title, description, slug }) => {
   const [openDialog, setOpenDialog] = useState(false);
 
   const openDialogEditProject = () => {
@@ -13,40 +21,59 @@ const ProfileInvite = () => {
 
   return (
     <>
-      <Card sx={{ flex: '1', minWidth: '250px', height: 'max-content' }}>
-        <CardContent>
-          <Typography
-            variant="body2"
-            marginBottom="0.3rem"
-            fontSize="1.2rem"
-            fontWeight="500"
-          >
-            Facebook
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            This impressive paella is a perfect party dish and a fun meal to cook together
-            with your guests. Add 1 cup of frozen peas along with the mussels, if you
-            like.
-          </Typography>
-        </CardContent>
-        <CardActions disableSpacing>
-          <IconButton aria-label="edit project" onClick={openDialogEditProject}>
-            <EditIcon />
-          </IconButton>
-          <IconButton aria-label="delete project">
-            <DeleteIcon />
-          </IconButton>
-        </CardActions>
-      </Card>
+      {
+        <Grid
+          item
+          component={Card}
+          xs
+          minWidth="250px"
+          display="flex"
+          flexDirection="column"
+          justifyContent="space-between"
+        >
+          <CardContent>
+            <Typography
+              variant="body2"
+              marginBottom="0.3rem"
+              fontSize="1.2rem"
+              fontWeight="500"
+            >
+              {title}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {description.slice(0, 60)}
+            </Typography>
+          </CardContent>
+          <CardActions disableSpacing>
+            <IconButton aria-label="edit project" onClick={openDialogEditProject}>
+              <EditIcon />
+            </IconButton>
+            <IconButton aria-label="delete project">
+              <DeleteIcon />
+            </IconButton>
+          </CardActions>
+        </Grid>
+      }
 
-      <ModalCreateInvite
-        openModal={openDialog}
-        setOpenModal={setOpenDialog}
-        title="Editar Projeto"
-        buttonTitle="Atualizar"
-      />
+      {openDialog && (
+        <ModalCreateInvite
+          openModal={openDialog}
+          setOpenModal={setOpenDialog}
+          title="Editar Convite"
+          buttonTitle="Atualizar"
+          inviteTitle={title}
+          inviteDescription={description}
+          inviteSlug={slug}
+        />
+      )}
     </>
   );
+};
+
+ProfileInvite.propTypes = {
+  title: PropTypes.string,
+  description: PropTypes.string,
+  slug: PropTypes.string,
 };
 
 export default ProfileInvite;

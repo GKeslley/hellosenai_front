@@ -17,10 +17,13 @@ import ProfileProjects from './ProfileProjects';
 import ProfileInvites from './ProfileInvites';
 import { useContext } from 'react';
 import { UserGlobalContext } from '../../contexts/UserContext';
+import Loading from '../../components/Helper/Loading';
 
 const Profile = () => {
   const isMobile = useMediaQuery('(min-width: 768px)');
-  const { data } = useContext(UserGlobalContext);
+  const { data, isLoading } = useContext(UserGlobalContext);
+
+  if (isLoading) return <Loading />;
 
   return (
     <Container
