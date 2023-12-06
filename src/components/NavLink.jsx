@@ -11,6 +11,7 @@ const NavLinkActive = ({
   fontWeight = '800',
   sx,
   after,
+  top = false
 }) => {
   return (
     <Box
@@ -37,6 +38,7 @@ const NavLinkActive = ({
           transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
           transitionDuration: '150ms',
           background: background,
+          top: top ? top : 'auto',
           ...after,
         },
         ':hover:after': { background: background, width: '100%' },
