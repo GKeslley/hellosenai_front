@@ -34,6 +34,7 @@ const Invite = ({
       display="flex"
       flexDirection="column"
       justifyContent="space-between"
+      margin="0 1% 24px"
       onClick={handleClick}
     >
       <CardActionArea>

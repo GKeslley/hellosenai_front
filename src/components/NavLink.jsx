@@ -11,7 +11,7 @@ const NavLinkActive = ({
   fontWeight = '800',
   sx,
   after,
-  top = false
+  top = false,
 }) => {
   return (
     <Box
@@ -62,6 +62,7 @@ NavLinkActive.propTypes = {
   background: PropTypes.string,
   fontWeight: PropTypes.string,
   after: PropTypes.object,
+  top: PropTypes.bool,
   sx: PropTypes.object,
 };
 

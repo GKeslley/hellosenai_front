@@ -12,7 +12,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ModalCreateInvite from '../../../Invites/Modal/ModalCreateInvite';
 import PropTypes from 'prop-types';
 
-const ProfileInvite = ({ title, description, slug }) => {
+const ProfileInvite = ({ title, description, slug, actions = true }) => {
   const [openDialog, setOpenDialog] = useState(false);
 
   const openDialogEditProject = () => {
@@ -44,14 +44,16 @@ const ProfileInvite = ({ title, description, slug }) => {
               {description.slice(0, 60)}
             </Typography>
           </CardContent>
-          <CardActions disableSpacing>
-            <IconButton aria-label="edit project" onClick={openDialogEditProject}>
-              <EditIcon />
-            </IconButton>
-            <IconButton aria-label="delete project">
-              <DeleteIcon />
-            </IconButton>
-          </CardActions>
+          {actions && (
+            <CardActions disableSpacing>
+              <IconButton aria-label="edit project" onClick={openDialogEditProject}>
+                <EditIcon />
+              </IconButton>
+              <IconButton aria-label="delete project">
+                <DeleteIcon />
+              </IconButton>
+            </CardActions>
+          )}
         </Grid>
       }
 
@@ -74,6 +76,7 @@ ProfileInvite.propTypes = {
   title: PropTypes.string,
   description: PropTypes.string,
   slug: PropTypes.string,
+  actions: PropTypes.bool,
 };
 
 export default ProfileInvite;

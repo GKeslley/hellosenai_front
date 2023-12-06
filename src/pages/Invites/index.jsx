@@ -8,6 +8,7 @@ import ModalAccessInvite from './Modal/ModalAccessInvite';
 import { useQuery } from 'react-query';
 import axios from 'axios';
 import Loading from '../../components/Helper/Loading';
+import Stylebreak from '../../components/Stylebreak';
 
 const Invites = () => {
   const [openModalCreateInvite, setOpenModalCreateInvite] = useState(false);
@@ -95,19 +96,25 @@ const Invites = () => {
           </SelectComponent>
         </Box>
       </Box>
-      <Grid component="article" container alignItems="stretch" wrap="wrap" gap="1rem">
-        {data &&
-          data.data.map(({ titulo, descricao, dataCriacao, slug, autor }) => (
-            <Invite
-              key={slug}
-              modalAccessInvite={modalAccessInvite}
-              title={titulo}
-              description={descricao}
-              date={dataCriacao}
-              author={autor}
-              setDataInvite={setDataInvite}
-            />
-          ))}
+      <Grid component="article" container alignItems="stretch" wrap="wrap">
+        <>
+          {data && (
+            <>
+              {data.data.map(({ titulo, descricao, dataCriacao, slug, autor }) => (
+                <Invite
+                  key={slug}
+                  modalAccessInvite={modalAccessInvite}
+                  title={titulo}
+                  description={descricao}
+                  date={dataCriacao}
+                  author={autor}
+                  setDataInvite={setDataInvite}
+                />
+              ))}
+              <Stylebreak length={data.data.length - 1} width="250px" />
+            </>
+          )}
+        </>
       </Grid>
 
       {openModalCreateInvite && (
