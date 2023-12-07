@@ -1,51 +1,112 @@
-import { Avatar, Box, Paper, Typography } from '@mui/material'
-import React from 'react'
-import ChatBubbleRoundedIcon from '@mui/icons-material/ChatBubbleRounded';
+import { Avatar, Box, Paper, Typography } from '@mui/material';
 import ChatBubbleOutlineRoundedIcon from '@mui/icons-material/ChatBubbleOutlineRounded';
+import PropTypes from 'prop-types';
+import CommentActions from './CommentActions';
+import CommentInput from './CommentInput';
+import useForm from '../../hooks/useForm';
 
-const Comment = ({author, content, time}) => {
+const Comment = ({
+  id,
+  text,
+  date,
+  user,
+  sx,
+  isReply = false,
+  openReply,
+  setOpenReply,
+}) => {
+  const reply = useForm();
+
+  const handleCloseComment = () => {
+    reply.setValue('');
+    setOpenReply({ isOpen: false, id: null });
+  };
+
+  const handleOpenComment = () => {
+    setOpenReply({ isOpen: true, id });
+  };
+
   return (
-    <Box sx={{display: 'flex', flexDirection: 'column', gap: '0.5rem'}}>
-      <Box sx={{display: 'flex', gap: '1rem', alignItems: 'start'}}>
-        <Avatar sx={{width: '30px', height: '30px'}} />
-        <Paper sx={{padding: '0.5rem 0.75rem', width: '100%'}}>
-          <Box 
-          sx={{display: 'flex', gap: '0.5rem', alignItems: 'center', marginBottom: '1rem'}}>       
-            <Typography sx={{fontWeight: '800'}}>Scofield Idehen</Typography>
-      
+    <Box
+      sx={{ display: 'flex', flexDirection: 'column', gap: '0.125rem', ...sx }}
+      id={id}
+    >
+      <Box sx={{ display: 'flex', gap: '1rem', alignItems: 'start' }}>
+        <Avatar sx={{ width: '30px', height: '30px' }} />
+        <Paper sx={{ width: '100%' }} elevation={0}>
+          <Box
+            sx={{
+              display: 'flex',
+              gap: '0.5rem',
+              alignItems: 'center',
+              marginBottom: '0.2rem',
+            }}
+          >
+            <Typography sx={{ fontWeight: '800' }}>{user.nome}</Typography>
+
             <Typography
               component="span"
               fontSize="0.5rem"
               className="bg-gray-400 h-1 w-1 rounded-full mx-2"
             ></Typography>
 
-            <Typography
-              component="time"
-              fontSize="0.9rem"
-              className="text-gray-400"
-            >
-              22h
+            <Typography component="time" fontSize="0.9rem" className="text-gray-400">
+              {date}
             </Typography>
-
           </Box>
 
-          <Typography>
-            You know, I always look at becoming a developer kind of videos on YouTube with disdain.
-          </Typography>
+          <Typography>{text}</Typography>
         </Paper>
-      </Box>  
-      <Box sx={{display: 'flex', gap: '0.25rem', alignItems: 'center', 
-        maxWidth: 'max-content',
-        marginLeft: '49px',
-        padding: '0.3rem',
-        borderRadius: '4px',
-        ':hover': {backgroundColor: '#efefef', transition: '0.3s'}}}
-      >
-        <ChatBubbleOutlineRoundedIcon sx={{fontSize: '0.875rem', fill: '#3d3d3d'}} />
-        <Typography sx={{fontSize: '0.875rem', color: '#3d3d3d'}}>Responder</Typography>
       </Box>
+      {!isReply && (
+        <Box
+          sx={{
+            display: 'flex',
+            gap: '0.25rem',
+            alignItems: 'center',
+            maxWidth: `${openReply.isOpen ? '100%' : 'max-content'}`,
+            marginLeft: 'calc(46px - 0.3rem)',
+            padding: '0.3rem',
+            borderRadius: '4px',
+            ':hover': !openReply.isOpen && {
+              backgroundColor: '#efefef',
+              transition: '0.3s',
+            },
+          }}
+        >
+          {openReply.isOpen && id === openReply.id ? (
+            <>
+              <CommentInput input={reply} />
+              <CommentActions handleCloseComment={handleCloseComment} input={reply} />
+            </>
+          ) : (
+            <>
+              <ChatBubbleOutlineRoundedIcon
+                sx={{ fontSize: '0.875rem', fill: '#3d3d3d' }}
+              />
+              <Typography
+                sx={{ fontSize: '0.875rem', color: '#3d3d3d' }}
+                onClick={handleOpenComment}
+              >
+                Responder
+              </Typography>
+            </>
+          )}
+        </Box>
+      )}
     </Box>
-  )
-}
+  );
+};
 
-export default Comment
+Comment.propTypes = {
+  id: PropTypes.number,
+  text: PropTypes.string,
+  date: PropTypes.string,
+  user: PropTypes.object,
+  sx: PropTypes.object,
+  isReply: PropTypes.bool,
+  openReply: PropTypes.bool,
+  setOpenReply: PropTypes.func,
+};
+
+export default Comment;
