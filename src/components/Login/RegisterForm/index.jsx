@@ -54,14 +54,14 @@ const RegisterForm = () => {
             }}
           />
           <Input
-            error={name.error}
+            error={name.error.isError}
             required={true}
             id="nome"
             fullWidth={true}
             value={name.value}
             onChange={name.onChange}
             onBlur={name.onBlur}
-            helperText={name.error}
+            helperText={name.error.isError && name.error.message}
             label="Nome"
             variant="standard"
             sx={{
@@ -82,14 +82,14 @@ const RegisterForm = () => {
             }}
           />
           <Input
-            error={email.error}
+            error={email.error.isError}
             required={true}
             id="email"
             fullWidth={true}
             value={email.value}
             onChange={email.onChange}
             onBlur={email.onBlur}
-            helperText={email.error}
+            helperText={name.error.isError && name.error.message}
             label="Email"
             variant="standard"
             sx={{
@@ -117,14 +117,14 @@ const RegisterForm = () => {
             }}
           />
           <Input
-            error={password.error}
+            error={password.error.isError}
             required={true}
             id="senha"
             fullWidth={true}
             value={password.value}
             onChange={password.onChange}
             onBlur={password.onBlur}
-            helperText={password.error}
+            helperText={name.error.isError && name.error.message}
             label="Senha"
             variant="standard"
             type="password"

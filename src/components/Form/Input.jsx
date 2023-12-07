@@ -12,6 +12,7 @@ const Input = ({
   onChange,
   onBlur,
   helperText,
+  type,
   ...props
 }) => {
   return (
@@ -26,6 +27,7 @@ const Input = ({
       onChange={onChange}
       onBlur={onBlur}
       helperText={helperText}
+      type={type}
       {...props}
     />
   );

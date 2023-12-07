@@ -49,14 +49,14 @@ const LoginForm = () => {
             sx={{ color: 'action.active', my: 0.5, position: 'absolute', zIndex: '10' }}
           />
           <Input
-            error={email.error}
+            error={email.error.isError}
             required={true}
             id="email"
             fullWidth={true}
             value={email.value}
             onChange={email.onChange}
             onBlur={email.onBlur}
-            helperText={email.error}
+            helperText={email.error.isError && email.error.message}
             label="Email"
             variant="standard"
             sx={{
@@ -71,14 +71,14 @@ const LoginForm = () => {
             sx={{ color: 'action.active', my: 0.5, position: 'absolute', zIndex: '10' }}
           />
           <Input
-            error={password.error}
+            error={password.error.isError}
             required={true}
             id="senha"
             fullWidth={true}
             value={password.value}
             onChange={password.onChange}
             onBlur={password.onBlur}
-            helperText={password.error}
+            helperText={email.error.isError && email.error.message}
             label="Senha"
             variant="standard"
             type="password"
