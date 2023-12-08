@@ -20,10 +20,12 @@ import { Link, useLocation } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import axios from 'axios';
 import Loading from '../../components/Helper/Loading';
+import Options from '../../components/Options';
 
 const Projects = () => {
   const [openModal, setOpenModal] = useState(false);
   const [challenge, setChallenge] = useState(null);
+  const [slugProject, setSlugProject] = useState(null);
   const handleOpen = () => setOpenModal(true);
   const isMobile = useMediaQuery('(min-width: 768px)');
   const { search } = useLocation();
@@ -33,6 +35,10 @@ const Projects = () => {
       .get('http://127.0.0.1:8000/api/v1/projeto')
       .then((response) => response.data);
   });
+
+  const getSlugProject = (slugProject) => {
+    setSlugProject(slugProject);
+  };
 
   useState(() => {
     if (!openModal && search.includes('desafio')) {
@@ -191,6 +197,13 @@ const Projects = () => {
                         >
                           {dataCriacao}
                         </Typography>
+
+                        <Options
+                          sx={{ flexGrow: '1', textAlign: 'end' }}
+                          slugProject={slugProject}
+                          getSlugProject={() => getSlugProject(slug)}
+                          setSlugProject={setSlugProject}
+                        />
                       </Box>
 
                       <Typography fontSize="1rem">{nomeProjeto}</Typography>
