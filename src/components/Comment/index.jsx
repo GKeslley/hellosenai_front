@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import CommentActions from './CommentActions';
 import CommentInput from './CommentInput';
 import useForm from '../../hooks/useForm';
+import { useMutation } from 'react-query';
+import axios from 'axios';
 
 const Comment = ({
   id,
@@ -14,8 +16,23 @@ const Comment = ({
   isReply = false,
   openReply,
   setOpenReply,
+  config,
+  slug
 }) => {
   const reply = useForm();
+
+  const mutation = useMutation({
+    mutationFn: (dataComment) => {
+      return axios.post(
+        `http://127.0.0.1:8000/api/v1/projeto/${slug}/comentario`,
+        dataComment,
+        config,
+      );
+    },
+    onSuccess: () => {
+      handleCloseComment();
+    },
+  });
 
   const handleCloseComment = () => {
     reply.setValue('');
@@ -25,6 +42,14 @@ const Comment = ({
   const handleOpenComment = () => {
     setOpenReply({ isOpen: true, id });
   };
+
+  const postReplyComment = () => {
+    console.log('dasdsad');
+    mutation.mutate({
+      texto: reply.value,
+      comentarioPai: openReply.id
+    });
+  }
 
   return (
     <Box
@@ -75,10 +100,11 @@ const Comment = ({
           }}
         >
           {openReply.isOpen && id === openReply.id ? (
-            <>
+            <Box sx={{display: 'flex', flexDirection: 'column', width: '100%'}}>
               <CommentInput input={reply} />
-              <CommentActions handleCloseComment={handleCloseComment} input={reply} />
-            </>
+              <CommentActions handleCloseComment={handleCloseComment} input={reply} 
+                onClick={postReplyComment} isLoading={mutation.isLoading} />
+            </Box>
           ) : (
             <>
               <ChatBubbleOutlineRoundedIcon

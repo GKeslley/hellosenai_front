@@ -13,6 +13,7 @@ import { useState } from 'react';
 import useForm from '../../hooks/useForm';
 import CommentActions from '../../components/Comment/CommentActions';
 import CommentInput from '../../components/Comment/CommentInput';
+import ConstructionIcon from '@mui/icons-material/Construction';
 
 const config = {
   headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
@@ -28,12 +29,12 @@ const Project = () => {
     return axios
       .get(`http://127.0.0.1:8000/api/v1/projeto/${params.slug}`)
       .then((response) => response.data);
-  });
+  }, { refetchOnWindowFocus: false });
 
   const mutation = useMutation({
     mutationFn: (dataComment) => {
       return axios.post(
-        `http://127.0.0.1:8000/api/v1/${params.slug}/comentario`,
+        `http://127.0.0.1:8000/api/v1/projeto/${params.slug}/comentario`,
         dataComment,
         config,
       );
@@ -54,7 +55,6 @@ const Project = () => {
     const data = {
       texto: comment.value,
     };
-    if (openReply.id) data.comentarioPai = openReply.id;
     mutation.mutate(data);
   };
 
@@ -100,6 +100,14 @@ const Project = () => {
           )}
 
           <Box component="li">
+            <Subtitle sx={{ marginBottom: '1rem' }}>Status</Subtitle>
+            <Box sx={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+              <ConstructionIcon />
+              <Typography>{data.data.status}</Typography>
+            </Box>
+          </Box>
+
+          <Box component="li">
             <Subtitle sx={{ marginBottom: '1rem' }}>Sobre</Subtitle>
             <Box sx={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
               <GitHubIcon />
@@ -138,7 +146,8 @@ const Project = () => {
                 <CommentInput handleOpenComment={handleOpenComment} input={comment} />
               </Box>
               {openComment && (
-                <CommentActions handleCloseComment={handleCloseComment} input={comment} />
+                <CommentActions handleCloseComment={handleCloseComment} input={comment} 
+                  onClick={postNewComment} isLoading={mutation.isLoading} />
               )}
             </Box>
 
@@ -160,6 +169,8 @@ const Project = () => {
                         user={usuario}
                         openReply={openReply}
                         setOpenReply={setOpenReply}
+                        config={config}
+                        slug={params.slug}
                       />
                       {resposta && (
                         <Comment
@@ -169,6 +180,8 @@ const Project = () => {
                           user={resposta.usuario}
                           sx={{ margin: '10px 0px 10px 46px' }}
                           isReply={true}
+                          config={config}
+                          slug={params.slug}
                         />
                       )}
                     </Box>
