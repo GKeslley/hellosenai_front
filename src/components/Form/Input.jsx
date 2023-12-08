@@ -43,6 +43,7 @@ Input.propTypes = {
   value: PropTypes.string,
   onChange: PropTypes.func,
   onBlur: PropTypes.func,
+  type: PropTypes.string,
   helperText: PropTypes.string,
 };
 
