@@ -7,6 +7,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import PropTypes from 'prop-types';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import RedeemIcon from '@mui/icons-material/Redeem';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 import CodeIcon from '@mui/icons-material/Code';
 import Icon from '../../Icon';
 import { NavLink } from 'react-router-dom';
@@ -66,6 +67,10 @@ const MenuMobile = ({ anchorEl, setAnchorEl }) => {
       <Divider />
       <MenuItem onClick={handleClose}>
         <Icon icon={AccountCircleIcon} /> <NavLink to="/perfil">Minha Conta</NavLink>
+      </MenuItem>
+      <Divider />
+      <MenuItem onClick={handleClose}>
+        <Icon icon={NotificationsIcon} /> <NavLink to="/notificacoes">Notificações</NavLink>
       </MenuItem>
       <Divider />
       <MenuItem onClick={handleClose}>
