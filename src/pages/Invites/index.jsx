@@ -107,6 +107,7 @@ const Invites = () => {
                   title={titulo}
                   description={descricao}
                   date={dataCriacao}
+                  slug={slug}
                   author={autor}
                   setDataInvite={setDataInvite}
                 />

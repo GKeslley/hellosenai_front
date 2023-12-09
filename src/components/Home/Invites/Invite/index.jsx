@@ -19,10 +19,11 @@ const Invite = ({
   date,
   author,
   description,
+  slug,
   setDataInvite,
 }) => {
   const handleClick = () => {
-    setDataInvite({ titulo: title, data: date, autor: author, descricao: description });
+    setDataInvite({ titulo: title, data: date, autor: author, descricao: description, slug });
   };
 
   return (

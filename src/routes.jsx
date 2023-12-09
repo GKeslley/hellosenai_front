@@ -11,7 +11,6 @@ import Challenges from './pages/Challenges';
 import ChallengeInfos from './pages/Challenges/ChallengeInfos';
 import User from './pages/User';
 import RegisterTeacher from './pages/Login/RegisterTeacher';
-import Adm from './pages/Adm';
 
 const CreateRoutes = () => {
   return (
@@ -28,7 +27,6 @@ const CreateRoutes = () => {
       <Route path="/desafios/:user/*" element={<ChallengeInfos />}></Route>
       <Route path="/perfil/*" element={<Profile />}></Route>
       <Route path="/usuario/:user/*" element={<User />}></Route>
-      <Route path="/usuario/adm" element={<Adm />}></Route>
     </Routes>
   );
 };

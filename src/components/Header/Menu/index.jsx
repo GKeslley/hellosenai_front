@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SettingsIcon from '@mui/icons-material/Settings';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 import Icon from '../../Icon';
 import { NavLink } from 'react-router-dom';
 
@@ -55,6 +56,9 @@ const MenuHeader = ({ anchorEl, setAnchorEl }) => {
         <Icon icon={AccountCircleIcon} /> <NavLink to="/perfil">Minha Conta</NavLink>
       </MenuItem>
       <Divider />
+      <MenuItem onClick={handleClose}>
+        <Icon icon={NotificationsIcon} /> <NavLink to="/notificacoes">Notificações</NavLink>
+      </MenuItem>
       <MenuItem onClick={handleClose}>
         <Icon icon={SettingsIcon} /> <NavLink to="/configuracoes">Configurações</NavLink>
       </MenuItem>
