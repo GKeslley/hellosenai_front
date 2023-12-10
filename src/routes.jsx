@@ -11,6 +11,9 @@ import Challenges from './pages/Challenges';
 import ChallengeInfos from './pages/Challenges/ChallengeInfos';
 import User from './pages/User';
 import RegisterTeacher from './pages/Login/RegisterTeacher';
+import Notifications from './pages/Notifications';
+import Adm from './pages/Adm';
+import Denounces from './components/Denounces';
 
 const CreateRoutes = () => {
   return (
@@ -27,6 +30,10 @@ const CreateRoutes = () => {
       <Route path="/desafios/:user/*" element={<ChallengeInfos />}></Route>
       <Route path="/perfil/*" element={<Profile />}></Route>
       <Route path="/usuario/:user/*" element={<User />}></Route>
+      <Route path="/usuario/adm" element={<Adm />}></Route>
+      <Route path="/usuario/adm/denuncias" element={<Denounces />}></Route>
+      <Route path="/usuario/adm/professor" element={<Denounces />}></Route>
+      <Route path="/notificacoes" element={<Notifications />}></Route>
     </Routes>
   );
 };

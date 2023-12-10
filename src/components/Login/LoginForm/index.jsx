@@ -44,9 +44,15 @@ const LoginForm = () => {
           marginBottom: '1.5rem',
         }}
       >
-        <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+        <Box sx={{ display: 'flex', alignItems: 'flex-end', position: 'relative' }}>
           <EmailIcon
-            sx={{ color: 'action.active', my: 0.5, position: 'absolute', zIndex: '10' }}
+            sx={{
+              color: 'action.active',
+              my: 0.5,
+              position: 'absolute',
+              zIndex: '10',
+              top: '1rem',
+            }}
           />
           <Input
             error={email.error.isError}
@@ -66,9 +72,22 @@ const LoginForm = () => {
           />
         </Box>
 
-        <Box sx={{ display: 'flex', alignItems: 'flex-end', marginBottom: '1rem' }}>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'flex-end',
+            marginBottom: '1rem',
+            position: 'relative',
+          }}
+        >
           <LockIcon
-            sx={{ color: 'action.active', my: 0.5, position: 'absolute', zIndex: '10' }}
+            sx={{
+              color: 'action.active',
+              my: 0.5,
+              position: 'absolute',
+              zIndex: '10',
+              top: '1rem',
+            }}
           />
           <Input
             error={password.error.isError}

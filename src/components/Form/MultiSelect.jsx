@@ -14,7 +14,7 @@ const MultiSelect = ({
     <Autocomplete
       multiple
       fullWidth
-      options={options}
+      options={isLoading ? [] : options}
       getOptionLabel={(option) => option}
       filterOptions={(x) => x}
       disableCloseOnSelect

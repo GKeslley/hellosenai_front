@@ -21,6 +21,7 @@ const SelectComponent = ({
         value={value}
         label={label}
         onChange={onChange}
+        sx={{ background: 'transparent' }}
         {...props}
       >
         {children}
