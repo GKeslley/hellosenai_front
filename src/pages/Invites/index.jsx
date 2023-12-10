@@ -1,4 +1,15 @@
-import { Box, Container, Grid, MenuItem, Typography, useMediaQuery } from '@mui/material';
+import {
+  Box,
+  Container,
+  FormControl,
+  Grid,
+  InputAdornment,
+  InputLabel,
+  MenuItem,
+  OutlinedInput,
+  Typography,
+  useMediaQuery,
+} from '@mui/material';
 import Invite from '../../components/Home/Invites/Invite';
 import ButtonComponent from '../../components/Button';
 import SelectComponent from '../../components/Form/Select';
@@ -9,6 +20,9 @@ import { useQuery } from 'react-query';
 import axios from 'axios';
 import Loading from '../../components/Helper/Loading';
 import Stylebreak from '../../components/Stylebreak';
+import useQueryString from '../../hooks/useQueryString';
+import useForm from '../../hooks/useForm';
+import SearchIcon from '@mui/icons-material/Search';
 
 const Invites = () => {
   const [openModalCreateInvite, setOpenModalCreateInvite] = useState(false);
@@ -17,13 +31,18 @@ const Invites = () => {
   const modalCreateInvite = () => setOpenModalCreateInvite(true);
   const modalAccessInvite = () => setOpenModalAccessInvite(true);
   const isMobile = useMediaQuery('(min-width: 768px)');
+  const searchInvite = useForm();
+
+  const { url, onChangeOrder, onSearch, params } = useQueryString({
+    search: 'titulo[lk]',
+    input: searchInvite,
+    baseUrl: 'http://127.0.0.1:8000/api/v1/convite',
+  });
 
   const { data, isLoading } = useQuery(
-    'invites',
+    [params, 'invites'],
     () => {
-      return axios
-        .get('http://127.0.0.1:8000/api/v1/convite')
-        .then((response) => response.data);
+      return axios.get(url).then((response) => response.data);
     },
     { refetchOnWindowFocus: false },
   );
@@ -59,7 +78,32 @@ const Invites = () => {
           <Typography component="h1" variant="h3" fontWeight="800">
             Convites
           </Typography>
-          <ButtonComponent onClick={modalCreateInvite}>Criar Convite</ButtonComponent>
+
+          <FormControl
+            sx={{ m: 0, width: '100%' }}
+            variant="outlined"
+            component="form"
+            onSubmit={onSearch}
+          >
+            <InputLabel htmlFor="outlined-adornment-password">Buscar</InputLabel>
+            <OutlinedInput
+              id="outlined-adornment-password"
+              startAdornment={
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              }
+              label="Buscar"
+              size="small"
+              onChange={searchInvite.onChange}
+              value={searchInvite.value}
+              fullWidth={true}
+            />
+          </FormControl>
+
+          <ButtonComponent onClick={modalCreateInvite} sx={{ maxWidth: '100%' }}>
+            Criar Convite
+          </ButtonComponent>
         </Box>
 
         <Box
@@ -78,21 +122,12 @@ const Invites = () => {
           <SelectComponent
             label="Ordenar por:"
             sx={{ width: '100%' }}
-            variant={!isMobile ? 'outlined' : 'standard'}
-            value=""
+            variant={!isMobile ? 'filled' : 'standard'}
+            onChange={onChangeOrder}
+            value={params.order}
           >
-            <MenuItem value="recentes">Mais Recentes</MenuItem>
-            <MenuItem value="antigos">Mais Antigos</MenuItem>
-          </SelectComponent>
-          <SelectComponent
-            label="Tag:"
-            sx={{ width: '100%' }}
-            variant={!isMobile ? 'outlined' : 'standard'}
-            value=""
-          >
-            <MenuItem value="game">Game</MenuItem>
-            <MenuItem value="web">Web</MenuItem>
-            <MenuItem value="desktop">Desktop</MenuItem>
+            <MenuItem value="DESC">Mais Recentes</MenuItem>
+            <MenuItem value="ASC">Mais Antigos</MenuItem>
           </SelectComponent>
         </Box>
       </Box>
