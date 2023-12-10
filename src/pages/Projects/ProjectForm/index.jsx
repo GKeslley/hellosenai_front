@@ -1,25 +1,24 @@
-import ModalComponent from '../../../components/Modal';
 import {
   Box,
   Button,
   Divider,
   ListItem,
+  MenuItem,
   TextField,
   Typography,
-  MenuItem,
 } from '@mui/material';
+import { useState } from 'react';
+import SelectComponent from '../../../components/Form/Select';
 import MultiSelect from '../../../components/Form/MultiSelect';
 import { CloudUpload } from '@mui/icons-material';
 import ButtonComponent from '../../../components/Button';
-import PropTypes from 'prop-types';
-import useForm from '../../../hooks/useForm';
-import SelectComponent from '../../../components/Form/Select';
-import { useState } from 'react';
-import axios from 'axios';
-import { useMutation, useQuery } from 'react-query';
-import { useDebounce } from 'use-debounce';
-import { Snackbar } from '@mui/base';
 import RequestError from '../../../components/Helper/RequestError';
+import ModalComponent from '../../../components/Modal';
+import useForm from '../../../hooks/useForm';
+import { useDebounce } from 'use-debounce';
+import PropTypes from 'prop-types';
+import { useQuery } from 'react-query';
+import axios from 'axios';
 
 const fetchParticipants = async (username) => {
   const response = await axios
@@ -28,12 +27,13 @@ const fetchParticipants = async (username) => {
   return response.data;
 };
 
-const DialogCreateProject = ({
-  openModal,
+const ProjectForm = ({
+  project,
   setOpenModal,
+  openModal,
+  mutation,
   title,
   challenge,
-  dataEditProject,
 }) => {
   const [imagePreview, setImagePreview] = useState(null);
   const [newUserValue, setNewUserValue] = useState('');
@@ -60,22 +60,6 @@ const DialogCreateProject = ({
     setImagePreview({ raw: target.files[0] });
   };
 
-  const config = {
-    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-  };
-
-  const mutation = useMutation((dataProject) => {
-    return axios.post('http://127.0.0.1:8000/api/v1/projeto', dataProject, config);
-  });
-
-  const mutationUpdate = useMutation((dataProject) => {
-    return axios.post(
-      `http://127.0.0.1:8000/api/v1/projeto/${dataEditProject.slug}?_method=PUT`,
-      dataProject,
-      config,
-    );
-  });
-
   const createOrUpdateProject = () => {
     if (
       name.validate() &&
@@ -99,29 +83,22 @@ const DialogCreateProject = ({
         formData.append('desafio', challenge);
       }
 
-      if (dataEditProject) {
-        mutationUpdate.mutate(formData);
-        return null;
-      }
-
       mutation.mutate(formData);
     }
   };
 
-  console.log(dataEditProject);
-
-  if (dataEditProject && !status.value) {
-    name.setValue(dataEditProject.name);
-    description.setValue(dataEditProject.description);
-    status.setValue(dataEditProject.status);
+  if (project && !status.value) {
+    name.setValue(project.name);
+    description.setValue(project.description);
+    status.setValue(project.status.toLowerCase());
     setParticipants(() => {
-      const values = dataEditProject.participants.map(({ apelido }) => {
+      const values = project.participants.map(({ apelido }) => {
         return apelido;
       });
       return values;
     });
     setImagePreview({
-      raw: { name: `http://127.0.0.1:8000${dataEditProject.image}` },
+      raw: { name: `http://127.0.0.1:8000${project.image}` },
     });
   }
 
@@ -192,17 +169,15 @@ const DialogCreateProject = ({
               <MenuItem value="concluido">Concluido</MenuItem>
             </SelectComponent>
 
-            {!isLoading && (
-              <MultiSelect
-                label="Participantes"
-                placeholder="Participante"
-                onChange={participantsForTheProject}
-                onInputChange={(event, value) => setNewUserValue(value)}
-                isLoading={isLoading}
-                options={data}
-                defaultValue={participants}
-              />
-            )}
+            <MultiSelect
+              label="Participantes"
+              placeholder="Participante"
+              onChange={participantsForTheProject}
+              onInputChange={(event, value) => setNewUserValue(value)}
+              isLoading={isLoading}
+              options={data}
+              defaultValue={participants}
+            />
 
             <TextField
               required
@@ -261,30 +236,23 @@ const DialogCreateProject = ({
             onClick={createOrUpdateProject}
             isLoading={mutation.isLoading}
           >
-            Criar
+            {project ? 'Atualizar' : 'Criar'}
           </ButtonComponent>
-          {mutation.error ||
-            (mutationUpdate.error && (
-              <RequestError mutation={dataEditProject ? mutationUpdate : mutation} />
-            ))}
+          {mutation.error && <RequestError mutation={mutation} />}
         </Box>
-
-        <Snackbar
-          open={mutation.isSuccess}
-          autoHideDuration={6000}
-          message="Projeto Criado"
-        />
       </Box>
     </ModalComponent>
   );
 };
 
-DialogCreateProject.propTypes = {
-  openModal: PropTypes.bool,
+ProjectForm.propTypes = {
+  project: PropTypes.object,
   setOpenModal: PropTypes.func,
+  openModal: PropTypes.bool,
+  mutation: PropTypes.object,
   title: PropTypes.string,
   challenge: PropTypes.string,
-  dataEditProject: PropTypes.object,
+  onClick: PropTypes.func,
 };
 
-export default DialogCreateProject;
+export default ProjectForm;

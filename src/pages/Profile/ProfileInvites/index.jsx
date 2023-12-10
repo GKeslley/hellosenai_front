@@ -5,6 +5,7 @@ import { UserGlobalContext } from '../../../contexts/UserContext';
 import { useQuery } from 'react-query';
 import axios from 'axios';
 import Loading from '../../../components/Helper/Loading';
+import Stylebreak from '../../../components/Stylebreak';
 
 const ProfileInvites = () => {
   const { data: userData } = useContext(UserGlobalContext);
@@ -23,11 +24,20 @@ const ProfileInvites = () => {
 
   if (isLoading) return <Loading />;
   return (
-    <Grid component="article" container alignItems="stretch" wrap="wrap" gap="1rem">
-      {data &&
-        data.data.map(({ titulo, descricao, slug }) => (
-          <ProfileInvite key={slug} title={titulo} description={descricao} slug={slug} />
-        ))}
+    <Grid component="article" container alignItems="stretch" wrap="wrap">
+      {data && (
+        <>
+          {data.data.map(({ titulo, descricao, slug }) => (
+            <ProfileInvite
+              key={slug}
+              title={titulo}
+              description={descricao}
+              slug={slug}
+            />
+          ))}
+          <Stylebreak length={data.data.length} width="250px" />
+        </>
+      )}
     </Grid>
   );
 };

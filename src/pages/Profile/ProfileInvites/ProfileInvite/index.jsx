@@ -30,6 +30,7 @@ const ProfileInvite = ({ title, description, slug, actions = true }) => {
           display="flex"
           flexDirection="column"
           justifyContent="space-between"
+          margin="0 1% 24px"
         >
           <CardContent>
             <Typography

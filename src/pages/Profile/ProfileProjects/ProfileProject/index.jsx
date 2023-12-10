@@ -6,20 +6,45 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import DialogCreateProject from '../../../Projects/DialogCreateProject';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import ProjectForm from '../../../Projects/ProjectForm';
+import { useMutation } from 'react-query';
+import axios from 'axios';
+import SnackbarRequest from '../../../../components/SnackbarRequest';
 
 const ProfileProject = ({ name, description, participants, status, slug, image }) => {
   const [openDialog, setOpenDialog] = useState(false);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const config = {
+    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+  };
+
+  const mutation = useMutation({
+    mutationFn: (dataProject) => {
+      return axios.post(
+        `http://127.0.0.1:8000/api/v1/projeto/${slug}?_method=PUT`,
+        dataProject,
+        config,
+      );
+    },
+    onSuccess: () => {
+      setOpenSnackbar(true);
+      setOpenDialog(false);
+    },
+    onError: () => {
+      setOpenSnackbar(true);
+    },
+  });
 
   const openDialogEditProject = () => {
     setOpenDialog(true);
   };
+
   return (
     <>
-      <Card sx={{ flex: '1', minWidth: '250px' }}>
+      <Card sx={{ flex: '1', minWidth: '250px', margin: '0 1% 24px' }}>
         <Link to={`/projetos/${slug}`}>
           <CardMedia
             component="img"
@@ -44,11 +69,25 @@ const ProfileProject = ({ name, description, participants, status, slug, image }
       </Card>
 
       {openDialog && (
-        <DialogCreateProject
-          openModal={openDialog}
+        <ProjectForm
+          project={{ name, description, participants, status, image, slug }}
           setOpenModal={setOpenDialog}
-          dataEditProject={{ name, description, participants, status, image, slug }}
+          openModal={openDialog}
           title="Editar Projeto"
+          mutation={mutation}
+        />
+      )}
+
+      {openSnackbar && (
+        <SnackbarRequest
+          message={
+            mutation.isSuccess
+              ? mutation.data.data.message
+              : mutation.error.response.data.message
+          }
+          open={openSnackbar}
+          onClose={() => setOpenSnackbar(false)}
+          severity={mutation.isSuccess ? 'success' : 'error'}
         />
       )}
     </>

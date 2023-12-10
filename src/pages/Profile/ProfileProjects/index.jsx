@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useContext } from 'react';
 import { UserGlobalContext } from '../../../contexts/UserContext';
 import Loading from '../../../components/Helper/Loading';
+import Stylebreak from '../../../components/Stylebreak';
 
 const ProfileProjects = () => {
   const { data: userData } = useContext(UserGlobalContext);
@@ -25,21 +26,26 @@ const ProfileProjects = () => {
 
   if (isLoading) return <Loading />;
   return (
-    <Box component="article" sx={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-      {data &&
-        data.data.map(
-          ({ nomeProjeto, descricao, participantes, status, slug, imagem }) => (
-            <ProfileProject
-              key={slug}
-              name={nomeProjeto}
-              slug={slug}
-              image={imagem}
-              description={descricao}
-              participants={participantes}
-              status={status}
-            />
-          ),
-        )}
+    <Box component="article" sx={{ display: 'flex', flexWrap: 'wrap' }}>
+      {data && (
+        <>
+          {data.data.map(
+            ({ nomeProjeto, descricao, participantes, status, slug, imagem }) => (
+              <ProfileProject
+                key={slug}
+                name={nomeProjeto}
+                slug={slug}
+                image={imagem}
+                description={descricao}
+                participants={participantes}
+                status={status}
+              />
+            ),
+          )}
+
+          <Stylebreak length={data.data.length} width="250px" />
+        </>
+      )}
     </Box>
   );
 };

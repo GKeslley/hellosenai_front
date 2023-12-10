@@ -6,7 +6,11 @@ import {
   Chip,
   Container,
   Divider,
+  FormControl,
+  InputAdornment,
+  InputLabel,
   MenuItem,
+  OutlinedInput,
   Paper,
   Typography,
   useMediaQuery,
@@ -14,26 +18,56 @@ import {
 import ButtonComponent from '../../components/Button';
 import { useState } from 'react';
 import ChatBubbleRoundedIcon from '@mui/icons-material/ChatBubbleRounded';
-import DialogCreateProject from './DialogCreateProject';
 import SelectComponent from '../../components/Form/Select';
 import { Link, useLocation } from 'react-router-dom';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import axios from 'axios';
 import Loading from '../../components/Helper/Loading';
 import Options from '../../components/Options';
+import ProjectForm from './ProjectForm';
+import SnackbarRequest from '../../components/SnackbarRequest';
+import useForm from '../../hooks/useForm';
+import SearchIcon from '@mui/icons-material/Search';
+import useQueryString from '../../hooks/useQueryString';
+
+const config = {
+  headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+};
 
 const Projects = () => {
   const [openModal, setOpenModal] = useState(false);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
   const [challenge, setChallenge] = useState(null);
   const [slugProject, setSlugProject] = useState(null);
   const handleOpen = () => setOpenModal(true);
   const isMobile = useMediaQuery('(min-width: 768px)');
   const { search } = useLocation();
+  const searchProject = useForm();
+  const { url, onChangeOrder, onSearch, params } = useQueryString({
+    search: 'nomeProjeto[lk]',
+    input: searchProject,
+    baseUrl: 'http://127.0.0.1:8000/api/v1/projeto',
+  });
 
-  const { data, isLoading } = useQuery('projects', () => {
-    return axios
-      .get('http://127.0.0.1:8000/api/v1/projeto')
-      .then((response) => response.data);
+  const { data, isLoading } = useQuery(
+    [params, 'projects'],
+    () => {
+      return axios.get(url).then((response) => response.data);
+    },
+    { refetchOnWindowFocus: false },
+  );
+
+  const mutation = useMutation({
+    mutationFn: (dataProject) => {
+      return axios.post('http://127.0.0.1:8000/api/v1/projeto', dataProject, config);
+    },
+    onSuccess: () => {
+      setOpenModal(false);
+      setOpenSnackbar(true);
+    },
+    onError: () => {
+      setOpenSnackbar(true);
+    },
   });
 
   const getSlugProject = (slugProject) => {
@@ -47,8 +81,6 @@ const Projects = () => {
       setOpenModal(true);
     }
   }, []);
-
-  console.log(data);
 
   if (isLoading) return <Loading />;
   return (
@@ -70,13 +102,37 @@ const Projects = () => {
               display: 'flex',
               flexDirection: 'column',
               gap: '1rem',
-              marginTop: '2rem',
+              marginTop: '4rem',
             }}
           >
             <Typography component="h1" variant="h3" fontWeight="800">
               Projetos
             </Typography>
-            <ButtonComponent onClick={handleOpen}>Criar Projeto</ButtonComponent>
+            <FormControl
+              sx={{ m: 0, width: '100%' }}
+              variant="outlined"
+              component="form"
+              onSubmit={onSearch}
+            >
+              <InputLabel htmlFor="outlined-adornment-password">Buscar</InputLabel>
+              <OutlinedInput
+                id="outlined-adornment-password"
+                startAdornment={
+                  <InputAdornment position="start">
+                    <SearchIcon />
+                  </InputAdornment>
+                }
+                label="Buscar"
+                size="small"
+                onChange={searchProject.onChange}
+                value={searchProject.value}
+                fullWidth={true}
+              />
+            </FormControl>
+
+            <ButtonComponent onClick={handleOpen} sx={{ maxWidth: '100%' }}>
+              Criar Projeto
+            </ButtonComponent>
           </Box>
 
           <Box
@@ -85,7 +141,7 @@ const Projects = () => {
               flexDirection: isMobile ? 'column' : 'row',
               gap: !isMobile ? '0rem' : '1rem',
               position: !isMobile && 'absolute',
-              top: !isMobile && '-2rem',
+              top: !isMobile && '0rem',
               width: !isMobile && '100%',
               left: !isMobile && '0px',
               justifyContent: !isMobile && 'center',
@@ -95,19 +151,12 @@ const Projects = () => {
             <SelectComponent
               label="Ordenar por:"
               sx={{ width: '100%' }}
-              variant={!isMobile ? 'outlined' : 'standard'}
+              variant={!isMobile ? 'filled' : 'standard'}
+              onChange={onChangeOrder}
+              value={params.order}
             >
-              <MenuItem value="recentes">Mais Recentes</MenuItem>
-              <MenuItem value="antigos">Mais Antigos</MenuItem>
-            </SelectComponent>
-            <SelectComponent
-              label="Tag:"
-              sx={{ width: '100%' }}
-              variant={!isMobile ? 'outlined' : 'standard'}
-            >
-              <MenuItem value="game">Game</MenuItem>
-              <MenuItem value="web">Web</MenuItem>
-              <MenuItem value="desktop">Desktop</MenuItem>
+              <MenuItem value="DESC">Mais Recentes</MenuItem>
+              <MenuItem value="ASC">Mais Antigos</MenuItem>
             </SelectComponent>
           </Box>
         </Box>
@@ -243,11 +292,25 @@ const Projects = () => {
       </Box>
 
       {openModal && (
-        <DialogCreateProject
+        <ProjectForm
           openModal={openModal}
           setOpenModal={setOpenModal}
           title="Criar Projeto"
           challenge={challenge}
+          mutation={mutation}
+        />
+      )}
+
+      {openSnackbar && (
+        <SnackbarRequest
+          message={
+            mutation.isSuccess
+              ? mutation.data.data.message
+              : mutation.error.response.data.message
+          }
+          open={openSnackbar}
+          onClose={() => setOpenSnackbar(false)}
+          severity={mutation.isSuccess ? 'success' : 'error'}
         />
       )}
     </Container>
