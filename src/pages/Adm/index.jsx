@@ -1,6 +1,8 @@
 import { Avatar, Box, Container, Paper, Typography } from '@mui/material';
-import Denounces from '../../components/Denounces';
 import teacherImage from '../../assets/login/pvta.png';
+import warningImage from '../../assets/teste2.png';
+import Title from '../../components/Title';
+import { Link } from 'react-router-dom';
 
 const Adm = () => {
   return (
@@ -13,14 +15,15 @@ const Adm = () => {
         marginBottom: '2rem',
       }}
     >
-      <Box>
+      <Title>Tela do Administrador</Title>
+      <Box sx={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
         <Paper
           sx={{
             display: 'flex',
             flexDirection: 'column',
             padding: '1rem 1rem',
             alignItems: 'center',
-            gap: '1rem',
+            gap: '0.5rem',
             minWidth: { xs: '15rem', sm: '15rem' },
             maxWidth: { xs: '15rem', sm: '15rem' },
           }}
@@ -40,9 +43,36 @@ const Adm = () => {
             Novo Professor
           </Typography>
         </Paper>
-      </Box>
 
-      {<Denounces />}
+        <Paper
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            padding: '1rem 1rem',
+            alignItems: 'center',
+            gap: '0.5rem',
+            minWidth: { xs: '15rem', sm: '15rem' },
+            maxWidth: { xs: '15rem', sm: '15rem' },
+          }}
+          component={Link}
+          to="/usuario/adm/denuncias"
+        >
+          <Avatar
+            src={warningImage}
+            sx={{
+              objectPosition: 'top',
+              width: '90px',
+              height: '90px',
+              '& .MuiAvatar-img': {
+                objectPosition: 'top',
+              },
+            }}
+          />
+          <Typography fontSize="1.5rem" fontWeight="500">
+            Denúncias
+          </Typography>
+        </Paper>
+      </Box>
     </Container>
   );
 };

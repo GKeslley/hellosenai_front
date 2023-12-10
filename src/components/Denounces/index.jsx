@@ -1,25 +1,36 @@
-import { Button } from '@mui/material';
+import { Button, Container } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import axios from 'axios';
 import { useQuery } from 'react-query';
+import Subtitle from '../Subtitle';
+import WarningIcon from '@mui/icons-material/Warning';
+import { useState } from 'react';
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 70 },
-  { field: 'texto', headerName: 'Texto', width: 200 },
-  { field: 'projeto', headerName: 'Projeto', width: 200 },
+  { field: 'texto', headerName: 'Texto', width: 500 },
+  { field: 'projeto', headerName: 'Projeto', width: 250 },
   {
     field: 'criada_em',
     headerName: 'Data Criação',
-    width: 200,
+    width: 150,
   },
-  {
+];
+
+const Denounces = () => {
+  const [denounce, setDenounce] = useState(null);
+  const config = {
+    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+  };
+
+  columns[4] = {
     headerName: 'Visualizar',
-    width: 300,
+    width: 200,
     // Define a custom render function for the cell
     renderCell: (params) => {
       const row = params.row;
       const handleClick = () => {
-        alert(`You clicked on row ${row}`);
+        setDenounce(row);
       };
       return (
         <Button onClick={handleClick} variant="contained" size="small">
@@ -27,13 +38,9 @@ const columns = [
         </Button>
       );
     },
-  },
-];
-
-const Denounces = () => {
-  const config = {
-    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
   };
+
+  console.log(denounce);
 
   const { data, isLoading, error } = useQuery('denounces', () => {
     return axios
@@ -44,7 +51,11 @@ const Denounces = () => {
   console.log(data);
 
   return (
-    <>
+    <Container sx={{ marginTop: '2rem', marginBottom: '2rem' }}>
+      <Subtitle>
+        Denúncias Recentes
+        <WarningIcon sx={{ width: '30px', height: '30px', marginLeft: '0.25rem' }} />
+      </Subtitle>
       {data && (
         <div style={{ height: 400, width: '100%' }}>
           <DataGrid
@@ -56,11 +67,10 @@ const Denounces = () => {
               },
             }}
             pageSizeOptions={[5, 10]}
-            checkboxSelection
           />
         </div>
       )}
-    </>
+    </Container>
   );
 };
 
