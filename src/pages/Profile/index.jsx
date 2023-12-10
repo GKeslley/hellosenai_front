@@ -18,6 +18,7 @@ import ProfileInvites from './ProfileInvites';
 import { useContext } from 'react';
 import { UserGlobalContext } from '../../contexts/UserContext';
 import Loading from '../../components/Helper/Loading';
+import Settings from './Settings';
 
 const Profile = () => {
   const isMobile = useMediaQuery('(min-width: 768px)');
@@ -180,6 +181,7 @@ const Profile = () => {
           <Route path="/" element={<User />}></Route>
           <Route path="projetos" element={<ProfileProjects />}></Route>
           <Route path="convites" element={<ProfileInvites />}></Route>
+          <Route path="configuracoes" element={<Settings />}></Route>
         </Routes>
       </Box>
 
