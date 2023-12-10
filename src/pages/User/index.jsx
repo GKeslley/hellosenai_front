@@ -4,10 +4,24 @@ import NavLinkActive from '../../components/NavLink';
 import { Route, Routes, useParams } from 'react-router-dom';
 import UserProjects from './UserProjects';
 import UserInvites from './UserInvites';
+import { useQuery } from 'react-query';
+import axios from 'axios';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import Loading from '../../components/Helper/Loading';
 
 const User = () => {
   const params = useParams();
 
+  const { data, isLoading, error } = useQuery('userData', () => {
+    return axios
+      .get(`http://127.0.0.1:8000/api/v1/usuario/${params.user}`)
+      .then((response) => response.data);
+  });
+
+  console.log(params);
+
+  if (isLoading) return <Loading />;
+  if (error) return null;
   return (
     <Box component="section" sx={{ display: 'grid', gridTemplateRows: 'auto 1fr' }}>
       <Box sx={{ position: 'relative' }}>
@@ -39,9 +53,12 @@ const User = () => {
               }}
             >
               <Typography fontWeight={800} fontSize="2rem">
-                Kevin Smith
+                {data.nome}
               </Typography>
-              <Typography>Entrou em: 22/05/2023</Typography>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                <CalendarMonthIcon sx={{ width: '20px', height: '20px' }} />
+                <Typography>Ingressou em: {data.criadoEm}</Typography>
+              </Box>
             </Box>
           </Box>
         </Container>
@@ -80,7 +97,7 @@ const User = () => {
 
         <Routes>
           <Route path="/" element={<UserProjects username={params.user} />}></Route>
-          <Route path="convites" element={<UserInvites />}></Route>
+          <Route path="convites" element={<UserInvites username={params.user} />}></Route>
         </Routes>
       </Container>
     </Box>

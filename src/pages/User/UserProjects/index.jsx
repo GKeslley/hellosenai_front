@@ -4,13 +4,14 @@ import { useQuery } from 'react-query';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import Stylebreak from '../../../components/Stylebreak';
 
 const UserProjects = ({ username }) => {
   const { data, isLoading } = useQuery(
     'userInvites',
     () => {
       return axios
-        .get(`http://127.0.0.1:8000/api/v1/usuario/pessoa2067a1071/projetos`)
+        .get(`http://127.0.0.1:8000/api/v1/usuario/${username}/projetos`)
         .then((response) => response.data);
     },
     { refetchOnWindowFocus: false },
@@ -23,7 +24,6 @@ const UserProjects = ({ username }) => {
       container
       alignItems="stretch"
       wrap="wrap"
-      gap="1rem"
       marginBottom="2rem"
     >
       {data && data.data.length ? (
@@ -31,7 +31,7 @@ const UserProjects = ({ username }) => {
           {data.data.map(({ imagem, slug }) => (
             <Grid
               component={Link}
-              to={`/desafios/${slug}`}
+              to={`/projetos/${slug}`}
               key={slug}
               item
               xs
@@ -42,6 +42,7 @@ const UserProjects = ({ username }) => {
               justifyContent="space-between"
               sx={{
                 position: 'relative',
+                margin: '0 1% 24px',
               }}
             >
               <Box component="figure" sx={{ height: '100%' }}>
@@ -54,6 +55,7 @@ const UserProjects = ({ username }) => {
               </Box>
             </Grid>
           ))}
+          <Stylebreak length={data.data.length - 1} width="250px" />
         </>
       ) : (
         <Typography>O usuário não possui projetos</Typography>
