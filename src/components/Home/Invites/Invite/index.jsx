@@ -23,7 +23,13 @@ const Invite = ({
   setDataInvite,
 }) => {
   const handleClick = () => {
-    setDataInvite({ titulo: title, data: date, autor: author, descricao: description, slug });
+    setDataInvite({
+      titulo: title,
+      data: date,
+      autor: author,
+      descricao: description,
+      slug,
+    });
   };
 
   return (
@@ -70,6 +76,7 @@ Invite.propTypes = {
   description: PropTypes.string,
   date: PropTypes.string,
   author: PropTypes.object,
+  slug: PropTypes.string,
   setDataInvite: PropTypes.func,
 };
 

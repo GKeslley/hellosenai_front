@@ -10,19 +10,16 @@ import {
   Typography,
   useMediaQuery,
 } from '@mui/material';
-import Invite from '../../components/Home/Invites/Invite';
 import ButtonComponent from '../../components/Button';
 import SelectComponent from '../../components/Form/Select';
 import { useState } from 'react';
 import ModalCreateInvite from './Modal/ModalCreateInvite';
 import ModalAccessInvite from './Modal/ModalAccessInvite';
-import { useQuery } from 'react-query';
-import axios from 'axios';
-import Loading from '../../components/Helper/Loading';
-import Stylebreak from '../../components/Stylebreak';
 import useQueryString from '../../hooks/useQueryString';
 import useForm from '../../hooks/useForm';
 import SearchIcon from '@mui/icons-material/Search';
+import useInfiniteScroll from '../../hooks/useInfiniteScroll';
+import InvitesItem from './InvitesItem';
 
 const Invites = () => {
   const [openModalCreateInvite, setOpenModalCreateInvite] = useState(false);
@@ -30,24 +27,15 @@ const Invites = () => {
   const [dataInvite, setDataInvite] = useState(null);
   const modalCreateInvite = () => setOpenModalCreateInvite(true);
   const modalAccessInvite = () => setOpenModalAccessInvite(true);
+  const { pages, infinite, setInfinite } = useInfiniteScroll();
   const isMobile = useMediaQuery('(min-width: 768px)');
   const searchInvite = useForm();
-
   const { url, onChangeOrder, onSearch, params } = useQueryString({
     search: 'titulo[lk]',
     input: searchInvite,
     baseUrl: 'http://127.0.0.1:8000/api/v1/convite',
   });
 
-  const { data, isLoading } = useQuery(
-    [params, 'invites'],
-    () => {
-      return axios.get(url).then((response) => response.data);
-    },
-    { refetchOnWindowFocus: false },
-  );
-
-  if (isLoading) return <Loading />;
   return (
     <Container
       sx={{
@@ -133,23 +121,18 @@ const Invites = () => {
       </Box>
       <Grid component="article" container alignItems="stretch" wrap="wrap">
         <>
-          {data && (
-            <>
-              {data.data.map(({ titulo, descricao, dataCriacao, slug, autor }) => (
-                <Invite
-                  key={slug}
-                  modalAccessInvite={modalAccessInvite}
-                  title={titulo}
-                  description={descricao}
-                  date={dataCriacao}
-                  slug={slug}
-                  author={autor}
-                  setDataInvite={setDataInvite}
-                />
-              ))}
-              <Stylebreak length={data.data.length - 1} width="250px" />
-            </>
-          )}
+          {pages.map((page) => (
+            <InvitesItem
+              key={page}
+              url={url}
+              page={page}
+              setInfinite={setInfinite}
+              infinite={infinite}
+              modalAccessInvite={modalAccessInvite}
+              setDataInvite={setDataInvite}
+              params={params}
+            />
+          ))}
         </>
       </Grid>
 

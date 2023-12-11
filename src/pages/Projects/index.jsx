@@ -1,11 +1,6 @@
 import {
-  Avatar,
   Box,
-  Card,
-  CardContent,
-  Chip,
   Container,
-  Divider,
   FormControl,
   InputAdornment,
   InputLabel,
@@ -17,18 +12,17 @@ import {
 } from '@mui/material';
 import ButtonComponent from '../../components/Button';
 import { useState } from 'react';
-import ChatBubbleRoundedIcon from '@mui/icons-material/ChatBubbleRounded';
 import SelectComponent from '../../components/Form/Select';
-import { Link, useLocation } from 'react-router-dom';
-import { useMutation, useQuery } from 'react-query';
+import { useLocation } from 'react-router-dom';
+import { useMutation } from 'react-query';
 import axios from 'axios';
-import Loading from '../../components/Helper/Loading';
-import Options from '../../components/Options';
 import ProjectForm from './ProjectForm';
 import SnackbarRequest from '../../components/SnackbarRequest';
 import useForm from '../../hooks/useForm';
 import SearchIcon from '@mui/icons-material/Search';
 import useQueryString from '../../hooks/useQueryString';
+import ProjectsItem from './ProjectsItem';
+import useInfiniteScroll from '../../hooks/useInfiniteScroll';
 
 const config = {
   headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
@@ -38,24 +32,16 @@ const Projects = () => {
   const [openModal, setOpenModal] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [challenge, setChallenge] = useState(null);
-  const [slugProject, setSlugProject] = useState(null);
   const handleOpen = () => setOpenModal(true);
   const isMobile = useMediaQuery('(min-width: 768px)');
   const { search } = useLocation();
   const searchProject = useForm();
+  const { pages, infinite, setInfinite } = useInfiniteScroll();
   const { url, onChangeOrder, onSearch, params } = useQueryString({
     search: 'nomeProjeto[lk]',
     input: searchProject,
     baseUrl: 'http://127.0.0.1:8000/api/v1/projeto',
   });
-
-  const { data, isLoading } = useQuery(
-    [params, 'projects'],
-    () => {
-      return axios.get(url).then((response) => response.data);
-    },
-    { refetchOnWindowFocus: false },
-  );
 
   const mutation = useMutation({
     mutationFn: (dataProject) => {
@@ -70,10 +56,6 @@ const Projects = () => {
     },
   });
 
-  const getSlugProject = (slugProject) => {
-    setSlugProject(slugProject);
-  };
-
   useState(() => {
     if (!openModal && search.includes('desafio')) {
       const challengeQuery = search.split('=')[1];
@@ -82,7 +64,6 @@ const Projects = () => {
     }
   }, []);
 
-  if (isLoading) return <Loading />;
   return (
     <Container sx={{ flex: '1', position: 'relative' }}>
       <Box
@@ -166,128 +147,16 @@ const Projects = () => {
           elevation={1}
           sx={{ display: 'flex', flexDirection: 'column', flexShrink: '0' }}
         >
-          {data &&
-            data.data.map(({ nomeProjeto, dataCriacao, slug, imagem, autor }) => (
-              <>
-                <Card
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    padding: '14px 16px',
-                    maxWidth: '100%',
-                  }}
-                  elevation={0}
-                  component="li"
-                >
-                  <Box
-                    sx={{ display: 'flex', position: 'relative', marginTop: '1.5rem' }}
-                  >
-                    <Avatar
-                      sx={{
-                        width: '50px',
-                        height: '50px',
-                        position: 'absolute',
-                        top: '0px',
-                        left: '0px',
-                      }}
-                    />
-
-                    <CardContent
-                      sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        width: '100%',
-                        padding: '0 0 0 59px',
-                      }}
-                    >
-                      <Box
-                        sx={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          fontSize: '15px',
-                          whiteSpace: 'nowrap',
-                          gap: '0.4rem',
-                        }}
-                      >
-                        <Typography
-                          fontWeight="800"
-                          sx={{
-                            whiteSpace: 'nowrap',
-                            textOverflow: 'ellipsis',
-                            overflow: 'hidden',
-                            marginRight: '5px',
-                            marginTop: '0.125rem',
-                          }}
-                        >
-                          {autor.nome}
-                        </Typography>
-
-                        <Typography
-                          className="text-gray-400"
-                          sx={{
-                            whiteSpace: 'nowrap',
-                            textOverflow: 'ellipsis',
-                            overflow: 'hidden',
-                          }}
-                        >
-                          @{autor.apelido}
-                        </Typography>
-
-                        <Typography
-                          component="span"
-                          fontSize="0.5rem"
-                          className="bg-gray-400 h-1 w-1 rounded-full mx-2"
-                        ></Typography>
-
-                        <Typography
-                          component="time"
-                          fontSize="0.9rem"
-                          className="text-gray-400"
-                        >
-                          {dataCriacao}
-                        </Typography>
-
-                        <Options
-                          sx={{ flexGrow: '1', textAlign: 'end' }}
-                          slugProject={slugProject}
-                          getSlugProject={() => getSlugProject(slug)}
-                          setSlugProject={setSlugProject}
-                        />
-                      </Box>
-
-                      <Typography fontSize="1rem">{nomeProjeto}</Typography>
-
-                      <Link to={`/projetos/${slug}`}>
-                        <Box
-                          component="figure"
-                          sx={{
-                            height: 'min(285px, max(175px, 41vw))',
-                            marginBottom: '0.5rem',
-                          }}
-                        >
-                          <Box
-                            component="img"
-                            src={`http://127.0.0.1:8000${imagem}`}
-                            alt="teste"
-                            sx={{
-                              borderRadius: '6px',
-                              height: '100%',
-                              objectFit: 'cover',
-                              width: '100%',
-                            }}
-                          />
-                        </Box>
-
-                        <Box className="flex items-center justify-between gap-5">
-                          <Chip icon={<ChatBubbleRoundedIcon />} label="5" />
-                        </Box>
-                      </Link>
-                    </CardContent>
-                  </Box>
-                </Card>
-                <Divider variant="middle" />
-              </>
-            ))}
+          {pages.map((page) => (
+            <ProjectsItem
+              key={page}
+              params={params}
+              url={url}
+              page={page}
+              infinite={infinite}
+              setInfinite={setInfinite}
+            />
+          ))}
         </Paper>
       </Box>
 
