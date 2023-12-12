@@ -1,10 +1,12 @@
 import { Box, useMediaQuery } from '@mui/material';
-import Challenge from './Challenge';
 import { useState } from 'react';
 import Sidebar from './Sidebar';
 import { useQuery } from 'react-query';
 import axios from 'axios';
 import Loading from '../../components/Helper/Loading';
+import ChallengeCards from '../../components/Challenges/ChallengesCards';
+import { Route, Routes } from 'react-router';
+import ChallengesPosted from '../../components/Challenges/ChallengesPosted';
 
 const Challenges = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -40,61 +42,16 @@ const Challenges = () => {
         data={data}
       />
 
-      <Box
-        sx={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          marginBottom: '2rem',
-          marginTop: '2rem',
-          padding: isMobile ? '0 1rem' : '0 2rem',
-          alignSelf: 'flex-start',
-        }}
-      >
-        {data &&
-          data.data.map(({ nome, apelido, desafios }) => (
-            <Challenge
-              key={apelido}
-              name={nome}
-              username={apelido}
-              challenges={desafios}
-            />
-          ))}
-        <Box
-          sx={{
-            height: 0,
-            width: '18.75rem',
-            minWidth: '18.75rem',
-            flexGrow: '1',
-            margin: '0 1% 24px',
-            marginTop: 0,
-            marginBottom: 0,
-          }}
-        ></Box>
-        <Box
-          sx={{
-            height: 0,
-            width: '18.75rem',
-            minWidth: '18.75rem',
-            flexGrow: '1',
-            margin: '0 1% 24px',
-            marginBottom: 0,
-            marginTop: 0,
-          }}
-        ></Box>
-        <Box
-          sx={{
-            height: 0,
-            width: '18.75rem',
-            minWidth: '18.75rem',
-            flexGrow: '1',
-            margin: '0 1% 24px',
-            marginBottom: 0,
-            marginTop: 0,
-          }}
-        ></Box>
-      </Box>
+      <Routes>
+        <Route path='/' element={<ChallengeCards data={data} />}></Route>
+        <Route path=":user/*" element={<ChallengesPosted />}></Route>
+      </Routes>
+      
     </Box>
   );
 };
 
 export default Challenges;
+
+
+

@@ -8,7 +8,6 @@ import Login from './pages/Login';
 import LoginStudent from './pages/Login/LoginStudent';
 import LoginTeacher from './pages/Login/LoginTeacher';
 import Challenges from './pages/Challenges';
-import ChallengeInfos from './pages/Challenges/ChallengeInfos';
 import User from './pages/User';
 import RegisterTeacher from './pages/Login/RegisterTeacher';
 import Notifications from './pages/Notifications';
@@ -26,8 +25,7 @@ const CreateRoutes = () => {
       <Route path="/projetos" element={<Projects />}></Route>
       <Route path="/projetos/:slug" element={<Project />}></Route>
       <Route path="/convites" element={<Invites />}></Route>
-      <Route path="/desafios" element={<Challenges />}></Route>
-      <Route path="/desafios/:user/*" element={<ChallengeInfos />}></Route>
+      <Route path="/desafios/*" element={<Challenges />}></Route>
       <Route path="/perfil/*" element={<Profile />}></Route>
       <Route path="/usuario/:user/*" element={<User />}></Route>
       <Route path="/usuario/adm" element={<Adm />}></Route>

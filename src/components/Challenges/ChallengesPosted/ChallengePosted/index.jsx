@@ -1,12 +1,12 @@
 import { Avatar, Box, Container, Paper, Typography } from '@mui/material';
 import ButtonComponent from '../../../../components/Button';
-import CreateChallenge from '../CreateChallenge';
+import CreateChallenge from '../../CreateChallenge';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import Title from '../../../../components/Title';
 
-const ChallengeItems = ({ data }) => {
+const ChallengePosted = ({ data }) => {
   const [openModal, setOpenModal] = useState(false);
 
   return (
@@ -103,8 +103,8 @@ const ChallengeItems = ({ data }) => {
   );
 };
 
-ChallengeItems.propTypes = {
+ChallengePosted.propTypes = {
   data: PropTypes.array,
 };
 
-export default ChallengeItems;
+export default ChallengePosted;

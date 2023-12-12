@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import PropTypes from 'prop-types';
 
-const Stylebreak = ({ length, width }) => {
+const Stylebreak = ({ length, width, sx }) => {
   const elements = Array(length).fill(0);
   return (
     <>
@@ -17,6 +17,7 @@ const Stylebreak = ({ length, width }) => {
             flex: '1',
             marginTop: 0,
             marginBottom: 0,
+            ...sx
           }}
         ></Box>
       ))}
@@ -27,6 +28,7 @@ const Stylebreak = ({ length, width }) => {
 Stylebreak.propTypes = {
   length: PropTypes.number,
   width: PropTypes.string,
+  sx: PropTypes.object,
 };
 
 export default Stylebreak;

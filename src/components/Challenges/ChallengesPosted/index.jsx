@@ -1,12 +1,11 @@
 import { Box, Paper } from '@mui/material';
 import { useState } from 'react';
-import Sidebar from '../Sidebar';
 import NavLinkActive from '../../../components/NavLink';
 import { Route, Routes, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useQuery } from 'react-query';
 import Loading from '../../../components/Helper/Loading';
-import ChallengeItems from './ChallengeItems';
+import ChallengePosted from './ChallengePosted';
 import ChallengesPerfomed from '../ChallengesPerfomed';
 
 const fetchChallengesByTeacher = async (username) => {
@@ -16,7 +15,7 @@ const fetchChallengesByTeacher = async (username) => {
   return response.data;
 };
 
-const ChallengeInfos = () => {
+const ChallengesPosted = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const params = useParams();
 
@@ -41,12 +40,9 @@ const ChallengeInfos = () => {
       component="section"
       sx={{
         display: 'grid',
-        gridTemplateColumns: 'auto 1fr',
         flexGrow: '1',
       }}
     >
-      <Sidebar mobileOpen={mobileOpen} handleDrawerToggle={handleDrawerToggle} />
-
       <Box sx={{ marginBottom: '2rem' }}>
         <Paper sx={{ borderRadius: '0', marginBottom: '2rem' }}>
           <Box sx={{ display: 'flex', alignItems: 'start', gap: '1rem' }}>
@@ -73,7 +69,7 @@ const ChallengeInfos = () => {
         </Paper>
 
         <Routes>
-          <Route path="/" element={<ChallengeItems data={data} />}></Route>
+          <Route path="/" element={<ChallengePosted data={data} />}></Route>
           <Route path="realizados" element={<ChallengesPerfomed />}></Route>
         </Routes>
       </Box>
@@ -81,4 +77,4 @@ const ChallengeInfos = () => {
   );
 };
 
-export default ChallengeInfos;
+export default ChallengesPosted;

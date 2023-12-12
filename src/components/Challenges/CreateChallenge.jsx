@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import ModalComponent from '../../../components/Modal';
+import ModalComponent from '../../components/Modal';
 import {
   Box,
   Button,
@@ -9,14 +9,14 @@ import {
   ListItem,
   Typography,
 } from '@mui/material';
-import Input from '../../../components/Form/Input';
-import ButtonComponent from '../../../components/Button';
+import Input from '../../components/Form/Input';
+import ButtonComponent from '../../components/Button';
 import PropTypes from 'prop-types';
-import useForm from '../../../hooks/useForm';
+import useForm from '../../hooks/useForm';
 import { useMutation } from 'react-query';
 import axios from 'axios';
 import { CloudUpload } from '@mui/icons-material';
-import RequestError from '../../../components/Helper/RequestError';
+import RequestError from '../../components/Helper/RequestError';
 
 const CreateChallenge = ({ openModal, setOpenModal, title, buttonTitle }) => {
   const [imagePreview, setImagePreview] = useState(null);
