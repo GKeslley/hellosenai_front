@@ -8,19 +8,18 @@ import { useState } from 'react';
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import PropTypes from 'prop-types';
 
-const ProjectsItem = ({ params, url, page, infinite, setInfinite }) => {
+const ProjectsItem = ({ params, url, page, infinite, setInfinite, queryClient }) => {
   const [slugProject, setSlugProject] = useState(null);
 
   console.log(page);
 
-  const { data, isLoading } = useQuery(
-    [params, page, 'projects'],
-    () => {
-      console.log();
+  const { data, isLoading } = useQuery({
+    queryKey: ['projects', params, page],
+    queryFn: () => {
       return axios.get(`${url}&page=${page}`).then((response) => response.data);
     },
-    { refetchOnWindowFocus: false },
-  );
+    refetchOnWindowFocus: false,
+  });
 
   if (infinite && data && !data.links.next) {
     setInfinite(false);
@@ -117,6 +116,8 @@ const ProjectsItem = ({ params, url, page, infinite, setInfinite }) => {
                       slugProject={slugProject}
                       getSlugProject={() => getSlugProject(slug)}
                       setSlugProject={setSlugProject}
+                      author={autor.apelido}
+                      queryClient={queryClient}
                     />
                   </Box>
 
@@ -163,6 +164,7 @@ ProjectsItem.propTypes = {
   page: PropTypes.number,
   infinite: PropTypes.bool,
   setInfinite: PropTypes.func,
+  queryClient: PropTypes.object,
 };
 
 export default ProjectsItem;

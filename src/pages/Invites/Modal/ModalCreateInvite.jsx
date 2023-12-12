@@ -20,6 +20,7 @@ const ModalCreateInvite = ({
   inviteTitle,
   inviteDescription,
   inviteSlug,
+  queryClient,
 }) => {
   const titleInput = useForm(true);
   const description = useForm(true);
@@ -29,6 +30,7 @@ const ModalCreateInvite = ({
       return axios.post('http://127.0.0.1:8000/api/v1/convite', dataInvite, config);
     },
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['invites'], type: 'active' });
       titleInput.setValue('');
       description.setValue('');
       setOpenModal(false);
@@ -44,6 +46,7 @@ const ModalCreateInvite = ({
       );
     },
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['userInvites'], type: 'active' });
       titleInput.setValue('');
       description.setValue('');
       setOpenModal(false);
@@ -147,6 +150,7 @@ ModalCreateInvite.propTypes = {
   inviteTitle: PropTypes.string,
   inviteDescription: PropTypes.string,
   inviteSlug: PropTypes.string,
+  queryClient: PropTypes.object,
 };
 
 export default ModalCreateInvite;

@@ -5,7 +5,7 @@ import Accordion from '../../components/Accordion';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import Comment from '../../components/Comment';
 import { useParams } from 'react-router-dom';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import axios from 'axios';
 import Loading from '../../components/Helper/Loading';
 import LinkComponent from '../../components/Link';
@@ -22,14 +22,19 @@ const config = {
 const Project = () => {
   const [openComment, setOpenComment] = useState(false);
   const [openReply, setOpenReply] = useState({ isOpen: false, id: null });
+  const queryClient = useQueryClient();
   const params = useParams();
   const comment = useForm();
 
-  const { data, isLoading, error } = useQuery('project', () => {
-    return axios
-      .get(`http://127.0.0.1:8000/api/v1/projeto/${params.slug}`)
-      .then((response) => response.data);
-  }, { refetchOnWindowFocus: false });
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['project'],
+    queryFn: () => {
+      return axios
+        .get(`http://127.0.0.1:8000/api/v1/projeto/${params.slug}`)
+        .then((response) => response.data);
+    },
+    refetchOnWindowFocus: false,
+  });
 
   const mutation = useMutation({
     mutationFn: (dataComment) => {
@@ -40,6 +45,7 @@ const Project = () => {
       );
     },
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['project'], type: 'active' });
       handleCloseComment();
     },
   });
@@ -146,8 +152,12 @@ const Project = () => {
                 <CommentInput handleOpenComment={handleOpenComment} input={comment} />
               </Box>
               {openComment && (
-                <CommentActions handleCloseComment={handleCloseComment} input={comment} 
-                  onClick={postNewComment} isLoading={mutation.isLoading} />
+                <CommentActions
+                  handleCloseComment={handleCloseComment}
+                  input={comment}
+                  onClick={postNewComment}
+                  isLoading={mutation.isLoading}
+                />
               )}
             </Box>
 
@@ -171,6 +181,7 @@ const Project = () => {
                         setOpenReply={setOpenReply}
                         config={config}
                         slug={params.slug}
+                        queryClient={queryClient}
                       />
                       {resposta && (
                         <Comment
@@ -182,6 +193,7 @@ const Project = () => {
                           isReply={true}
                           config={config}
                           slug={params.slug}
+                          queryClient={queryClient}
                         />
                       )}
                     </Box>

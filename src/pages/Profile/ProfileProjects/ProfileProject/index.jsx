@@ -14,7 +14,15 @@ import { useMutation } from 'react-query';
 import axios from 'axios';
 import SnackbarRequest from '../../../../components/SnackbarRequest';
 
-const ProfileProject = ({ name, description, participants, status, slug, image }) => {
+const ProfileProject = ({
+  name,
+  description,
+  participants,
+  status,
+  slug,
+  image,
+  queryClient,
+}) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const config = {
@@ -30,6 +38,7 @@ const ProfileProject = ({ name, description, participants, status, slug, image }
       );
     },
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['userProjects'], type: 'active' });
       setOpenSnackbar(true);
       setOpenDialog(false);
     },
@@ -101,6 +110,7 @@ ProfileProject.propTypes = {
   status: PropTypes.string,
   slug: PropTypes.string,
   image: PropTypes.string,
+  queryClient: PropTypes.string,
 };
 
 export default ProfileProject;

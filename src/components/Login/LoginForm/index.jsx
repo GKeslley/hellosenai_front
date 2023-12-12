@@ -10,8 +10,11 @@ import axios from 'axios';
 import { useMutation } from 'react-query';
 import RequestError from '../../Helper/RequestError';
 import { Navigate } from 'react-router-dom';
+import { useContext } from 'react';
+import { UserGlobalContext } from '../../../contexts/UserContext';
 
 const LoginForm = () => {
+  const { setToken } = useContext(UserGlobalContext);
   const email = useForm('email');
   const password = useForm('password');
 
@@ -30,6 +33,7 @@ const LoginForm = () => {
 
   if (mutation.isSuccess) {
     localStorage.setItem('token', mutation.data.data.plainTextToken);
+    setToken(mutation.data.data.plainTextToken);
     return <Navigate to="/" />;
   }
 

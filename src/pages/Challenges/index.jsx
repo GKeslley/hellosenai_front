@@ -32,7 +32,7 @@ const Challenges = () => {
       component="section"
       sx={{
         display: 'grid',
-        gridTemplateColumns: 'auto 1fr',
+        gridTemplateColumns: isMobile ? '1fr' : 'auto 1fr',
         flexGrow: '1',
       }}
     >
@@ -40,18 +40,15 @@ const Challenges = () => {
         mobileOpen={mobileOpen}
         handleDrawerToggle={handleDrawerToggle}
         data={data}
+        isMobile={isMobile}
       />
 
       <Routes>
-        <Route path='/' element={<ChallengeCards data={data} />}></Route>
+        <Route path="/" element={<ChallengeCards data={data} />}></Route>
         <Route path=":user/*" element={<ChallengesPosted />}></Route>
       </Routes>
-      
     </Box>
   );
 };
 
 export default Challenges;
-
-
-

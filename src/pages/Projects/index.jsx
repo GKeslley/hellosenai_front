@@ -14,7 +14,7 @@ import ButtonComponent from '../../components/Button';
 import { useState } from 'react';
 import SelectComponent from '../../components/Form/Select';
 import { useLocation } from 'react-router-dom';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import axios from 'axios';
 import ProjectForm from './ProjectForm';
 import SnackbarRequest from '../../components/SnackbarRequest';
@@ -36,6 +36,7 @@ const Projects = () => {
   const isMobile = useMediaQuery('(min-width: 768px)');
   const { search } = useLocation();
   const searchProject = useForm();
+  const queryClient = useQueryClient();
   const { pages, infinite, setInfinite } = useInfiniteScroll();
   const { url, onChangeOrder, onSearch, params } = useQueryString({
     search: 'nomeProjeto[lk]',
@@ -48,6 +49,7 @@ const Projects = () => {
       return axios.post('http://127.0.0.1:8000/api/v1/projeto', dataProject, config);
     },
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['projects'], type: 'active' });
       setOpenModal(false);
       setOpenSnackbar(true);
     },
@@ -155,6 +157,7 @@ const Projects = () => {
               page={page}
               infinite={infinite}
               setInfinite={setInfinite}
+              queryClient={queryClient}
             />
           ))}
         </Paper>

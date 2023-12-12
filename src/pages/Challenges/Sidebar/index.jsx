@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 const drawerWidth = 240;
 
-const Sidebar = ({ mobileOpen, handleDrawerToggle, data }) => {
+const Sidebar = ({ mobileOpen, handleDrawerToggle, data, isMobile }) => {
   return (
     <>
       <Drawer
@@ -13,7 +13,7 @@ const Sidebar = ({ mobileOpen, handleDrawerToggle, data }) => {
         onClose={handleDrawerToggle}
         ModalProps={{ keepMounted: true }}
         sx={{
-          display: { xs: 'none', sm: 'block' },
+          display: isMobile ? 'none' : 'block',
           '& .MuiDrawer-paper': {
             boxSizing: 'border-box',
             width: drawerWidth,
@@ -25,7 +25,7 @@ const Sidebar = ({ mobileOpen, handleDrawerToggle, data }) => {
       <Drawer
         variant="permanent"
         sx={{
-          display: { xs: 'none', sm: 'block' },
+          display: isMobile ? 'none' : 'block',
           '& .MuiDrawer-paper': {
             boxSizing: 'border-box',
             width: drawerWidth,
@@ -45,6 +45,7 @@ Sidebar.propTypes = {
   mobileOpen: PropTypes.bool,
   handleDrawerToggle: PropTypes.func,
   data: PropTypes.object,
+  isMobile: PropTypes.bool,
 };
 
 export default Sidebar;

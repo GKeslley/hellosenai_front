@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import ProfileProject from './ProfileProject';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import axios from 'axios';
 import { useContext } from 'react';
 import { UserGlobalContext } from '../../../contexts/UserContext';
@@ -9,20 +9,19 @@ import Stylebreak from '../../../components/Stylebreak';
 
 const ProfileProjects = () => {
   const { data: userData } = useContext(UserGlobalContext);
+  const queryClient = useQueryClient();
 
-  const { data, isLoading } = useQuery(
-    'userProjects',
-    () => {
+  const { data, isLoading } = useQuery({
+    queryKey: ['userProjects'],
+    queryFn: () => {
       if (userData) {
         return axios
           .get(`http://127.0.0.1:8000/api/v1/usuario/${userData.apelido}/projetos`)
           .then((response) => response.data);
       }
     },
-    { refetchOnWindowFocus: false },
-  );
-
-  console.log(data);
+    refetchOnWindowFocus: false,
+  });
 
   if (isLoading) return <Loading />;
   return (
@@ -39,6 +38,7 @@ const ProfileProjects = () => {
                 description={descricao}
                 participants={participantes}
                 status={status}
+                queryClient={queryClient}
               />
             ),
           )}

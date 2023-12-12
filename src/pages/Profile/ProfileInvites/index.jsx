@@ -2,25 +2,24 @@ import { Grid } from '@mui/material';
 import ProfileInvite from './ProfileInvite';
 import { useContext } from 'react';
 import { UserGlobalContext } from '../../../contexts/UserContext';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import axios from 'axios';
 import Loading from '../../../components/Helper/Loading';
 import Stylebreak from '../../../components/Stylebreak';
 
 const ProfileInvites = () => {
   const { data: userData } = useContext(UserGlobalContext);
+  const queryClient = useQueryClient();
 
-  const { data, isLoading } = useQuery(
-    'userInvites',
-    () => {
-      if (userData) {
-        return axios
-          .get(`http://127.0.0.1:8000/api/v1/usuario/${userData.apelido}/convites`)
-          .then((response) => response.data);
-      }
+  const { data, isLoading } = useQuery({
+    queryKey: ['userInvites'],
+    queryFn: () => {
+      return axios
+        .get(`http://127.0.0.1:8000/api/v1/usuario/${userData.apelido}/convites`)
+        .then((response) => response.data);
     },
-    { refetchOnWindowFocus: false },
-  );
+    refetchOnWindowFocus: false,
+  });
 
   if (isLoading) return <Loading />;
   return (
@@ -33,6 +32,7 @@ const ProfileInvites = () => {
               title={titulo}
               description={descricao}
               slug={slug}
+              queryClient={queryClient}
             />
           ))}
           <Stylebreak length={data.data.length} width="250px" />

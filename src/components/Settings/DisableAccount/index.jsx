@@ -1,10 +1,10 @@
 import { Box, Typography, styled } from '@mui/material';
 import axios from 'axios';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useMutation } from 'react-query';
-import { useNavigate } from 'react-router-dom';
 import ButtonComponent from '../../Button';
 import SnackbarRequest from '../../SnackbarRequest';
+import { UserGlobalContext } from '../../../contexts/UserContext';
 
 const BootstrapButton = styled(ButtonComponent)({
   backgroundColor: '#e54',
@@ -26,7 +26,7 @@ const BootstrapButton = styled(ButtonComponent)({
 
 const DisableAccount = () => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
-  const navigate = useNavigate();
+  const { logout } = useContext(UserGlobalContext);
   const config = {
     headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
   };
@@ -40,8 +40,7 @@ const DisableAccount = () => {
       );
     },
     onSuccess: () => {
-      localStorage.removeItem('token');
-      navigate('/login');
+      logout();
     },
     onError: () => {
       setOpenSnackbar(true);

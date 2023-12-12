@@ -8,38 +8,47 @@ import {
   ListItemText,
   Typography,
 } from '@mui/material';
+import axios from 'axios';
 import PropTypes from 'prop-types';
+import { useQuery } from 'react-query';
 
 const SidebarInfos = ({ data }) => {
+  const { data: newsChallenges } = useQuery('newChallenges', () => {
+    return axios
+      .get('http://127.0.0.1:8000/api/v1/desafio?limit=3')
+      .then((response) => response.data);
+  });
+
   return (
     <Box
       sx={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem' }}
     >
       <Typography>Novos Desafios</Typography>
       <List sx={{ display: 'flex', flexDirection: 'column', padding: '0' }}>
-        {['Jogo da Velha', 'Sistema Senha'].map((text, i) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton sx={{ paddingLeft: '0', gap: '0.5rem' }}>
-              <Box
-                sx={{
-                  background: i % 2 == 0 ? '#ffd400' : '#00c6d7',
-                  width: '30px',
-                  height: '30px',
-                  borderRadius: '50%',
-                }}
-              ></Box>
-              <ListItemText
-                primary={text}
-                sx={{
-                  whiteSpace: 'nowrap',
-                  textOverflow: 'ellipsis',
-                  maxWidth: '15ch',
-                  overflow: 'hidden',
-                }}
-              />
-            </ListItemButton>
-          </ListItem>
-        ))}
+        {newsChallenges &&
+          newsChallenges.data.map(({ desafio }, i) => (
+            <ListItem key={desafio.slug} disablePadding>
+              <ListItemButton sx={{ paddingLeft: '0', gap: '0.5rem' }}>
+                <Box
+                  sx={{
+                    background: i % 2 == 0 ? '#ffd400' : '#00c6d7',
+                    width: '30px',
+                    height: '30px',
+                    borderRadius: '50%',
+                  }}
+                ></Box>
+                <ListItemText
+                  primary={desafio.titulo}
+                  sx={{
+                    whiteSpace: 'nowrap',
+                    textOverflow: 'ellipsis',
+                    maxWidth: '15ch',
+                    overflow: 'hidden',
+                  }}
+                />
+              </ListItemButton>
+            </ListItem>
+          ))}
       </List>
       <Divider />
       <Typography>Professores Cadastrados</Typography>

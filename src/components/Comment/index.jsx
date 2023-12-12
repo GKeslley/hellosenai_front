@@ -17,7 +17,8 @@ const Comment = ({
   openReply,
   setOpenReply,
   config,
-  slug
+  slug,
+  queryClient,
 }) => {
   const reply = useForm();
 
@@ -30,6 +31,7 @@ const Comment = ({
       );
     },
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['project'], type: 'active' });
       handleCloseComment();
     },
   });
@@ -47,9 +49,9 @@ const Comment = ({
     console.log('dasdsad');
     mutation.mutate({
       texto: reply.value,
-      comentarioPai: openReply.id
+      comentarioPai: openReply.id,
     });
-  }
+  };
 
   return (
     <Box
@@ -100,10 +102,14 @@ const Comment = ({
           }}
         >
           {openReply.isOpen && id === openReply.id ? (
-            <Box sx={{display: 'flex', flexDirection: 'column', width: '100%'}}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
               <CommentInput input={reply} />
-              <CommentActions handleCloseComment={handleCloseComment} input={reply} 
-                onClick={postReplyComment} isLoading={mutation.isLoading} />
+              <CommentActions
+                handleCloseComment={handleCloseComment}
+                input={reply}
+                onClick={postReplyComment}
+                isLoading={mutation.isLoading}
+              />
             </Box>
           ) : (
             <>
@@ -130,9 +136,12 @@ Comment.propTypes = {
   date: PropTypes.string,
   user: PropTypes.object,
   sx: PropTypes.object,
+  queryClient: PropTypes.object,
   isReply: PropTypes.bool,
   openReply: PropTypes.bool,
   setOpenReply: PropTypes.func,
+  config: PropTypes.string,
+  slug: PropTypes.string,
 };
 
 export default Comment;

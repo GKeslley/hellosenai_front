@@ -20,6 +20,7 @@ import useForm from '../../hooks/useForm';
 import SearchIcon from '@mui/icons-material/Search';
 import useInfiniteScroll from '../../hooks/useInfiniteScroll';
 import InvitesItem from './InvitesItem';
+import { useQueryClient } from 'react-query';
 
 const Invites = () => {
   const [openModalCreateInvite, setOpenModalCreateInvite] = useState(false);
@@ -30,6 +31,7 @@ const Invites = () => {
   const { pages, infinite, setInfinite } = useInfiniteScroll();
   const isMobile = useMediaQuery('(min-width: 768px)');
   const searchInvite = useForm();
+  const queryClient = useQueryClient();
   const { url, onChangeOrder, onSearch, params } = useQueryString({
     search: 'titulo[lk]',
     input: searchInvite,
@@ -142,6 +144,7 @@ const Invites = () => {
           setOpenModal={setOpenModalCreateInvite}
           title="Criar Convite"
           buttonTitle="Criar"
+          queryClient={queryClient}
         />
       )}
 

@@ -11,12 +11,31 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ModalCreateInvite from '../../../Invites/Modal/ModalCreateInvite';
 import PropTypes from 'prop-types';
+import { useMutation } from 'react-query';
+import axios from 'axios';
 
-const ProfileInvite = ({ title, description, slug, actions = true }) => {
+const config = {
+  headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+};
+
+const ProfileInvite = ({ title, description, slug, actions = true, queryClient }) => {
   const [openDialog, setOpenDialog] = useState(false);
 
   const openDialogEditProject = () => {
     setOpenDialog(true);
+  };
+
+  const mutation = useMutation({
+    mutationFn: (slug) => {
+      return axios.delete(`http://127.0.0.1:8000/api/v1/convite/${slug}`, config);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['userInvites'], type: 'active' });
+    },
+  });
+
+  const deleteInvite = (slug) => {
+    mutation.mutate(slug);
   };
 
   return (
@@ -50,7 +69,7 @@ const ProfileInvite = ({ title, description, slug, actions = true }) => {
               <IconButton aria-label="edit project" onClick={openDialogEditProject}>
                 <EditIcon />
               </IconButton>
-              <IconButton aria-label="delete project">
+              <IconButton aria-label="delete project" onClick={() => deleteInvite(slug)}>
                 <DeleteIcon />
               </IconButton>
             </CardActions>
@@ -67,6 +86,7 @@ const ProfileInvite = ({ title, description, slug, actions = true }) => {
           inviteTitle={title}
           inviteDescription={description}
           inviteSlug={slug}
+          queryClient={queryClient}
         />
       )}
     </>
@@ -78,6 +98,7 @@ ProfileInvite.propTypes = {
   description: PropTypes.string,
   slug: PropTypes.string,
   actions: PropTypes.bool,
+  queryClient: PropTypes.object,
 };
 
 export default ProfileInvite;

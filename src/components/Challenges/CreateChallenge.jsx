@@ -18,7 +18,13 @@ import axios from 'axios';
 import { CloudUpload } from '@mui/icons-material';
 import RequestError from '../../components/Helper/RequestError';
 
-const CreateChallenge = ({ openModal, setOpenModal, title, buttonTitle }) => {
+const CreateChallenge = ({
+  openModal,
+  setOpenModal,
+  title,
+  buttonTitle,
+  setOpenSnackbar,
+}) => {
   const [imagePreview, setImagePreview] = useState(null);
   const titleInput = useForm(true);
   const description = useForm(true);
@@ -31,10 +37,16 @@ const CreateChallenge = ({ openModal, setOpenModal, title, buttonTitle }) => {
     mutationFn: (dataChallenge) => {
       return axios.post('http://127.0.0.1:8000/api/v1/desafio', dataChallenge, config);
     },
-    onSuccess: () => {
+    onSuccess: (message) => {
+      console.log(message);
       titleInput.setValue('');
       description.setValue('');
       setOpenModal(false);
+      setOpenSnackbar({ open: false, message: 'Desafio criado', severity: 'success' });
+    },
+    onError: (message) => {
+      console.log(message);
+      setOpenSnackbar({ open: false, message: 'Desafio criado', severity: 'error' });
     },
   });
 
@@ -146,6 +158,7 @@ CreateChallenge.propTypes = {
   setOpenModal: PropTypes.func,
   title: PropTypes.string,
   buttonTitle: PropTypes.string,
+  setOpenSnackbar: PropTypes.func,
 };
 
 export default CreateChallenge;

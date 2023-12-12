@@ -14,14 +14,13 @@ const InvitesItem = ({
   modalAccessInvite,
   setDataInvite,
 }) => {
-  console.log(params);
-  const { data, isLoading } = useQuery(
-    [params, page, 'invites'],
-    () => {
+  const { data, isLoading } = useQuery({
+    queryKey: ['invites', params, page],
+    queryFn: () => {
       return axios.get(`${url}&page=${page}`).then((response) => response.data);
     },
-    { refetchOnWindowFocus: false },
-  );
+    refetchOnWindowFocus: false,
+  });
 
   if (infinite && data && !data.links.next) {
     setInfinite(false);

@@ -1,5 +1,5 @@
 import { Box, IconButton, ListItem, Menu, MenuItem, Typography } from '@mui/material';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import WarningIcon from '@mui/icons-material/Warning';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -10,12 +10,21 @@ import ModalComponent from './Modal';
 import Input from './Form/Input';
 import useForm from '../hooks/useForm';
 import ButtonComponent from './Button';
+import { UserGlobalContext } from '../contexts/UserContext';
 
 const config = {
   headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
 };
 
-const Options = ({ sx, slugProject, getSlugProject, setSlugProject }) => {
+const Options = ({
+  sx,
+  slugProject,
+  getSlugProject,
+  setSlugProject,
+  author,
+  queryClient,
+}) => {
+  const { data } = useContext(UserGlobalContext);
   const [anchorEl, setAnchorEl] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
   const text = useForm(true);
@@ -35,6 +44,16 @@ const Options = ({ sx, slugProject, getSlugProject, setSlugProject }) => {
     },
   });
 
+  const mutationDeleteProject = useMutation({
+    mutationFn: () => {
+      return axios.delete(`http://127.0.0.1:8000/api/v1/projeto/${slugProject}`, config);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['projects'], type: 'active' });
+      setAnchorEl(null);
+    },
+  });
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -47,6 +66,13 @@ const Options = ({ sx, slugProject, getSlugProject, setSlugProject }) => {
   const handleOpen = () => {
     getSlugProject();
     setOpenDialog(true);
+  };
+
+  const handleDeleteProject = () => {
+    if (confirm('Realmente deseja deletar o projeto?') === true) {
+      mutationDeleteProject.mutate();
+      handleClose();
+    }
   };
 
   const report = () => {
@@ -83,10 +109,14 @@ const Options = ({ sx, slugProject, getSlugProject, setSlugProject }) => {
           <WarningIcon />
           Denunciar
         </MenuItem>
-        <MenuItem onClick={handleClose} sx={{ gap: '0.5rem' }}>
-          <DeleteIcon />
-          Deletar
-        </MenuItem>
+        {data && data.apelido === author ? (
+          <MenuItem onClick={handleDeleteProject} sx={{ gap: '0.5rem' }}>
+            <DeleteIcon />
+            Deletar
+          </MenuItem>
+        ) : (
+          ''
+        )}
       </Menu>
 
       {openDialog && (
@@ -135,6 +165,8 @@ Options.propTypes = {
   slugProject: PropTypes.string,
   getSlugProject: PropTypes.func,
   setSlugProject: PropTypes.func,
+  author: PropTypes.object,
+  queryClient: PropTypes.object,
 };
 
 export default Options;
