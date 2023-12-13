@@ -1,4 +1,4 @@
-import { Avatar, Box, Container, Paper, Typography } from '@mui/material';
+import { Box, Container, Paper, Typography } from '@mui/material';
 import ButtonComponent from '../../../../components/Button';
 import CreateChallenge from '../../CreateChallenge';
 import { Link } from 'react-router-dom';
@@ -7,8 +7,9 @@ import PropTypes from 'prop-types';
 import Title from '../../../../components/Title';
 import { UserGlobalContext } from '../../../../contexts/UserContext';
 import SnackbarRequest from '../../../SnackbarRequest';
+import AvatarUser from '../../../Avatar';
 
-const ChallengePosted = ({ data }) => {
+const ChallengePosted = ({ data, user }) => {
   const { data: dataUser } = useContext(UserGlobalContext);
   const [openModal, setOpenModal] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState({
@@ -34,7 +35,7 @@ const ChallengePosted = ({ data }) => {
       </Box>
 
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-        {dataUser && dataUser.permissao === 'professor' && (
+        {dataUser && dataUser.permissao === 'professor' && dataUser.apelido === user && (
           <Paper
             sx={{
               display: 'flex',
@@ -67,7 +68,7 @@ const ChallengePosted = ({ data }) => {
                 key={titulo}
               >
                 <Box sx={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                  <Avatar />
+                  <AvatarUser avatar={autor.avatar} />
                   <Box>
                     <Typography fontSize="0.875rem">{autor.nome}</Typography>
                     <Typography
@@ -127,6 +128,7 @@ const ChallengePosted = ({ data }) => {
 
 ChallengePosted.propTypes = {
   data: PropTypes.array,
+  user: PropTypes.object,
 };
 
 export default ChallengePosted;

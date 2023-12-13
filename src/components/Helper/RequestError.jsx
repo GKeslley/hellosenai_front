@@ -4,8 +4,6 @@ import PropTypes from 'prop-types';
 const RequestError = ({ mutation }) => {
   const { isError, error } = mutation;
 
-  console.log(mutation);
-
   return (
     <>
       {isError && (

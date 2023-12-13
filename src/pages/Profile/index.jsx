@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Box,
   Container,
   Divider,
@@ -13,19 +12,60 @@ import { Routes, Route } from 'react-router-dom';
 import User from './User';
 import SenaiLogo from '../../assets/home/senai.png';
 import NavLinkActive from '../../components/NavLink';
-import ProfileProjects from './ProfileProjects';
-import ProfileInvites from './ProfileInvites';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { UserGlobalContext } from '../../contexts/UserContext';
 import Loading from '../../components/Helper/Loading';
 import Settings from './Settings';
+import { useMutation, useQueryClient } from 'react-query';
+import axios from 'axios';
+import SnackbarRequest from '../../components/SnackbarRequest';
+import AvatarUser from '../../components/Avatar';
+
+const config = {
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem('token')}`,
+  },
+};
 
 const Profile = () => {
   const isMobile = useMediaQuery('(min-width: 768px)');
+  const queryClient = useQueryClient();
   const { data, isLoading } = useContext(UserGlobalContext);
+  const [openSnackbar, setOpenSnackbar] = useState({
+    open: false,
+    message: '',
+    severity: '',
+  });
+
+  const mutation = useMutation({
+    mutationFn: (avatar) => {
+      return axios.post(
+        `http://127.0.0.1:8000/api/v1/avatar?_method=PUT`,
+        avatar,
+        config,
+      );
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['user'], type: 'active' });
+    },
+    onError: (error) => {
+      setOpenSnackbar({
+        open: true,
+        message: error.response.data.message,
+        severity: 'error',
+      });
+    },
+  });
+
+  const changeAvatar = ({ target }) => {
+    const formData = new FormData();
+    formData.append('avatar', target.files[0]);
+    mutation.mutate(formData);
+  };
+
+  console.log(data);
 
   if (isLoading) return <Loading />;
-
   return (
     <Container
       component="section"
@@ -63,8 +103,28 @@ const Profile = () => {
             sx={{ opacity: '0.5', width: '10rem', placeSelf: 'center' }}
           />
         </Box>
-        <Box component="figure" sx={{ marginTop: '3rem', position: 'absolute' }}>
-          <Avatar sx={{ width: '80px', height: '80px' }} />
+        <Box
+          component="figure"
+          sx={{
+            marginTop: '3rem',
+            position: 'absolute',
+            cursor: 'pointer',
+            ':hover': {
+              '.MuiTypography-root': {
+                display: 'block',
+              },
+              '.MuiAvatar-root': {
+                opacity: '0.9',
+              },
+            },
+          }}
+        >
+          <Box component="label" sx={{ position: 'relative', cursor: 'pointer' }}>
+            <AvatarUser avatar={data.avatar} sx={{ width: '90px', height: '90px' }} />
+            {!mutation.isLoading && (
+              <input type="file" accept="image/*" hidden onChange={changeAvatar} />
+            )}
+          </Box>
         </Box>
         <Paper
           component="ul"
@@ -77,7 +137,9 @@ const Profile = () => {
             width: '100%',
           }}
         >
-          <ListItem sx={{ justifyContent: 'center', padding: '0px', marginTop: '8rem' }}>
+          <ListItem
+            sx={{ justifyContent: 'center', padding: '0px', marginTop: '8.5rem' }}
+          >
             <Typography sx={{ fontSize: '1.5rem', fontWeight: '600' }}>
               {data.nome}
             </Typography>
@@ -163,13 +225,14 @@ const Profile = () => {
         </Routes>
       </Box>
 
-      {/* <Snackbar
-        open={false}
-        autoHideDuration={6000}
-        onClose={handleClose}
-        message="Note archived"
-        action={action}
-      /> */}
+      {openSnackbar.open && (
+        <SnackbarRequest
+          message={openSnackbar.message}
+          open={openSnackbar}
+          onClose={() => setOpenSnackbar(false)}
+          severity={openSnackbar.severity}
+        />
+      )}
     </Container>
   );
 };

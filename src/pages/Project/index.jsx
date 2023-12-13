@@ -1,4 +1,12 @@
-import { Avatar, Box, Container, Divider, IconButton, Menu, MenuItem, Typography } from '@mui/material';
+import {
+  Box,
+  Container,
+  Divider,
+  IconButton,
+  Menu,
+  MenuItem,
+  Typography,
+} from '@mui/material';
 import Title from '../../components/Title';
 import Subtitle from '../../components/Subtitle';
 import Accordion from '../../components/Accordion';
@@ -20,18 +28,19 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ProjectForm from '../Projects/ProjectForm';
 import Error from '../Error';
+import AvatarUser from '../../components/Avatar';
 
 const config = {
   headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
 };
 
 const Project = () => {
-  const {data: dataUser} = useContext(UserGlobalContext)
+  const { data: dataUser } = useContext(UserGlobalContext);
   const [openComment, setOpenComment] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [openReply, setOpenReply] = useState({ isOpen: false, id: null });
   const [anchorEl, setAnchorEl] = useState(null);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const open = Boolean(anchorEl);
   const queryClient = useQueryClient();
   const params = useParams();
@@ -70,23 +79,19 @@ const Project = () => {
       );
     },
     onSuccess: (data) => {
-      setOpenDialog(false)
-      setAnchorEl(false)
-      navigate(`/projetos/${data.data.slug}`)
+      setOpenDialog(false);
+      setAnchorEl(false);
+      navigate(`/projetos/${data.data.slug}`);
     },
-   
   });
 
   const mutationDeleteProject = useMutation({
     mutationFn: () => {
-      return axios.delete(
-        `http://127.0.0.1:8000/api/v1/projeto/${slug}`,
-        config,
-      );
+      return axios.delete(`http://127.0.0.1:8000/api/v1/projeto/${params.slug}`, config);
     },
     onSuccess: () => {
-      navigate('/projetos')
-    }
+      navigate('/projetos');
+    },
   });
 
   const handleOpenComment = () => setOpenComment(true);
@@ -112,18 +117,21 @@ const Project = () => {
   };
 
   const handleOpenEditProject = () => {
-    setOpenDialog(true)
+    setOpenDialog(true);
   };
 
   const handleDeleteProject = () => {
     if (confirm('Realmente deseja deletar o projeto?') === true) {
       setAnchorEl(false);
-      mutationDeleteProject.mutate()
+      mutationDeleteProject.mutate();
     }
   };
 
   if (isLoading) return <Loading />;
-  if (error) return <Error message={error.response.data.message} statusCode={error.response.status} />;
+  if (error)
+    return (
+      <Error message={error.response.data.message} statusCode={error.response.status} />
+    );
   return (
     <Container sx={{ marginBottom: '2rem', marginTop: '2rem' }}>
       <Box
@@ -138,45 +146,55 @@ const Project = () => {
         }}
       />
       <Container>
-        <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3rem'}}>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: '3rem',
+          }}
+        >
           <Title>{data.data.nomeProjeto}</Title>
-          {dataUser && data.data.autor.apelido === dataUser.apelido && <Box>
-            <IconButton
-              aria-label="more"
-              id="long-button"
-              aria-controls={open ? 'long-menu' : undefined}
-              aria-expanded={open ? 'true' : undefined}
-              aria-haspopup="true"
-              onClick={handleClick}
-            >
-              <MoreHorizIcon />
-            </IconButton>
-            <Menu
-              id="basic-menu"
-              anchorEl={anchorEl}
-              open={open}
-              onClose={handleClose}
-              MenuListProps={{
-                'aria-labelledby': 'basic-button',
-              }}
-              sx={{ gap: '0.5rem' }}
-            >
-              <MenuItem onClick={handleOpenEditProject} sx={{ gap: '0.5rem' }}>
-                <EditIcon />
-                Editar
-              </MenuItem>
-              {mutationDeleteProject.isLoading ? 
-              <MenuItem sx={{ gap: '0.5rem' }}>
-                <DeleteIcon />
-                Deletando...
-              </MenuItem> : 
-              <MenuItem onClick={handleDeleteProject} sx={{ gap: '0.5rem' }}>
-                <DeleteIcon />
-                Deletar
-              </MenuItem>}
-            </Menu>
-            
-          </Box>}
+          {dataUser && data.data.autor.apelido === dataUser.apelido && (
+            <Box>
+              <IconButton
+                aria-label="more"
+                id="long-button"
+                aria-controls={open ? 'long-menu' : undefined}
+                aria-expanded={open ? 'true' : undefined}
+                aria-haspopup="true"
+                onClick={handleClick}
+              >
+                <MoreHorizIcon />
+              </IconButton>
+              <Menu
+                id="basic-menu"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                MenuListProps={{
+                  'aria-labelledby': 'basic-button',
+                }}
+                sx={{ gap: '0.5rem' }}
+              >
+                <MenuItem onClick={handleOpenEditProject} sx={{ gap: '0.5rem' }}>
+                  <EditIcon />
+                  Editar
+                </MenuItem>
+                {mutationDeleteProject.isLoading ? (
+                  <MenuItem sx={{ gap: '0.5rem' }}>
+                    <DeleteIcon />
+                    Deletando...
+                  </MenuItem>
+                ) : (
+                  <MenuItem onClick={handleDeleteProject} sx={{ gap: '0.5rem' }}>
+                    <DeleteIcon />
+                    Deletar
+                  </MenuItem>
+                )}
+              </Menu>
+            </Box>
+          )}
         </Box>
         <Box
           component="ul"
@@ -191,10 +209,16 @@ const Project = () => {
             <Box component="li">
               <Subtitle sx={{ marginBottom: '1rem' }}>Participantes</Subtitle>
               <Box sx={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                {data.data.participantes.map(({ nome, apelido }) => (
+                {data.data.participantes.map(({ nome, apelido, avatar }) => (
                   <>
                     <LinkComponent to={`/usuario/${apelido}`} animation={false}>
-                      {nome}
+                      <Box sx={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                        <AvatarUser
+                          avatar={avatar}
+                          sx={{ width: '30px', height: '30px' }}
+                        />
+                        {nome}
+                      </Box>
                     </LinkComponent>
                   </>
                 ))}
@@ -245,7 +269,12 @@ const Project = () => {
                   flexWrap: 'wrap',
                 }}
               >
-                <Avatar sx={{ width: '30px', height: '30px' }} />
+                {dataUser && (
+                  <AvatarUser
+                    avatar={dataUser.avatar}
+                    sx={{ width: '30px', height: '30px' }}
+                  />
+                )}
                 <CommentInput handleOpenComment={handleOpenComment} input={comment} />
               </Box>
               {openComment && (
@@ -301,15 +330,22 @@ const Project = () => {
         </Box>
       </Container>
 
-      {openDialog &&  
+      {openDialog && (
         <ProjectForm
-          project={{ name: data.data.nomeProjeto, description: data.data.descricao, participants: data.data.participantes, 
-            status: data.data.status, image: data.data.imagem, slug: data.data.slug }}
+          project={{
+            name: data.data.nomeProjeto,
+            description: data.data.descricao,
+            participants: data.data.participantes,
+            status: data.data.status,
+            image: data.data.imagem,
+            slug: data.data.slug,
+          }}
           setOpenModal={setOpenDialog}
           openModal={openDialog}
           title="Editar Projeto"
           mutation={mutationUpdateProject}
-        />}
+        />
+      )}
     </Container>
   );
 };

@@ -1,17 +1,10 @@
-import {
-  Avatar,
-  Card,
-  CardContent,
-  CardActionArea,
-  CardActions,
-  Box,
-  Grid,
-} from '@mui/material';
+import { Card, CardContent, CardActionArea, CardActions, Box, Grid } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import './styles.css';
 import ButtonComponent from '../../../Button';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import AvatarUser from '../../../Avatar';
 
 const Invite = ({
   modalAccessInvite,
@@ -47,7 +40,7 @@ const Invite = ({
       <CardActionArea>
         <CardContent>
           <Box className="flex items-center gap-x-4 mb-4">
-            <Avatar sx={{ width: '30px', height: '30px' }} />
+            <AvatarUser avatar={author.avatar} sx={{ width: '30px', height: '30px' }} />
             <Link to={`/usuario/${author.apelido}`}>{author.nome}</Link>
           </Box>
           <Typography gutterBottom fontSize="1.2rem" fontWeight="500">

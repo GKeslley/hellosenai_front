@@ -12,7 +12,6 @@ import SelectComponent from '../../../components/Form/Select';
 import MultiSelect from '../../../components/Form/MultiSelect';
 import { CloudUpload } from '@mui/icons-material';
 import ButtonComponent from '../../../components/Button';
-import RequestError from '../../../components/Helper/RequestError';
 import ModalComponent from '../../../components/Modal';
 import useForm from '../../../hooks/useForm';
 import { useDebounce } from 'use-debounce';
@@ -92,7 +91,7 @@ const ProjectForm = ({
     description.setValue(project.description);
     status.setValue(project.status.toLowerCase());
     setParticipants(() => {
-      if (!project.participants.length) return []
+      if (!project.participants.length) return [];
       const values = project.participants.map(({ apelido }) => {
         return apelido;
       });

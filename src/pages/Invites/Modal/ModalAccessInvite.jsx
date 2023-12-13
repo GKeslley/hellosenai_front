@@ -6,28 +6,45 @@ import { useMutation } from 'react-query';
 import axios from 'axios';
 import useForm from '../../../hooks/useForm';
 
-const config = {
-  headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-};
-
 const ModalAccessInvite = ({
   openModalAccessInvite,
   setOpenModalAccessInvite,
   dataInvite,
+  setOpenSnackbar,
 }) => {
-  const messageInvite = useForm(true)
-  
-  const mutation = useMutation((message) => {
-    return axios.post(`http://127.0.0.1:8000/api/email/${dataInvite.slug}`, message, config);
+  const messageInvite = useForm(true);
+
+  const mutation = useMutation({
+    mutationFn: (message) => {
+      const config = {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+      };
+      return axios.post(
+        `http://127.0.0.1:8000/api/email/${dataInvite.slug}`,
+        message,
+        config,
+      );
+    },
+    onSuccess: (data) => {
+      setOpenModalAccessInvite(false);
+      setOpenSnackbar({ open: true, message: data.data.message, severity: 'success' });
+    },
+    onError: (error) => {
+      setOpenSnackbar({
+        open: true,
+        message: error.response.data.message,
+        severity: 'error',
+      });
+    },
   });
 
   const acceptInvite = () => {
     if (messageInvite.validate()) {
       mutation.mutate({
-        mensagem: messageInvite.value
-      })
+        mensagem: messageInvite.value,
+      });
     }
-  }
+  };
 
   console.log(dataInvite);
 
@@ -80,7 +97,13 @@ const ModalAccessInvite = ({
           />
         </ListItem>
 
-        <ButtonComponent sx={{ alignSelf: 'end' }} onClick={acceptInvite} isLoading={mutation.isLoading}>Solicitar</ButtonComponent>
+        <ButtonComponent
+          sx={{ alignSelf: 'end' }}
+          onClick={acceptInvite}
+          isLoading={mutation.isLoading}
+        >
+          Solicitar
+        </ButtonComponent>
       </Box>
     </ModalComponent>
   );
@@ -90,6 +113,7 @@ ModalAccessInvite.propTypes = {
   openModalAccessInvite: PropTypes.bool,
   setOpenModalAccessInvite: PropTypes.func,
   dataInvite: PropTypes.object,
+  setOpenSnackbar: PropTypes.func,
 };
 
 export default ModalAccessInvite;

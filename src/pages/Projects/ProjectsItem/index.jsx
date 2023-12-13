@@ -1,4 +1,4 @@
-import { Avatar, Box, Card, CardContent, Chip, Divider, Typography } from '@mui/material';
+import { Box, Card, CardContent, Chip, Divider, Typography } from '@mui/material';
 import axios from 'axios';
 import { useQuery } from 'react-query';
 import Loading from '../../../components/Helper/Loading';
@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import PropTypes from 'prop-types';
+import AvatarUser from '../../../components/Avatar';
 
 const ProjectsItem = ({ params, url, page, infinite, setInfinite, queryClient }) => {
   const [slugProject, setSlugProject] = useState(null);
@@ -46,7 +47,8 @@ const ProjectsItem = ({ params, url, page, infinite, setInfinite, queryClient })
               component="li"
             >
               <Box sx={{ display: 'flex', position: 'relative', marginTop: '1.5rem' }}>
-                <Avatar
+                <AvatarUser
+                  avatar={autor.avatar}
                   sx={{
                     width: '50px',
                     height: '50px',

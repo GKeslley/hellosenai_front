@@ -19,13 +19,13 @@ const ChallengesPosted = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const params = useParams();
 
-  const { data, isLoading, error } = useQuery(
-    'challengesTeacher',
-    () => fetchChallengesByTeacher(params.user),
-    {
-      refetchOnWindowFocus: false,
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['challengesTeacher'],
+    queryFn: () => {
+      return fetchChallengesByTeacher(params.user);
     },
-  );
+    refetchOnWindowFocus: false,
+  });
 
   if (isLoading) return <Loading />;
   if (error) return null;
@@ -63,7 +63,10 @@ const ChallengesPosted = () => {
         </Paper>
 
         <Routes>
-          <Route path="/" element={<ChallengePosted data={data} />}></Route>
+          <Route
+            path="/"
+            element={<ChallengePosted data={data} user={params.user} />}
+          ></Route>
           <Route path="realizados" element={<ChallengesPerfomed />}></Route>
         </Routes>
       </Box>

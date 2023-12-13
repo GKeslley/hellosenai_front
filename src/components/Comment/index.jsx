@@ -1,4 +1,4 @@
-import { Avatar, Box, Paper, Typography } from '@mui/material';
+import { Box, Paper, Typography } from '@mui/material';
 import ChatBubbleOutlineRoundedIcon from '@mui/icons-material/ChatBubbleOutlineRounded';
 import PropTypes from 'prop-types';
 import CommentActions from './CommentActions';
@@ -6,6 +6,7 @@ import CommentInput from './CommentInput';
 import useForm from '../../hooks/useForm';
 import { useMutation } from 'react-query';
 import axios from 'axios';
+import AvatarUser from '../Avatar';
 
 const Comment = ({
   id,
@@ -59,7 +60,7 @@ const Comment = ({
       id={id}
     >
       <Box sx={{ display: 'flex', gap: '1rem', alignItems: 'start' }}>
-        <Avatar sx={{ width: '30px', height: '30px' }} />
+        <AvatarUser avatar={user.avatar} sx={{ width: '30px', height: '30px' }} />
         <Paper sx={{ width: '100%' }} elevation={0}>
           <Box
             sx={{

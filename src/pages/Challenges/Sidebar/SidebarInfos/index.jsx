@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Box,
   Divider,
   List,
@@ -11,6 +10,7 @@ import {
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import { useQuery } from 'react-query';
+import AvatarUser from '../../../../components/Avatar';
 
 const SidebarInfos = ({ data }) => {
   const { data: newsChallenges } = useQuery('newChallenges', () => {
@@ -54,10 +54,10 @@ const SidebarInfos = ({ data }) => {
       <Typography>Professores Cadastrados</Typography>
       <List sx={{ display: 'flex', flexDirection: 'column', padding: '0' }}>
         {data &&
-          data.data.map(({ nome, apelido }) => (
+          data.data.map(({ nome, apelido, avatar }) => (
             <ListItem key={apelido} disablePadding>
               <ListItemButton sx={{ paddingLeft: '0', gap: '0.5rem' }}>
-                <Avatar sx={{ width: '30px', height: '30px' }} />
+                <AvatarUser avatar={avatar} sx={{ width: '30px', height: '30px' }} />
                 <ListItemText
                   primary={nome}
                   sx={{

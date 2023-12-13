@@ -21,11 +21,17 @@ import SearchIcon from '@mui/icons-material/Search';
 import useInfiniteScroll from '../../hooks/useInfiniteScroll';
 import InvitesItem from './InvitesItem';
 import { useQueryClient } from 'react-query';
+import SnackbarRequest from '../../components/SnackbarRequest';
 
 const Invites = () => {
   const [openModalCreateInvite, setOpenModalCreateInvite] = useState(false);
   const [openModalAccessInvite, setOpenModalAccessInvite] = useState(false);
   const [dataInvite, setDataInvite] = useState(null);
+  const [openSnackbar, setOpenSnackbar] = useState({
+    open: false,
+    message: '',
+    severity: '',
+  });
   const modalCreateInvite = () => setOpenModalCreateInvite(true);
   const modalAccessInvite = () => setOpenModalAccessInvite(true);
   const { pages, infinite, setInfinite } = useInfiniteScroll();
@@ -145,6 +151,7 @@ const Invites = () => {
           title="Criar Convite"
           buttonTitle="Criar"
           queryClient={queryClient}
+          setOpenSnackbar={setOpenSnackbar}
         />
       )}
 
@@ -153,6 +160,16 @@ const Invites = () => {
           openModalAccessInvite={openModalAccessInvite}
           setOpenModalAccessInvite={setOpenModalAccessInvite}
           dataInvite={dataInvite}
+          setOpenSnackbar={setOpenSnackbar}
+        />
+      )}
+
+      {openSnackbar.open && (
+        <SnackbarRequest
+          message={openSnackbar.message}
+          open={openSnackbar}
+          onClose={() => setOpenSnackbar(false)}
+          severity={openSnackbar.severity}
         />
       )}
     </Container>

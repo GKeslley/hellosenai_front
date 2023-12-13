@@ -21,6 +21,7 @@ const ModalCreateInvite = ({
   inviteDescription,
   inviteSlug,
   queryClient,
+  setOpenSnackbar,
 }) => {
   const titleInput = useForm(true);
   const description = useForm(true);
@@ -29,11 +30,19 @@ const ModalCreateInvite = ({
     mutationFn: (dataInvite) => {
       return axios.post('http://127.0.0.1:8000/api/v1/convite', dataInvite, config);
     },
-    onSuccess: () => {
+    onSuccess: ({ data }) => {
       queryClient.invalidateQueries({ queryKey: ['invites'], type: 'active' });
       titleInput.setValue('');
       description.setValue('');
       setOpenModal(false);
+      setOpenSnackbar({ open: true, message: data.message, severity: 'success' });
+    },
+    onError: (error) => {
+      setOpenSnackbar({
+        open: true,
+        message: error.response.data.message,
+        severity: 'error',
+      });
     },
   });
 
@@ -46,10 +55,10 @@ const ModalCreateInvite = ({
       );
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['userInvites'], type: 'active' });
       titleInput.setValue('');
       description.setValue('');
       setOpenModal(false);
+      queryClient.invalidateQueries({ queryKey: ['userInvites'], type: 'active' });
     },
   });
 
@@ -133,7 +142,7 @@ const ModalCreateInvite = ({
           size="large"
           variant="outlined"
           onClick={createOrUpdateInvite}
-          isLoading={mutation.isLoading}
+          isLoading={mutation.isLoading || mutationUpdate.isLoading}
         >
           {buttonTitle}
         </ButtonComponent>
@@ -151,6 +160,7 @@ ModalCreateInvite.propTypes = {
   inviteDescription: PropTypes.string,
   inviteSlug: PropTypes.string,
   queryClient: PropTypes.object,
+  setOpenSnackbar: PropTypes.func,
 };
 
 export default ModalCreateInvite;

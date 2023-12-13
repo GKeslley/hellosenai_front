@@ -13,7 +13,7 @@ import Input from '../../components/Form/Input';
 import ButtonComponent from '../../components/Button';
 import PropTypes from 'prop-types';
 import useForm from '../../hooks/useForm';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import axios from 'axios';
 import { CloudUpload } from '@mui/icons-material';
 import RequestError from '../../components/Helper/RequestError';
@@ -25,6 +25,7 @@ const CreateChallenge = ({
   buttonTitle,
   setOpenSnackbar,
 }) => {
+  const queryClient = useQueryClient();
   const [imagePreview, setImagePreview] = useState(null);
   const titleInput = useForm(true);
   const description = useForm(true);
@@ -37,16 +38,19 @@ const CreateChallenge = ({
     mutationFn: (dataChallenge) => {
       return axios.post('http://127.0.0.1:8000/api/v1/desafio', dataChallenge, config);
     },
-    onSuccess: (message) => {
-      console.log(message);
+    onSuccess: ({ data }) => {
       titleInput.setValue('');
       description.setValue('');
       setOpenModal(false);
-      setOpenSnackbar({ open: false, message: 'Desafio criado', severity: 'success' });
+      setOpenSnackbar({ open: true, message: data.message, severity: 'success' });
+      queryClient.invalidateQueries({ queryKey: ['challengesTeacher'], type: 'active' });
     },
-    onError: (message) => {
-      console.log(message);
-      setOpenSnackbar({ open: false, message: 'Desafio criado', severity: 'error' });
+    onError: (error) => {
+      setOpenSnackbar({
+        open: true,
+        message: error.response.data.message,
+        severity: 'error',
+      });
     },
   });
 
