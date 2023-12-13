@@ -1,33 +1,44 @@
-import { Avatar, Box, Container, Divider, Typography } from '@mui/material';
+import { Avatar, Box, Container, Divider, IconButton, Menu, MenuItem, Typography } from '@mui/material';
 import Title from '../../components/Title';
 import Subtitle from '../../components/Subtitle';
 import Accordion from '../../components/Accordion';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import Comment from '../../components/Comment';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import axios from 'axios';
 import Loading from '../../components/Helper/Loading';
 import LinkComponent from '../../components/Link';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import useForm from '../../hooks/useForm';
 import CommentActions from '../../components/Comment/CommentActions';
 import CommentInput from '../../components/Comment/CommentInput';
 import ConstructionIcon from '@mui/icons-material/Construction';
+import { UserGlobalContext } from '../../contexts/UserContext';
+import EditIcon from '@mui/icons-material/Edit';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import DeleteIcon from '@mui/icons-material/Delete';
+import ProjectForm from '../Projects/ProjectForm';
+import Error from '../Error';
 
 const config = {
   headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
 };
 
 const Project = () => {
+  const {data: dataUser} = useContext(UserGlobalContext)
   const [openComment, setOpenComment] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
   const [openReply, setOpenReply] = useState({ isOpen: false, id: null });
+  const [anchorEl, setAnchorEl] = useState(null);
+  const navigate = useNavigate()
+  const open = Boolean(anchorEl);
   const queryClient = useQueryClient();
   const params = useParams();
   const comment = useForm();
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ['project'],
+    queryKey: ['project', params],
     queryFn: () => {
       return axios
         .get(`http://127.0.0.1:8000/api/v1/projeto/${params.slug}`)
@@ -50,6 +61,34 @@ const Project = () => {
     },
   });
 
+  const mutationUpdateProject = useMutation({
+    mutationFn: (dataProject) => {
+      return axios.post(
+        `http://127.0.0.1:8000/api/v1/projeto/${params.slug}?_method=PUT`,
+        dataProject,
+        config,
+      );
+    },
+    onSuccess: (data) => {
+      setOpenDialog(false)
+      setAnchorEl(false)
+      navigate(`/projetos/${data.data.slug}`)
+    },
+   
+  });
+
+  const mutationDeleteProject = useMutation({
+    mutationFn: () => {
+      return axios.delete(
+        `http://127.0.0.1:8000/api/v1/projeto/${slug}`,
+        config,
+      );
+    },
+    onSuccess: () => {
+      navigate('/projetos')
+    }
+  });
+
   const handleOpenComment = () => setOpenComment(true);
 
   const handleCloseComment = () => {
@@ -64,8 +103,27 @@ const Project = () => {
     mutation.mutate(data);
   };
 
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleOpenEditProject = () => {
+    setOpenDialog(true)
+  };
+
+  const handleDeleteProject = () => {
+    if (confirm('Realmente deseja deletar o projeto?') === true) {
+      setAnchorEl(false);
+      mutationDeleteProject.mutate()
+    }
+  };
+
   if (isLoading) return <Loading />;
-  if (error) return null;
+  if (error) return <Error message={error.response.data.message} statusCode={error.response.status} />;
   return (
     <Container sx={{ marginBottom: '2rem', marginTop: '2rem' }}>
       <Box
@@ -80,7 +138,46 @@ const Project = () => {
         }}
       />
       <Container>
-        <Title sx={{ marginBottom: '3rem' }}>{data.data.nomeProjeto}</Title>
+        <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3rem'}}>
+          <Title>{data.data.nomeProjeto}</Title>
+          {dataUser && data.data.autor.apelido === dataUser.apelido && <Box>
+            <IconButton
+              aria-label="more"
+              id="long-button"
+              aria-controls={open ? 'long-menu' : undefined}
+              aria-expanded={open ? 'true' : undefined}
+              aria-haspopup="true"
+              onClick={handleClick}
+            >
+              <MoreHorizIcon />
+            </IconButton>
+            <Menu
+              id="basic-menu"
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              MenuListProps={{
+                'aria-labelledby': 'basic-button',
+              }}
+              sx={{ gap: '0.5rem' }}
+            >
+              <MenuItem onClick={handleOpenEditProject} sx={{ gap: '0.5rem' }}>
+                <EditIcon />
+                Editar
+              </MenuItem>
+              {mutationDeleteProject.isLoading ? 
+              <MenuItem sx={{ gap: '0.5rem' }}>
+                <DeleteIcon />
+                Deletando...
+              </MenuItem> : 
+              <MenuItem onClick={handleDeleteProject} sx={{ gap: '0.5rem' }}>
+                <DeleteIcon />
+                Deletar
+              </MenuItem>}
+            </Menu>
+            
+          </Box>}
+        </Box>
         <Box
           component="ul"
           sx={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}
@@ -203,6 +300,16 @@ const Project = () => {
           </Box>
         </Box>
       </Container>
+
+      {openDialog &&  
+        <ProjectForm
+          project={{ name: data.data.nomeProjeto, description: data.data.descricao, participants: data.data.participantes, 
+            status: data.data.status, image: data.data.imagem, slug: data.data.slug }}
+          setOpenModal={setOpenDialog}
+          openModal={openDialog}
+          title="Editar Projeto"
+          mutation={mutationUpdateProject}
+        />}
     </Container>
   );
 };
