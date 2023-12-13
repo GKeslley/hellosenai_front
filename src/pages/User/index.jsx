@@ -8,6 +8,7 @@ import { useQuery } from 'react-query';
 import axios from 'axios';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import Loading from '../../components/Helper/Loading';
+import Subtitle from '../../components/Subtitle';
 
 const User = () => {
   const params = useParams();
@@ -64,41 +65,55 @@ const User = () => {
         </Container>
       </Box>
 
-      <Container sx={{ display: 'grid', gap: '0.5rem', marginTop: '180px' }}>
-        <Divider />
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            gap: '0rem 5rem',
-            marginBottom: '1rem',
-          }}
-        >
-          <NavLinkActive
-            background="#000"
-            color="#000"
-            top="-1rem"
-            sx={{ fontSize: '1.3rem' }}
-            to={`/usuario/${params.user}`}
-            end={true}
-          >
-            Projetos
-          </NavLinkActive>
-          <NavLinkActive
-            to={`/usuario/${params.user}/convites`}
-            background="#000"
-            color="#000"
-            top="-1rem"
-            sx={{ fontSize: '1.3rem' }}
-          >
-            Convites
-          </NavLinkActive>
-        </Box>
+      <Container sx={{ display: 'grid', gap: '0.5rem', marginTop: '180px', marginBottom: '10rem' }}>
+      {data && 
+        <>
+          {data.status === 'ativo' ? 
+            <>
+              <Divider />
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  gap: '0rem 5rem',
+                  marginBottom: '1rem',
+                }}
+              >
+                <NavLinkActive
+                  background="#000"
+                  color="#000"
+                  top="-1rem"
+                  sx={{ fontSize: '1.3rem' }}
+                  to={`/usuario/${params.user}`}
+                  end={true}
+                >
+                  Projetos
+                </NavLinkActive>
+                <NavLinkActive
+                  to={`/usuario/${params.user}/convites`}
+                  background="#000"
+                  color="#000"
+                  top="-1rem"
+                  sx={{ fontSize: '1.3rem' }}
+                >
+                  Convites
+                </NavLinkActive>
+              </Box>
 
-        <Routes>
-          <Route path="/" element={<UserProjects username={params.user} />}></Route>
-          <Route path="convites" element={<UserInvites username={params.user} />}></Route>
-        </Routes>
+              <Routes>
+              <Route path="/" element={<UserProjects username={params.user} />}></Route>
+              <Route path="convites" element={<UserInvites username={params.user} />}></Route>
+              </Routes>
+            </>
+          : <Box sx={{display: 'flex', flexDirection: 'column', justifySelf: 'center', textAlign: 'center'}}>
+                <Subtitle sx={{marginBottom: '0'}}>Conta Desativada</Subtitle>
+                <Typography>O usuário desativou a conta</Typography>
+            </Box>}
+        </>
+      }
+        
+
+        
       </Container>
     </Box>
   );
