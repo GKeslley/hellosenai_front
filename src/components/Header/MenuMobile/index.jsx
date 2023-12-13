@@ -12,7 +12,7 @@ import CodeIcon from '@mui/icons-material/Code';
 import Icon from '../../Icon';
 import { NavLink } from 'react-router-dom';
 
-const MenuMobile = ({ anchorEl, setAnchorEl }) => {
+const MenuMobile = ({ anchorEl, setAnchorEl, data }) => {
   const open = Boolean(anchorEl);
 
   const handleClose = () => {
@@ -66,7 +66,7 @@ const MenuMobile = ({ anchorEl, setAnchorEl }) => {
       </MenuItem>
       <Divider />
       <MenuItem onClick={handleClose}>
-        <Icon icon={AccountCircleIcon} /> <NavLink to="/perfil">Minha Conta</NavLink>
+        <Icon icon={AccountCircleIcon} /> <NavLink to={`/usuario/${data.apelido}`}>Perfil</NavLink>
       </MenuItem>
       <Divider />
       <MenuItem onClick={handleClose}>
@@ -74,7 +74,7 @@ const MenuMobile = ({ anchorEl, setAnchorEl }) => {
       </MenuItem>
       <Divider />
       <MenuItem onClick={handleClose}>
-        <Icon icon={SettingsIcon} /> <NavLink to="/configuracoes">Configurações</NavLink>
+        <Icon icon={SettingsIcon} /> <NavLink to="/perfil">Configurações</NavLink>
       </MenuItem>
       <MenuItem onClick={handleClose}>
         <Icon icon={LogoutIcon} /> <NavLink to="/deslogar">Deslogar</NavLink>

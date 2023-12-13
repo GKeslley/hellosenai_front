@@ -79,11 +79,13 @@ const Header = () => {
                 </Tooltip>
               </li>
             </ul>
-            {!screenIsMobile ? (
-              <MenuHeader anchorEl={anchorEl} setAnchorEl={setAnchorEl} />
+            {data && <>
+              {!screenIsMobile ? (
+              <MenuHeader anchorEl={anchorEl} setAnchorEl={setAnchorEl} data={data} />
             ) : (
-              <MenuMobile anchorEl={anchorEl} setAnchorEl={setAnchorEl} />
+              <MenuMobile anchorEl={anchorEl} setAnchorEl={setAnchorEl} data={data} />
             )}
+            </>}
           </nav>
         </div>
 

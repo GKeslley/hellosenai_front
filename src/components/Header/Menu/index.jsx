@@ -9,7 +9,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import Icon from '../../Icon';
 import { NavLink } from 'react-router-dom';
 
-const MenuHeader = ({ anchorEl, setAnchorEl }) => {
+const MenuHeader = ({ anchorEl, setAnchorEl, data }) => {
   const open = Boolean(anchorEl);
 
   const handleClose = () => {
@@ -53,14 +53,14 @@ const MenuHeader = ({ anchorEl, setAnchorEl }) => {
       anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
     >
       <MenuItem onClick={handleClose}>
-        <Icon icon={AccountCircleIcon} /> <NavLink to="/perfil">Minha Conta</NavLink>
+        <Icon icon={AccountCircleIcon} /> <NavLink to={`/usuario/${data.apelido}`}>Perfil</NavLink>
       </MenuItem>
       <Divider />
       <MenuItem onClick={handleClose}>
         <Icon icon={NotificationsIcon} /> <NavLink to="/notificacoes">Notificações</NavLink>
       </MenuItem>
       <MenuItem onClick={handleClose}>
-        <Icon icon={SettingsIcon} /> <NavLink to="/configuracoes">Configurações</NavLink>
+        <Icon icon={SettingsIcon} /> <NavLink to="/perfil">Configurações</NavLink>
       </MenuItem>
       <MenuItem onClick={handleClose}>
         <Icon icon={LogoutIcon} /> <NavLink to="/">Deslogar</NavLink>
