@@ -147,26 +147,6 @@ const Profile = () => {
           </ListItem>
           <ListItem sx={{ justifyContent: 'center', padding: '0', minWidth: '10rem' }}>
             <NavLinkActive
-              to="/perfil/projetos"
-              color="#000"
-              background="#000"
-              sx={{ width: '100%', textAlign: 'center' }}
-            >
-              Meus Projetos
-            </NavLinkActive>
-          </ListItem>
-          <ListItem sx={{ justifyContent: 'center', padding: '0', minWidth: '10rem' }}>
-            <NavLinkActive
-              to="/perfil/convites"
-              color="#000"
-              background="#000"
-              sx={{ width: '100%', textAlign: 'center' }}
-            >
-              Meus Convites
-            </NavLinkActive>
-          </ListItem>
-          <ListItem sx={{ justifyContent: 'center', padding: '0', minWidth: '10rem' }}>
-            <NavLinkActive
               to="/perfil/configuracoes"
               color="#000"
               background="#000"
@@ -179,8 +159,6 @@ const Profile = () => {
 
         <Routes>
           <Route path="/" element={<User />}></Route>
-          <Route path="projetos" element={<ProfileProjects />}></Route>
-          <Route path="convites" element={<ProfileInvites />}></Route>
           <Route path="configuracoes" element={<Settings />}></Route>
         </Routes>
       </Box>

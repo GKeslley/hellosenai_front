@@ -138,9 +138,9 @@ Comment.propTypes = {
   sx: PropTypes.object,
   queryClient: PropTypes.object,
   isReply: PropTypes.bool,
-  openReply: PropTypes.bool,
+  openReply: PropTypes.object,
   setOpenReply: PropTypes.func,
-  config: PropTypes.string,
+  config: PropTypes.object,
   slug: PropTypes.string,
 };
 

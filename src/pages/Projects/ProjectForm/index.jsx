@@ -92,6 +92,7 @@ const ProjectForm = ({
     description.setValue(project.description);
     status.setValue(project.status.toLowerCase());
     setParticipants(() => {
+      if (!project.participants.length) return []
       const values = project.participants.map(({ apelido }) => {
         return apelido;
       });
@@ -238,7 +239,6 @@ const ProjectForm = ({
           >
             {project ? 'Atualizar' : 'Criar'}
           </ButtonComponent>
-          {mutation.error && <RequestError mutation={mutation} />}
         </Box>
       </Box>
     </ModalComponent>
