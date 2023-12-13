@@ -1,10 +1,12 @@
-import { Button, Container } from '@mui/material';
+import { Box, Button, Container, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import axios from 'axios';
 import { useQuery } from 'react-query';
 import Subtitle from '../Subtitle';
 import WarningIcon from '@mui/icons-material/Warning';
 import { useState } from 'react';
+import ModalComponent from '../Modal';
+import { Link } from 'react-router-dom';
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 70 },
@@ -18,6 +20,7 @@ const columns = [
 ];
 
 const Denounces = () => {
+  const [openModal, setOpenModal] = useState(false);
   const [denounce, setDenounce] = useState(null);
   const config = {
     headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
@@ -31,6 +34,7 @@ const Denounces = () => {
       const row = params.row;
       const handleClick = () => {
         setDenounce(row);
+        setOpenModal(true)
       };
       return (
         <Button onClick={handleClick} variant="contained" size="small">
@@ -70,6 +74,19 @@ const Denounces = () => {
           />
         </div>
       )}
+
+      {denounce && 
+        <ModalComponent openModal={openModal} setOpenModal={setOpenModal}>
+          <Box sx={{display: 'flex', flexDirection: 'column', padding: '1rem', gap: '1rem'}}>
+            <Typography fontSize='1.5rem'>Denúncia feita em {denounce.criada_em}</Typography>
+            <Box sx={{display: 'flex', flexDirection: 'column', gap: '0.5rem'}}>
+              <Typography>Denúncia: {denounce.texto}</Typography>
+            </Box>
+            <Box component={Link} to={`/projetos/${denounce.projeto}`} sx={{textDecoration: 'underline', width: 'max-content'}}>
+              Visualizar Projeto
+            </Box>
+          </Box>  
+        </ModalComponent>}
     </Container>
   );
 };
