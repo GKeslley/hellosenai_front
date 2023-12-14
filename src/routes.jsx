@@ -13,6 +13,7 @@ import RegisterTeacher from './pages/Login/RegisterTeacher';
 import Notifications from './pages/Notifications';
 import Adm from './pages/Adm';
 import Denounces from './components/Denounces';
+import Teachers from './pages/Teachers';
 
 const CreateRoutes = () => {
   return (
@@ -28,9 +29,9 @@ const CreateRoutes = () => {
       <Route path="/desafios/*" element={<Challenges />}></Route>
       <Route path="/perfil/*" element={<Profile />}></Route>
       <Route path="/usuario/:user/*" element={<User />}></Route>
-      <Route path="/usuario/adm" element={<Adm />}></Route>
-      <Route path="/usuario/adm/denuncias" element={<Denounces />}></Route>
-      <Route path="/usuario/adm/professor" element={<Denounces />}></Route>
+      <Route path="/adm" element={<Adm />}></Route>
+      <Route path="/adm/professor" element={<Teachers />}></Route>
+      <Route path="/adm/denuncias" element={<Denounces />}></Route>
       <Route path="/notificacoes" element={<Notifications />}></Route>
     </Routes>
   );

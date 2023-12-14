@@ -29,6 +29,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ProjectForm from '../Projects/ProjectForm';
 import Error from '../Error';
 import AvatarUser from '../../components/Avatar';
+import RestoreIcon from '@mui/icons-material/Restore';
 
 const config = {
   headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
@@ -50,7 +51,7 @@ const Project = () => {
     queryKey: ['project', params],
     queryFn: () => {
       return axios
-        .get(`http://127.0.0.1:8000/api/v1/projeto/${params.slug}`)
+        .get(`http://127.0.0.1:8000/api/v1/projeto/${params.slug}`, config)
         .then((response) => response.data);
     },
     refetchOnWindowFocus: false,
@@ -85,9 +86,26 @@ const Project = () => {
     },
   });
 
-  const mutationDeleteProject = useMutation({
+  const mutationDisableProject = useMutation({
     mutationFn: () => {
-      return axios.delete(`http://127.0.0.1:8000/api/v1/projeto/${params.slug}`, config);
+      return axios.put(
+        `http://127.0.0.1:8000/api/v1/projeto/${params.slug}/desativar`,
+        null,
+        config,
+      );
+    },
+    onSuccess: () => {
+      navigate('/projetos');
+    },
+  });
+
+  const mutationRestoreProject = useMutation({
+    mutationFn: () => {
+      return axios.put(
+        `http://127.0.0.1:8000/api/v1/projeto/${params.slug}/reativar`,
+        null,
+        config,
+      );
     },
     onSuccess: () => {
       navigate('/projetos');
@@ -120,10 +138,17 @@ const Project = () => {
     setOpenDialog(true);
   };
 
-  const handleDeleteProject = () => {
-    if (confirm('Realmente deseja deletar o projeto?') === true) {
+  const handleDisableProject = () => {
+    if (confirm('Realmente deseja desativar o projeto?') === true) {
       setAnchorEl(false);
-      mutationDeleteProject.mutate();
+      mutationDisableProject.mutate();
+    }
+  };
+
+  const handleRestoreProject = () => {
+    if (confirm('Realmente deseja reativar o projeto?') === true) {
+      setAnchorEl(false);
+      mutationRestoreProject.mutate();
     }
   };
 
@@ -181,16 +206,34 @@ const Project = () => {
                   <EditIcon />
                   Editar
                 </MenuItem>
-                {mutationDeleteProject.isLoading ? (
-                  <MenuItem sx={{ gap: '0.5rem' }}>
-                    <DeleteIcon />
-                    Deletando...
-                  </MenuItem>
+                {data.data.status === 1 ? (
+                  <>
+                    {mutationDisableProject.isLoading ? (
+                      <MenuItem sx={{ gap: '0.5rem' }}>
+                        <DeleteIcon />
+                        Desativando...
+                      </MenuItem>
+                    ) : (
+                      <MenuItem onClick={handleDisableProject} sx={{ gap: '0.5rem' }}>
+                        <DeleteIcon />
+                        Desativar
+                      </MenuItem>
+                    )}
+                  </>
                 ) : (
-                  <MenuItem onClick={handleDeleteProject} sx={{ gap: '0.5rem' }}>
-                    <DeleteIcon />
-                    Deletar
-                  </MenuItem>
+                  <>
+                    {mutationRestoreProject.isLoading ? (
+                      <MenuItem sx={{ gap: '0.5rem' }}>
+                        <RestoreIcon />
+                        Ativando...
+                      </MenuItem>
+                    ) : (
+                      <MenuItem onClick={handleRestoreProject} sx={{ gap: '0.5rem' }}>
+                        <RestoreIcon />
+                        Ativar
+                      </MenuItem>
+                    )}
+                  </>
                 )}
               </Menu>
             </Box>
@@ -230,7 +273,7 @@ const Project = () => {
             <Subtitle sx={{ marginBottom: '1rem' }}>Status</Subtitle>
             <Box sx={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
               <ConstructionIcon />
-              <Typography>{data.data.status}</Typography>
+              <Typography>{data.data.projetoStatus}</Typography>
             </Box>
           </Box>
 
@@ -336,7 +379,7 @@ const Project = () => {
             name: data.data.nomeProjeto,
             description: data.data.descricao,
             participants: data.data.participantes,
-            status: data.data.status,
+            status: data.data.projetoStatus,
             image: data.data.imagem,
             slug: data.data.slug,
           }}

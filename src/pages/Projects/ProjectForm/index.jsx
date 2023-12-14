@@ -70,7 +70,7 @@ const ProjectForm = ({
       const formData = new FormData();
       formData.append('nomeProjeto', name.value);
       formData.append('descricao', description.value);
-      formData.append('status', status.value);
+      formData.append('projetoStatus', status.value);
       formData.append('github', github.value);
       formData.append('imagem', imagePreview.raw);
 

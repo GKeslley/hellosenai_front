@@ -1,17 +1,20 @@
 import { Box, Container, Paper, Typography } from '@mui/material';
 import ButtonComponent from '../../../../components/Button';
 import CreateChallenge from '../../CreateChallenge';
-import { Link } from 'react-router-dom';
 import { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import Title from '../../../../components/Title';
 import { UserGlobalContext } from '../../../../contexts/UserContext';
 import SnackbarRequest from '../../../SnackbarRequest';
-import AvatarUser from '../../../Avatar';
+import ChallengeForm from '../../ChallengeForm';
+import ChallengeItem from './ChallengeItem';
 
 const ChallengePosted = ({ data, user }) => {
   const { data: dataUser } = useContext(UserGlobalContext);
   const [openModal, setOpenModal] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
+
+  const [challenge, setChallenge] = useState(null);
   const [openSnackbar, setOpenSnackbar] = useState({
     open: false,
     message: '',
@@ -56,51 +59,13 @@ const ChallengePosted = ({ data, user }) => {
 
         {data &&
           data.map(({ desafio: { titulo, descricao, dataCriacao, slug }, autor }) => (
-            <>
-              <Paper
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  padding: '1rem',
-                  border: '0.0625rem solid #dadce0',
-                }}
-                elevation={0}
-                key={titulo}
-              >
-                <Box sx={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                  <AvatarUser avatar={autor.avatar} />
-                  <Box>
-                    <Typography fontSize="0.875rem">{autor.nome}</Typography>
-                    <Typography
-                      component="time"
-                      fontSize="0.75rem"
-                      color="rgb(169, 162, 151)"
-                    >
-                      {dataCriacao}
-                    </Typography>
-                  </Box>
-                </Box>
-
-                <Box
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '1rem',
-                    marginTop: '0.5rem',
-                  }}
-                >
-                  <Typography fontWeight="800">{titulo}</Typography>
-                  <Typography sx={{ whiteSpace: 'pre-line' }}>{descricao}</Typography>
-                  <ButtonComponent
-                    sx={{ alignSelf: 'end' }}
-                    component={Link}
-                    to={`/projetos?desafio=${slug}`}
-                  >
-                    Realizar
-                  </ButtonComponent>
-                </Box>
-              </Paper>
-            </>
+            <ChallengeItem
+              key={slug}
+              data={{ titulo, descricao, dataCriacao, slug, autor }}
+              setChallenge={setChallenge}
+              setOpenDialog={setOpenDialog}
+              dataUser={dataUser}
+            />
           ))}
       </Box>
 
@@ -111,6 +76,17 @@ const ChallengePosted = ({ data, user }) => {
           setOpenSnackbar={setOpenSnackbar}
           title="Criar Desafio"
           buttonTitle="Criar"
+        />
+      )}
+
+      {openDialog && (
+        <ChallengeForm
+          openDialog={openDialog}
+          setOpenDialog={setOpenDialog}
+          title="Editar Desafio"
+          buttonTitle="Atualizar"
+          setOpenSnackbar={setOpenSnackbar}
+          challengeData={challenge}
         />
       )}
 
@@ -128,7 +104,7 @@ const ChallengePosted = ({ data, user }) => {
 
 ChallengePosted.propTypes = {
   data: PropTypes.array,
-  user: PropTypes.object,
+  user: PropTypes.string,
 };
 
 export default ChallengePosted;

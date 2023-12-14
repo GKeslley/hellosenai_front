@@ -29,7 +29,7 @@ const ProfileProjects = () => {
       {data && (
         <>
           {data.data.map(
-            ({ nomeProjeto, descricao, participantes, status, slug, imagem }) => (
+            ({ nomeProjeto, descricao, participantes, projetoStatus, slug, imagem }) => (
               <ProfileProject
                 key={slug}
                 name={nomeProjeto}
@@ -37,7 +37,7 @@ const ProfileProjects = () => {
                 image={imagem}
                 description={descricao}
                 participants={participantes}
-                status={status}
+                status={projetoStatus}
                 queryClient={queryClient}
               />
             ),
