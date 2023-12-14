@@ -1,10 +1,29 @@
-import { Avatar, Box, Container, Paper, Typography } from '@mui/material';
+import { Avatar, Box, Button, Container, Paper, Table, TableCell, TableContainer, TableHead, TableRow, Typography, TableBody } from '@mui/material';
 import teacherImage from '../../assets/login/pvta.png';
 import warningImage from '../../assets/teste2.png';
 import Title from '../../components/Title';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { useQuery } from 'react-query';
+import axios from 'axios';
+import ModalComponent from '../../components/Modal';
 
 const Adm = () => {
+  const [openModal, setOpenModal] = useState(false)
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['invalidTeachers'],
+    queryFn: () => {
+      const config = {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+      };
+
+      return axios.get(`http://127.0.0.1:8000/api/v1/professores/invalidos`, config);
+    },
+    refetchOnWindowFocus: false,
+  });
+
+
   return (
     <Container
       sx={{
@@ -27,6 +46,7 @@ const Adm = () => {
             minWidth: { xs: '15rem', sm: '15rem' },
             maxWidth: { xs: '15rem', sm: '15rem' },
           }}
+          onClick={() => setOpenModal(true)}
         >
           <Avatar
             src={teacherImage}
@@ -73,6 +93,35 @@ const Adm = () => {
           </Typography>
         </Paper>
       </Box>
+
+      {openModal && data && 
+      <ModalComponent openModal={openModal} setOpenModal={setOpenModal}>
+        <TableContainer>
+          <Table sx={{ minWidth: 450 }} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Nome</TableCell>
+                <TableCell align="right">Email</TableCell>
+                <TableCell align="right">Ação</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {data.data.data.map(({nome, email}) => 
+                <TableRow key={email} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                  <TableCell component="th" scope="row">
+                      {nome}
+                  </TableCell>
+                  <TableCell align="right">{email}</TableCell>
+                  <TableCell align="right">
+                    <Button variant='outlined'>Autorizar</Button>
+                  </TableCell>             
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        
+        </ModalComponent>}
     </Container>
   );
 };

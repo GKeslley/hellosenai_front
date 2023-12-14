@@ -16,7 +16,7 @@ const Login = () => {
         }}
       >
         <Title sx={{ textAlign: 'center', marginBottom: '1.5rem' }}>
-          Escolha seu papel:
+          Quem é você?
         </Title>
 
         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center', 

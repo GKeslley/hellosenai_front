@@ -71,7 +71,7 @@ const ProjectForm = ({
       formData.append('nomeProjeto', name.value);
       formData.append('descricao', description.value);
       formData.append('status', status.value);
-      formData.append('link', github.value);
+      formData.append('github', github.value);
       formData.append('imagem', imagePreview.raw);
 
       if (participants.length) {
