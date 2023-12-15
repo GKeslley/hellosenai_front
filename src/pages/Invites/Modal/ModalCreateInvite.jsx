@@ -8,9 +8,7 @@ import { useMutation } from 'react-query';
 import axios from 'axios';
 import { useEffect } from 'react';
 
-const config = {
-  headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-};
+
 
 const ModalCreateInvite = ({
   openModal,
@@ -26,8 +24,16 @@ const ModalCreateInvite = ({
   const titleInput = useForm(true);
   const description = useForm(true);
 
+  console.log(localStorage.getItem('token'));
+
   const mutation = useMutation({
     mutationFn: (dataInvite) => {
+      const config = {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+      };
+
+      console.log(config);
+      
       return axios.post('http://127.0.0.1:8000/api/v1/convite', dataInvite, config);
     },
     onSuccess: ({ data }) => {
@@ -82,7 +88,6 @@ const ModalCreateInvite = ({
   const { setValue: setTitleValue } = titleInput;
   const { setValue: setDescriptionValue } = description;
   useEffect(() => {
-    console.log('dsadsadsa');
     if (inviteTitle && inviteDescription) {
       setTitleValue(inviteTitle);
       setDescriptionValue(inviteDescription);

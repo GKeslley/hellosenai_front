@@ -6,8 +6,8 @@ import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import MenuMobile from './MenuMobile';
 import NavLinkActive from '../NavLink';
-import { Box, Paper, useMediaQuery } from '@mui/material';
-import { useLocation } from 'react-router-dom';
+import { Box, Button, Paper, useMediaQuery } from '@mui/material';
+import { Link, useLocation } from 'react-router-dom';
 import Logo from '../../assets/header/logo.png';
 import { UserGlobalContext } from '../../contexts/UserContext';
 
@@ -64,7 +64,7 @@ const Header = () => {
                 </>
               )}
               <li>
-                <Tooltip title="Configurações do Usuário">
+                {data ? <Tooltip title="Configurações do Usuário">
                   <IconButton
                     onClick={handleClick}
                     size="small"
@@ -76,7 +76,8 @@ const Header = () => {
                       {data ? data.nome.slice(0, 1).toUpperCase() : ''}
                     </Avatar>
                   </IconButton>
-                </Tooltip>
+                </Tooltip> : 
+                <Button component={Link} to='/login' variant='contained'>LOGIN</Button>}
               </li>
             </ul>
             {data && <>
