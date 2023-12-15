@@ -17,17 +17,20 @@ const Comment = ({
   isReply = false,
   openReply,
   setOpenReply,
-  config,
   slug,
   queryClient,
 }) => {
   const reply = useForm();
 
   const mutation = useMutation({
-    mutationFn: (dataComment) => {
+    mutationFn: ({ data, token }) => {
+      const config = {
+        headers: { Authorization: `Bearer ${token}` },
+      };
+
       return axios.post(
         `http://127.0.0.1:8000/api/v1/projeto/${slug}/comentario`,
-        dataComment,
+        data,
         config,
       );
     },
@@ -47,11 +50,12 @@ const Comment = ({
   };
 
   const postReplyComment = () => {
-    console.log('dasdsad');
-    mutation.mutate({
+    const token = localStorage.getItem('token');
+    const data = {
       texto: reply.value,
       comentarioPai: openReply.id,
-    });
+    };
+    mutation.mutate({ data, token });
   };
 
   return (

@@ -27,12 +27,13 @@ const BootstrapButton = styled(ButtonComponent)({
 const DisableAccount = () => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const { logout } = useContext(UserGlobalContext);
-  const config = {
-    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-  };
 
   const mutation = useMutation({
-    mutationFn: () => {
+    mutationFn: (token) => {
+      const config = {
+        headers: { Authorization: `Bearer ${token}` },
+      };
+
       return axios.put(
         'http://127.0.0.1:8000/api/v1/usuario/conta/desativar',
         null,
@@ -49,7 +50,8 @@ const DisableAccount = () => {
 
   const disableAccount = () => {
     if (confirm('Realmente deseja desativar sua conta?') === true) {
-      mutation.mutate();
+      const token = localStorage.getItem('token');
+      mutation.mutate(token);
     }
   };
 

@@ -32,10 +32,11 @@ const Teachers = () => {
   });
 
   const mutation = useMutation({
-    mutationFn: (data) => {
+    mutationFn: ({ data, token }) => {
       const config = {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        headers: { Authorization: `Bearer ${token}` },
       };
+
       return axios.put(`http://127.0.0.1:8000/api/v1/professor/autenticar`, data, config);
     },
     onSuccess: () => {
@@ -44,8 +45,9 @@ const Teachers = () => {
   });
 
   const authorizeTeacher = (email, i) => {
+    const token = localStorage.getItem('token');
     setId(i);
-    mutation.mutate({ email });
+    mutation.mutate({ data: email, token });
   };
 
   if (isLoading) return <Loading />;

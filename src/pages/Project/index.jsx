@@ -31,10 +31,6 @@ import Error from '../Error';
 import AvatarUser from '../../components/Avatar';
 import RestoreIcon from '@mui/icons-material/Restore';
 
-const config = {
-  headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-};
-
 const Project = () => {
   const { data: dataUser } = useContext(UserGlobalContext);
   const [openComment, setOpenComment] = useState(false);
@@ -50,6 +46,10 @@ const Project = () => {
   const { data, isLoading, error } = useQuery({
     queryKey: ['project', params],
     queryFn: () => {
+      const config = {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+      };
+
       return axios
         .get(`http://127.0.0.1:8000/api/v1/projeto/${params.slug}`, config)
         .then((response) => response.data);
@@ -58,10 +58,14 @@ const Project = () => {
   });
 
   const mutation = useMutation({
-    mutationFn: (dataComment) => {
+    mutationFn: ({ data, token }) => {
+      const config = {
+        headers: { Authorization: `Bearer ${token}` },
+      };
+
       return axios.post(
         `http://127.0.0.1:8000/api/v1/projeto/${params.slug}/comentario`,
-        dataComment,
+        data,
         config,
       );
     },
@@ -72,10 +76,14 @@ const Project = () => {
   });
 
   const mutationUpdateProject = useMutation({
-    mutationFn: (dataProject) => {
+    mutationFn: ({ data, token }) => {
+      const config = {
+        headers: { Authorization: `Bearer ${token}` },
+      };
+
       return axios.post(
         `http://127.0.0.1:8000/api/v1/projeto/${params.slug}?_method=PUT`,
-        dataProject,
+        data,
         config,
       );
     },
@@ -87,7 +95,11 @@ const Project = () => {
   });
 
   const mutationDisableProject = useMutation({
-    mutationFn: () => {
+    mutationFn: (token) => {
+      const config = {
+        headers: { Authorization: `Bearer ${token}` },
+      };
+
       return axios.put(
         `http://127.0.0.1:8000/api/v1/projeto/${params.slug}/desativar`,
         null,
@@ -100,7 +112,11 @@ const Project = () => {
   });
 
   const mutationRestoreProject = useMutation({
-    mutationFn: () => {
+    mutationFn: (token) => {
+      const config = {
+        headers: { Authorization: `Bearer ${token}` },
+      };
+
       return axios.put(
         `http://127.0.0.1:8000/api/v1/projeto/${params.slug}/reativar`,
         null,
@@ -120,10 +136,11 @@ const Project = () => {
   };
 
   const postNewComment = () => {
+    const token = localStorage.getItem('token');
     const data = {
       texto: comment.value,
     };
-    mutation.mutate(data);
+    mutation.mutate({ data, token });
   };
 
   const handleClick = (event) => {
@@ -140,15 +157,17 @@ const Project = () => {
 
   const handleDisableProject = () => {
     if (confirm('Realmente deseja desativar o projeto?') === true) {
+      const token = localStorage.getItem('token');
       setAnchorEl(false);
-      mutationDisableProject.mutate();
+      mutationDisableProject.mutate(token);
     }
   };
 
   const handleRestoreProject = () => {
     if (confirm('Realmente deseja reativar o projeto?') === true) {
+      const token = localStorage.getItem('token');
       setAnchorEl(false);
-      mutationRestoreProject.mutate();
+      mutationRestoreProject.mutate(token);
     }
   };
 
@@ -348,7 +367,6 @@ const Project = () => {
                         user={usuario}
                         openReply={openReply}
                         setOpenReply={setOpenReply}
-                        config={config}
                         slug={params.slug}
                         queryClient={queryClient}
                       />
@@ -360,7 +378,6 @@ const Project = () => {
                           user={resposta.usuario}
                           sx={{ margin: '10px 0px 10px 46px' }}
                           isReply={true}
-                          config={config}
                           slug={params.slug}
                           queryClient={queryClient}
                         />

@@ -15,13 +15,13 @@ const ModalAccessInvite = ({
   const messageInvite = useForm(true);
 
   const mutation = useMutation({
-    mutationFn: (message) => {
+    mutationFn: ({ data, token }) => {
       const config = {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        headers: { Authorization: `Bearer ${token}` },
       };
       return axios.post(
         `http://127.0.0.1:8000/api/email/${dataInvite.slug}`,
-        message,
+        data,
         config,
       );
     },
@@ -40,13 +40,13 @@ const ModalAccessInvite = ({
 
   const acceptInvite = () => {
     if (messageInvite.validate()) {
-      mutation.mutate({
+      const data = {
         mensagem: messageInvite.value,
-      });
+      };
+      const token = localStorage.getItem('token');
+      mutation.mutate({ data, token });
     }
   };
-
-  console.log(dataInvite);
 
   return (
     <ModalComponent

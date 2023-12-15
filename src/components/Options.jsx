@@ -12,10 +12,6 @@ import useForm from '../hooks/useForm';
 import ButtonComponent from './Button';
 import { UserGlobalContext } from '../contexts/UserContext';
 
-const config = {
-  headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-};
-
 const Options = ({
   sx,
   slugProject,
@@ -31,10 +27,14 @@ const Options = ({
   const open = Boolean(anchorEl);
 
   const mutation = useMutation({
-    mutationFn: (dataDenounce) => {
+    mutationFn: ({ data, token }) => {
+      const config = {
+        headers: { Authorization: `Bearer ${token}` },
+      };
+
       return axios.post(
         `http://127.0.0.1:8000/api/v1/projeto/${slugProject}/denuncia`,
-        dataDenounce,
+        data,
         config,
       );
     },
@@ -45,7 +45,11 @@ const Options = ({
   });
 
   const mutationDeleteProject = useMutation({
-    mutationFn: () => {
+    mutationFn: (token) => {
+      const config = {
+        headers: { Authorization: `Bearer ${token}` },
+      };
+
       return axios.delete(`http://127.0.0.1:8000/api/v1/projeto/${slugProject}`, config);
     },
     onSuccess: () => {
@@ -70,16 +74,19 @@ const Options = ({
 
   const handleDeleteProject = () => {
     if (confirm('Realmente deseja deletar o projeto?') === true) {
-      mutationDeleteProject.mutate();
+      const token = localStorage.getItem('token');
+      mutationDeleteProject.mutate(token);
       handleClose();
     }
   };
 
   const report = () => {
     if (slugProject && text.validate()) {
-      mutation.mutate({
+      const data = {
         texto: text.value,
-      });
+      };
+      const token = localStorage.getItem('token');
+      mutation.mutate({ data, token });
     }
   };
 

@@ -8,8 +8,6 @@ import { useMutation } from 'react-query';
 import axios from 'axios';
 import { useEffect } from 'react';
 
-
-
 const ModalCreateInvite = ({
   openModal,
   setOpenModal,
@@ -27,14 +25,12 @@ const ModalCreateInvite = ({
   console.log(localStorage.getItem('token'));
 
   const mutation = useMutation({
-    mutationFn: (dataInvite) => {
+    mutationFn: ({ data, token }) => {
       const config = {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        headers: { Authorization: `Bearer ${token}` },
       };
 
-      console.log(config);
-      
-      return axios.post('http://127.0.0.1:8000/api/v1/convite', dataInvite, config);
+      return axios.post('http://127.0.0.1:8000/api/v1/convite', data, config);
     },
     onSuccess: ({ data }) => {
       queryClient.invalidateQueries({ queryKey: ['invites'], type: 'active' });
@@ -53,10 +49,14 @@ const ModalCreateInvite = ({
   });
 
   const mutationUpdate = useMutation({
-    mutationFn: (dataInvite) => {
+    mutationFn: ({ data, token }) => {
+      const config = {
+        headers: { Authorization: `Bearer ${token}` },
+      };
+
       return axios.put(
         `http://127.0.0.1:8000/api/v1/convite/${inviteSlug}`,
-        dataInvite,
+        data,
         config,
       );
     },
@@ -70,18 +70,17 @@ const ModalCreateInvite = ({
 
   const createOrUpdateInvite = () => {
     if (titleInput.validate() && description.validate()) {
+      const data = {
+        titulo: titleInput.value,
+        descricao: description.value,
+      };
+      const token = localStorage.getItem('token');
       if (inviteTitle && inviteDescription) {
-        mutationUpdate.mutate({
-          titulo: titleInput.value,
-          descricao: description.value,
-        });
+        mutationUpdate.mutate({ data, token });
         return null;
       }
 
-      mutation.mutate({
-        titulo: titleInput.value,
-        descricao: description.value,
-      });
+      mutation.mutate({ data, token });
     }
   };
 

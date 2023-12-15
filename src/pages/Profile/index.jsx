@@ -21,12 +21,6 @@ import axios from 'axios';
 import SnackbarRequest from '../../components/SnackbarRequest';
 import AvatarUser from '../../components/Avatar';
 
-const config = {
-  headers: {
-    Authorization: `Bearer ${localStorage.getItem('token')}`,
-  },
-};
-
 const Profile = () => {
   const isMobile = useMediaQuery('(min-width: 768px)');
   const queryClient = useQueryClient();
@@ -38,12 +32,14 @@ const Profile = () => {
   });
 
   const mutation = useMutation({
-    mutationFn: (avatar) => {
-      return axios.post(
-        `http://127.0.0.1:8000/api/v1/avatar?_method=PUT`,
-        avatar,
-        config,
-      );
+    mutationFn: ({ data, token }) => {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      return axios.post(`http://127.0.0.1:8000/api/v1/avatar?_method=PUT`, data, config);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['user'], type: 'active' });
@@ -58,9 +54,10 @@ const Profile = () => {
   });
 
   const changeAvatar = ({ target }) => {
+    const token = localStorage.getItem('token');
     const formData = new FormData();
     formData.append('avatar', target.files[0]);
-    mutation.mutate(formData);
+    mutation.mutate({ data: formData, token });
   };
 
   console.log(data);

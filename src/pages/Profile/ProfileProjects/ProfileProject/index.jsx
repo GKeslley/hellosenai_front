@@ -25,15 +25,16 @@ const ProfileProject = ({
 }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
-  const config = {
-    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-  };
 
   const mutation = useMutation({
-    mutationFn: (dataProject) => {
+    mutationFn: ({ data, token }) => {
+      const config = {
+        headers: { Authorization: `Bearer ${token}` },
+      };
+
       return axios.post(
         `http://127.0.0.1:8000/api/v1/projeto/${slug}?_method=PUT`,
-        dataProject,
+        data,
         config,
       );
     },

@@ -30,13 +30,13 @@ const CreateChallenge = ({
   const titleInput = useForm(true);
   const description = useForm(true);
 
-  const config = {
-    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-  };
-
   const mutation = useMutation({
-    mutationFn: (dataChallenge) => {
-      return axios.post('http://127.0.0.1:8000/api/v1/desafio', dataChallenge, config);
+    mutationFn: ({ data, token }) => {
+      const config = {
+        headers: { Authorization: `Bearer ${token}` },
+      };
+
+      return axios.post('http://127.0.0.1:8000/api/v1/desafio', data, config);
     },
     onSuccess: ({ data }) => {
       titleInput.setValue('');
@@ -60,13 +60,14 @@ const CreateChallenge = ({
 
   const createChallenge = () => {
     if (titleInput.validate() && description.validate()) {
+      const token = localStorage.getItem('token');
       const formData = new FormData();
       formData.append('titulo', titleInput.value);
       formData.append('descricao', description.value);
       if (imagePreview) {
         formData.append('imagem', imagePreview.raw);
       }
-      mutation.mutate(formData);
+      mutation.mutate({ data: formData, token });
     }
   };
 

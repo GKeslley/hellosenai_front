@@ -14,10 +14,6 @@ import PropTypes from 'prop-types';
 import { useMutation } from 'react-query';
 import axios from 'axios';
 
-const config = {
-  headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-};
-
 const ProfileInvite = ({ title, description, slug, actions = true, queryClient }) => {
   const [openDialog, setOpenDialog] = useState(false);
 
@@ -26,7 +22,11 @@ const ProfileInvite = ({ title, description, slug, actions = true, queryClient }
   };
 
   const mutation = useMutation({
-    mutationFn: (slug) => {
+    mutationFn: ({ slug, token }) => {
+      const config = {
+        headers: { Authorization: `Bearer ${token}` },
+      };
+
       return axios.delete(`http://127.0.0.1:8000/api/v1/convite/${slug}`, config);
     },
     onSuccess: () => {
@@ -35,7 +35,8 @@ const ProfileInvite = ({ title, description, slug, actions = true, queryClient }
   });
 
   const deleteInvite = (slug) => {
-    mutation.mutate(slug);
+    const token = localStorage.getItem('token');
+    mutation.mutate({ slug, token });
   };
 
   return (

@@ -14,15 +14,15 @@ const Settings = () => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const password = useForm('password');
 
-  const config = {
-    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-  };
-
   const mutation = useMutation({
-    mutationFn: (newPassword) => {
+    mutationFn: ({ data, token }) => {
+      const config = {
+        headers: { Authorization: `Bearer ${token}` },
+      };
+
       return axios.put(
         'http://127.0.0.1:8000/api/v1/usuario/senha/modificar',
-        newPassword,
+        data,
         config,
       );
     },
@@ -38,9 +38,11 @@ const Settings = () => {
 
   const changePassword = () => {
     if (password.validate()) {
-      mutation.mutate({
+      const token = localStorage.getItem('token');
+      const data = {
         senha: password.value,
-      });
+      };
+      mutation.mutate({ data, token });
     }
   };
 

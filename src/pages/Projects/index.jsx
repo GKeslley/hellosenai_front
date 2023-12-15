@@ -41,12 +41,12 @@ const Projects = () => {
   });
 
   const mutation = useMutation({
-    mutationFn: ({ formData, token }) => {
+    mutationFn: ({ data, token }) => {
       const config = {
         headers: { Authorization: `Bearer ${token}` },
       };
 
-      return axios.post('http://127.0.0.1:8000/api/v1/projeto', formData, config);
+      return axios.post('http://127.0.0.1:8000/api/v1/projeto', data, config);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['projects'], type: 'active' });

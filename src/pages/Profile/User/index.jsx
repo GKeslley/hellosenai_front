@@ -15,25 +15,27 @@ const User = () => {
   const username = useForm(true);
   const email = useForm('email');
 
-  const config = {
-    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-  };
+  const mutation = useMutation(({ data, token }) => {
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
 
-  const mutation = useMutation((newDataUser) => {
     return axios.put(
       `http://127.0.0.1:8000/api/v1/usuario/${data.apelido}`,
-      newDataUser,
+      data,
       config,
     );
   });
 
   const updateUserData = () => {
     if (name.validate() && username.validate() && email.validate()) {
-      mutation.mutate({
+      const token = localStorage.getItem('token');
+      const data = {
         nome: name.value,
         apelido: username.value,
         email: email.value,
-      });
+      };
+      mutation.mutate({ data, token });
     }
   };
 

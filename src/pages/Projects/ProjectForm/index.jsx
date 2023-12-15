@@ -83,7 +83,7 @@ const ProjectForm = ({
       }
 
       const token = localStorage.getItem('token');
-      mutation.mutate({ formData, token });
+      mutation.mutate({ data: formData, token });
     }
   };
 
