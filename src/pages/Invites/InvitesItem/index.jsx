@@ -31,7 +31,7 @@ const InvitesItem = ({
     <>
       {data && (
         <>
-          {data.data.map(({ titulo, descricao, dataCriacao, slug, autor }) => (
+          {data.data.map(({ titulo, descricao, dataCriacao, slug, autor, participantes }) => (
             <Invite
               key={slug}
               modalAccessInvite={modalAccessInvite}
@@ -40,6 +40,7 @@ const InvitesItem = ({
               date={dataCriacao}
               slug={slug}
               author={autor}
+              participantes={participantes}
               setDataInvite={setDataInvite}
             />
           ))}

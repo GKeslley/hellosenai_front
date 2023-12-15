@@ -127,7 +127,7 @@ const Invites = () => {
           </SelectComponent>
         </Box>
       </Box>
-      <Grid component="article" container alignItems="stretch" wrap="wrap">
+      <Grid component="article" container alignItems="stretch" wrap="wrap" display='grid'>
         <>
           {pages.map((page) => (
             <InvitesItem
