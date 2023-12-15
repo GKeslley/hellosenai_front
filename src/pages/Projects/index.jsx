@@ -24,10 +24,6 @@ import useQueryString from '../../hooks/useQueryString';
 import ProjectsItem from './ProjectsItem';
 import useInfiniteScroll from '../../hooks/useInfiniteScroll';
 
-const config = {
-  headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-};
-
 const Projects = () => {
   const [openModal, setOpenModal] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -46,6 +42,10 @@ const Projects = () => {
 
   const mutation = useMutation({
     mutationFn: (dataProject) => {
+      const config = {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+      };
+      console.log(config);
       return axios.post('http://127.0.0.1:8000/api/v1/projeto', dataProject, config);
     },
     onSuccess: () => {
