@@ -82,7 +82,8 @@ const ProjectForm = ({
         formData.append('desafio', challenge);
       }
 
-      mutation.mutate(formData);
+      const token = localStorage.getItem('token');
+      mutation.mutate({ formData, token });
     }
   };
 
