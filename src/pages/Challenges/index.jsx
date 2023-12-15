@@ -7,6 +7,7 @@ import Loading from '../../components/Helper/Loading';
 import ChallengeCards from '../../components/Challenges/ChallengesCards';
 import { Route, Routes } from 'react-router';
 import ChallengesPosted from '../../components/Challenges/ChallengesPosted';
+import Challenge from '../Challenge';
 
 const Challenges = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -46,6 +47,7 @@ const Challenges = () => {
       <Routes>
         <Route path="/" element={<ChallengeCards data={data} />}></Route>
         <Route path=":user/*" element={<ChallengesPosted />}></Route>
+        <Route path="desafio/:slug" element={<Challenge />}></Route>
       </Routes>
     </Box>
   );

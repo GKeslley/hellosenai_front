@@ -14,6 +14,7 @@ import Notifications from './pages/Notifications';
 import Adm from './pages/Adm';
 import Denounces from './components/Denounces';
 import Teachers from './pages/Teachers';
+import RegisterAdm from './pages/Adm/Register';
 
 const CreateRoutes = () => {
   return (
@@ -32,6 +33,7 @@ const CreateRoutes = () => {
       <Route path="/adm" element={<Adm />}></Route>
       <Route path="/adm/professor" element={<Teachers />}></Route>
       <Route path="/adm/denuncias" element={<Denounces />}></Route>
+      <Route path="/adm/registrar" element={<RegisterAdm />}></Route>
       <Route path="/notificacoes" element={<Notifications />}></Route>
     </Routes>
   );

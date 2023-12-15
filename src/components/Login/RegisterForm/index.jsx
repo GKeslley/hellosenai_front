@@ -9,16 +9,27 @@ import PersonIcon from '@mui/icons-material/Person';
 import useForm from '../../../hooks/useForm';
 import { useMutation } from 'react-query';
 import axios from 'axios';
-import { Navigate } from 'react-router';
+import { useNavigate } from 'react-router';
 import RequestError from '../../Helper/RequestError';
+import { useContext } from 'react';
+import { UserGlobalContext } from '../../../contexts/UserContext';
 
 const RegisterForm = () => {
+  const { setToken } = useContext(UserGlobalContext);
   const name = useForm(true);
   const email = useForm('email');
   const password = useForm('password');
+  const navigate = useNavigate();
 
-  const mutation = useMutation((newUser) => {
-    return axios.post('http://127.0.0.1:8000/api/v1/usuario', newUser);
+  const mutation = useMutation({
+    mutationFn: (data) => {
+      return axios.post('http://127.0.0.1:8000/api/v1/usuario', data);
+    },
+    onSuccess: ({ data }) => {
+      localStorage.setItem('token', data.plainTextToken);
+      setToken(data.plainTextToken);
+      navigate('/');
+    },
   });
 
   const registerUser = async () => {
@@ -31,7 +42,6 @@ const RegisterForm = () => {
     }
   };
 
-  if (mutation.isSuccess) return <Navigate to="/" />;
   return (
     <Box sx={{ position: 'relative' }}>
       <Title sx={{ marginBottom: '1.5rem' }}>Registre-se</Title>
@@ -142,7 +152,6 @@ const RegisterForm = () => {
         >
           Registrar
         </ButtonComponent>
-        <RequestError mutation={mutation} />
       </FormControl>
 
       <Divider variant="inset" />

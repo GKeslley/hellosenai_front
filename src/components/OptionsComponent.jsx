@@ -38,6 +38,7 @@ OptionsComponent.propTypes = {
   onClick: PropTypes.func,
   anchorEl: PropTypes.bool,
   handleClose: PropTypes.func,
+  sx: PropTypes.object,
 };
 
 export default OptionsComponent;

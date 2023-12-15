@@ -21,6 +21,8 @@ const ChallengePosted = ({ data, user }) => {
     severity: '',
   });
 
+  console.log(user);
+
   return (
     <Container sx={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
       <Box
@@ -33,7 +35,7 @@ const ChallengePosted = ({ data, user }) => {
       >
         <Box sx={{ alignSelf: 'end', color: '#fff', padding: '1rem 2rem' }}>
           <Title sx={{ color: '#fff' }}>Desafios</Title>
-          <Typography marginLeft="2px">Leonardo Lucena</Typography>
+          <Typography marginLeft="2px">Felipee</Typography>
         </Box>
       </Box>
 

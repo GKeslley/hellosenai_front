@@ -1,5 +1,4 @@
 import { Box, Paper } from '@mui/material';
-import { useState } from 'react';
 import NavLinkActive from '../../../components/NavLink';
 import { Route, Routes, useParams } from 'react-router-dom';
 import axios from 'axios';
@@ -10,13 +9,12 @@ import ChallengesPerfomed from '../ChallengesPerfomed';
 
 const fetchChallengesByTeacher = async (username) => {
   const response = await axios
-    .get(`http://127.0.0.1:8000/api/v1/desafio/${username}`)
+    .get(`http://127.0.0.1:8000/api/v1/professor/${username}/desafios`)
     .then((response) => response.data);
   return response.data;
 };
 
 const ChallengesPosted = () => {
-  const [mobileOpen, setMobileOpen] = useState(false);
   const params = useParams();
 
   const { data, isLoading, error } = useQuery({

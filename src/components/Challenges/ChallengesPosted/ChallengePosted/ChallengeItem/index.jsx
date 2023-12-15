@@ -1,12 +1,11 @@
 import { Box, MenuItem, Paper, Typography } from '@mui/material';
 import { useState } from 'react';
-import AvatarUser from '../../../../Avatar';
 import OptionsComponent from '../../../../OptionsComponent';
-import ButtonComponent from '../../../../Button';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import { Link } from 'react-router-dom';
 
 const ChallengeItem = ({ data, setChallenge, setOpenDialog, dataUser }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -48,10 +47,35 @@ const ChallengeItem = ({ data, setChallenge, setOpenDialog, dataUser }) => {
           justifyContent: 'space-between',
         }}
       >
-        <Box sx={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-          <AvatarUser avatar={data.autor.avatar} />
-          <Box>
-            <Typography fontSize="0.875rem">{data.autor.nome}</Typography>
+        <Box
+          sx={{ display: 'flex', gap: '1rem', alignItems: 'center', width: '100%' }}
+          component={Link}
+          to={`/desafios/desafio/${data.slug}`}
+        >
+          <Box
+            component="figure"
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              background: 'rgb(95,99,104)',
+              borderRadius: '50%',
+              width: '2.5rem',
+              height: '2.5rem',
+            }}
+          >
+            <AssignmentIcon sx={{ fill: '#fff' }} />
+          </Box>
+          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+            <Typography
+              fontWeight={500}
+              whiteSpace="nowrap"
+              overflow="hidden"
+              textOverflow="ellipsis"
+            >
+              Novo desafio: {data.titulo}
+            </Typography>
+
             <Typography component="time" fontSize="0.75rem" color="rgb(169, 162, 151)">
               {data.dataCriacao}
             </Typography>
@@ -83,25 +107,6 @@ const ChallengeItem = ({ data, setChallenge, setOpenDialog, dataUser }) => {
             </MenuItem>
           </OptionsComponent>
         )}
-      </Box>
-
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '1rem',
-          marginTop: '0.5rem',
-        }}
-      >
-        <Typography fontWeight="800">{data.titulo}</Typography>
-        <Typography sx={{ whiteSpace: 'pre-line' }}>{data.descricao}</Typography>
-        <ButtonComponent
-          sx={{ alignSelf: 'end' }}
-          component={Link}
-          to={`/projetos?desafio=${data.slug}`}
-        >
-          Realizar
-        </ButtonComponent>
       </Box>
     </Paper>
   );
