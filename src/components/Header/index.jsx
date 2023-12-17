@@ -15,7 +15,7 @@ const Header = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const screenIsMobile = useMediaQuery('(max-width: 40rem)');
   const screenIsMobile960 = useMediaQuery('(max-width: 960px)');
-  const { data } = useContext(UserGlobalContext);
+  const { data, logout } = useContext(UserGlobalContext);
 
   const isOutOfHome = useLocation().pathname.slice(0, -1).length;
 
@@ -64,29 +64,46 @@ const Header = () => {
                 </>
               )}
               <li>
-                {data ? <Tooltip title="Configurações do Usuário">
-                  <IconButton
-                    onClick={handleClick}
-                    size="small"
-                    aria-controls={open ? 'account-menu' : undefined}
-                    aria-haspopup="true"
-                    aria-expanded={open ? 'true' : undefined}
-                  >
-                    <Avatar sx={{ width: 32, height: 32 }}>
-                      {data ? data.nome.slice(0, 1).toUpperCase() : ''}
-                    </Avatar>
-                  </IconButton>
-                </Tooltip> : 
-                <Button component={Link} to='/login' variant='contained'>LOGIN</Button>}
+                {data ? (
+                  <Tooltip title="Configurações do Usuário">
+                    <IconButton
+                      onClick={handleClick}
+                      size="small"
+                      aria-controls={open ? 'account-menu' : undefined}
+                      aria-haspopup="true"
+                      aria-expanded={open ? 'true' : undefined}
+                    >
+                      <Avatar sx={{ width: 32, height: 32 }}>
+                        {data ? data.nome.slice(0, 1).toUpperCase() : ''}
+                      </Avatar>
+                    </IconButton>
+                  </Tooltip>
+                ) : (
+                  <Button component={Link} to="/login" variant="contained">
+                    LOGIN
+                  </Button>
+                )}
               </li>
             </ul>
-            {data && <>
-              {!screenIsMobile ? (
-              <MenuHeader anchorEl={anchorEl} setAnchorEl={setAnchorEl} data={data} />
-            ) : (
-              <MenuMobile anchorEl={anchorEl} setAnchorEl={setAnchorEl} data={data} />
+            {data && (
+              <>
+                {!screenIsMobile ? (
+                  <MenuHeader
+                    anchorEl={anchorEl}
+                    setAnchorEl={setAnchorEl}
+                    data={data}
+                    logout={logout}
+                  />
+                ) : (
+                  <MenuMobile
+                    anchorEl={anchorEl}
+                    setAnchorEl={setAnchorEl}
+                    data={data}
+                    logout={logout}
+                  />
+                )}
+              </>
             )}
-            </>}
           </nav>
         </div>
 

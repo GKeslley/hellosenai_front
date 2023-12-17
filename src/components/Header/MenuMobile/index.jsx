@@ -11,12 +11,19 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import CodeIcon from '@mui/icons-material/Code';
 import Icon from '../../Icon';
 import { NavLink } from 'react-router-dom';
+import { Box, Typography } from '@mui/material';
 
-const MenuMobile = ({ anchorEl, setAnchorEl, data }) => {
+const MenuMobile = ({ anchorEl, setAnchorEl, data, logout }) => {
   const open = Boolean(anchorEl);
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const logoutAccount = () => {
+    if (confirm('Tem certeza que deseja deslogar?') === true) {
+      logout();
+    }
   };
 
   return (
@@ -55,29 +62,69 @@ const MenuMobile = ({ anchorEl, setAnchorEl, data }) => {
       transformOrigin={{ horizontal: 'right', vertical: 'top' }}
       anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
     >
-      <MenuItem onClick={handleClose}>
-        <Icon icon={GitHubIcon} /> <NavLink to="/projetos">Projetos</NavLink>
+      <MenuItem>
+        <Box
+          component={NavLink}
+          to="/projetos"
+          sx={{ width: '100%', display: 'flex', alignItems: 'center' }}
+        >
+          <Icon icon={GitHubIcon} /> <Typography>Projetos</Typography>
+        </Box>
       </MenuItem>
+
       <MenuItem onClick={handleClose}>
-        <Icon icon={RedeemIcon} /> <NavLink to="/convites">Convites</NavLink>
+        <Box
+          component={NavLink}
+          to="/convites"
+          sx={{ width: '100%', display: 'flex', alignItems: 'center' }}
+        >
+          <Icon icon={RedeemIcon} /> <Typography>Convites</Typography>
+        </Box>
       </MenuItem>
+
       <MenuItem onClick={handleClose}>
-        <Icon icon={CodeIcon} /> <NavLink to="/desafios">Desafios</NavLink>
+        <Box
+          component={NavLink}
+          to="/desafios"
+          sx={{ width: '100%', display: 'flex', alignItems: 'center' }}
+        >
+          <Icon icon={CodeIcon} /> <Typography>Desafios</Typography>
+        </Box>
+      </MenuItem>
+
+      <Divider />
+      <MenuItem>
+        <Box
+          component={NavLink}
+          to={`/usuario/${data.apelido}`}
+          sx={{ width: '100%', display: 'flex', alignItems: 'center' }}
+        >
+          <Icon icon={AccountCircleIcon} /> <Typography>Perfil</Typography>
+        </Box>
       </MenuItem>
       <Divider />
-      <MenuItem onClick={handleClose}>
-        <Icon icon={AccountCircleIcon} /> <NavLink to={`/usuario/${data.apelido}`}>Perfil</NavLink>
+      <MenuItem>
+        <Box
+          component={NavLink}
+          to="/notificacoes"
+          sx={{ width: '100%', display: 'flex', alignItems: 'center' }}
+        >
+          <Icon icon={NotificationsIcon} /> <Typography>Notificações</Typography>
+        </Box>
       </MenuItem>
-      <Divider />
-      <MenuItem onClick={handleClose}>
-        <Icon icon={NotificationsIcon} /> <NavLink to="/notificacoes">Notificações</NavLink>
+      <MenuItem>
+        <Box
+          component={NavLink}
+          to="/notificacoes"
+          sx={{ width: '100%', display: 'flex', alignItems: 'center' }}
+        >
+          <Icon icon={SettingsIcon} /> <Typography>Configurações</Typography>
+        </Box>
       </MenuItem>
-      <Divider />
-      <MenuItem onClick={handleClose}>
-        <Icon icon={SettingsIcon} /> <NavLink to="/perfil">Configurações</NavLink>
-      </MenuItem>
-      <MenuItem onClick={handleClose}>
-        <Icon icon={LogoutIcon} /> <NavLink to="/deslogar">Deslogar</NavLink>
+      <MenuItem onClick={logoutAccount}>
+        <Box sx={{ width: '100%', display: 'flex', alignItems: 'center' }}>
+          <Icon icon={LogoutIcon} /> <Typography>Deslogar</Typography>
+        </Box>
       </MenuItem>
     </Menu>
   );
@@ -86,6 +133,8 @@ const MenuMobile = ({ anchorEl, setAnchorEl, data }) => {
 MenuMobile.propTypes = {
   anchorEl: PropTypes.object,
   setAnchorEl: PropTypes.func,
+  data: PropTypes.object,
+  logout: PropTypes.func,
 };
 
 export default MenuMobile;

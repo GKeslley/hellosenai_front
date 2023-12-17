@@ -8,12 +8,19 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import Icon from '../../Icon';
 import { NavLink } from 'react-router-dom';
+import { Box, Typography } from '@mui/material';
 
-const MenuHeader = ({ anchorEl, setAnchorEl, data }) => {
+const MenuHeader = ({ anchorEl, setAnchorEl, data, logout }) => {
   const open = Boolean(anchorEl);
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const logoutAccount = () => {
+    if (confirm('Tem certeza que deseja deslogar?') === true) {
+      logout();
+    }
   };
 
   return (
@@ -52,18 +59,38 @@ const MenuHeader = ({ anchorEl, setAnchorEl, data }) => {
       transformOrigin={{ horizontal: 'right', vertical: 'top' }}
       anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
     >
-      <MenuItem onClick={handleClose}>
-        <Icon icon={AccountCircleIcon} /> <NavLink to={`/usuario/${data.apelido}`}>Perfil</NavLink>
+      <MenuItem>
+        <Box
+          component={NavLink}
+          to={`/usuario/${data.apelido}`}
+          sx={{ width: '100%', display: 'flex', alignItems: 'center' }}
+        >
+          <Icon icon={AccountCircleIcon} /> <Typography>Perfil</Typography>
+        </Box>
       </MenuItem>
       <Divider />
-      <MenuItem onClick={handleClose}>
-        <Icon icon={NotificationsIcon} /> <NavLink to="/notificacoes">Notificações</NavLink>
+      <MenuItem>
+        <Box
+          component={NavLink}
+          to="/notificacoes"
+          sx={{ width: '100%', display: 'flex', alignItems: 'center' }}
+        >
+          <Icon icon={NotificationsIcon} /> <Typography>Notificações</Typography>
+        </Box>
       </MenuItem>
-      <MenuItem onClick={handleClose}>
-        <Icon icon={SettingsIcon} /> <NavLink to="/perfil">Configurações</NavLink>
+      <MenuItem>
+        <Box
+          component={NavLink}
+          to="/perfil"
+          sx={{ width: '100%', display: 'flex', alignItems: 'center' }}
+        >
+          <Icon icon={SettingsIcon} /> <Typography>Configurações</Typography>
+        </Box>
       </MenuItem>
-      <MenuItem onClick={handleClose}>
-        <Icon icon={LogoutIcon} /> <NavLink to="/">Deslogar</NavLink>
+      <MenuItem onClick={logoutAccount}>
+        <Box sx={{ width: '100%', display: 'flex', alignItems: 'center' }}>
+          <Icon icon={LogoutIcon} /> <Typography>Deslogar</Typography>
+        </Box>
       </MenuItem>
     </Menu>
   );
@@ -72,6 +99,8 @@ const MenuHeader = ({ anchorEl, setAnchorEl, data }) => {
 MenuHeader.propTypes = {
   anchorEl: PropTypes.object,
   setAnchorEl: PropTypes.func,
+  data: PropTypes.object,
+  logout: PropTypes.func,
 };
 
 export default MenuHeader;
