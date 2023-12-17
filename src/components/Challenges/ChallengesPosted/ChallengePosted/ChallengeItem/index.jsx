@@ -6,9 +6,39 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { useMutation, useQueryClient } from 'react-query';
 
-const ChallengeItem = ({ data, setChallenge, setOpenDialog, dataUser }) => {
+const ChallengeItem = ({
+  data,
+  setChallenge,
+  setOpenDialog,
+  dataUser,
+  setOpenSnackbar,
+}) => {
+  const queryClient = useQueryClient();
   const [anchorEl, setAnchorEl] = useState(null);
+
+  const mutation = useMutation({
+    mutationFn: ({ slug, token }) => {
+      console.log(token);
+      const config = {
+        headers: { Authorization: `Bearer ${token}` },
+      };
+
+      return axios.delete(`http://127.0.0.1:8000/api/v1/desafio/${slug}`, config);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['challengesTeacher'], type: 'active' });
+    },
+    onError: (error) => {
+      setOpenSnackbar({
+        open: true,
+        message: error.response.data.message,
+        severity: 'error',
+      });
+    },
+  });
 
   const onClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -23,11 +53,15 @@ const ChallengeItem = ({ data, setChallenge, setOpenDialog, dataUser }) => {
     setOpenDialog(true);
   };
 
-  const handleDeleteChallenge = () => {
+  const handleDeleteChallenge = (slug) => {
+    const token = localStorage.getItem('token');
+    console.log('dsadsasa', token);
     if (confirm('Realmente deseja deletar o desafio?') === true) {
       setAnchorEl(false);
+      mutation.mutate({ slug, token });
     }
   };
+
   return (
     <Paper
       sx={{
@@ -101,7 +135,10 @@ const ChallengeItem = ({ data, setChallenge, setOpenDialog, dataUser }) => {
               <EditIcon />
               Editar
             </MenuItem>
-            <MenuItem onClick={handleDeleteChallenge} sx={{ gap: '0.5rem' }}>
+            <MenuItem
+              onClick={() => handleDeleteChallenge(data.slug)}
+              sx={{ gap: '0.5rem' }}
+            >
               <DeleteIcon />
               Deletar
             </MenuItem>
@@ -117,6 +154,7 @@ ChallengeItem.propTypes = {
   setChallenge: PropTypes.func,
   setOpenDialog: PropTypes.func,
   dataUser: PropTypes.object,
+  setOpenSnackbar: PropTypes.func,
 };
 
 export default ChallengeItem;

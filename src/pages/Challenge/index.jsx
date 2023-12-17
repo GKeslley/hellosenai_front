@@ -18,7 +18,7 @@ const Challenge = () => {
   const isMobile = useMediaQuery('(max-width: 768px)');
 
   const { data, isLoading } = useQuery({
-    queryKey: ['challenge'],
+    queryKey: ['challenge', params],
     queryFn: () => {
       return axios
         .get(`http://127.0.0.1:8000/api/v1/desafio/${params.slug}`)

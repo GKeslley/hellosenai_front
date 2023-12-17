@@ -11,6 +11,7 @@ import axios from 'axios';
 import PropTypes from 'prop-types';
 import { useQuery } from 'react-query';
 import AvatarUser from '../../../../components/Avatar';
+import { Link } from 'react-router-dom';
 
 const SidebarInfos = ({ data }) => {
   const { data: newsChallenges } = useQuery('newChallenges', () => {
@@ -30,22 +31,38 @@ const SidebarInfos = ({ data }) => {
             <ListItem key={desafio.slug} disablePadding>
               <ListItemButton sx={{ paddingLeft: '0', gap: '0.5rem' }}>
                 <Box
+                  component={Link}
+                  to={`/desafios/desafio/${desafio.slug}`}
                   sx={{
-                    background: i % 2 == 0 ? '#ffd400' : '#00c6d7',
-                    width: '30px',
-                    height: '30px',
-                    borderRadius: '50%',
+                    display: 'flex',
+                    gap: '0.5rem',
+                    alignItems: 'center',
+                    width: '100%',
                   }}
-                ></Box>
-                <ListItemText
-                  primary={desafio.titulo}
-                  sx={{
-                    whiteSpace: 'nowrap',
-                    textOverflow: 'ellipsis',
-                    maxWidth: '15ch',
-                    overflow: 'hidden',
-                  }}
-                />
+                >
+                  <Box
+                    sx={{
+                      background: i % 2 == 0 ? '#ffd400' : '#00c6d7',
+                      width: '30px',
+                      height: '30px',
+                      borderRadius: '50%',
+                    }}
+                  ></Box>
+                  <ListItemText
+                    primary={desafio.titulo}
+                    sx={{
+                      display: 'block',
+                      whiteSpace: 'nowrap',
+                      maxWidth: '15ch',
+                      '& .MuiTypography-root': {
+                        display: 'block',
+                        whiteSpace: 'nowrap',
+                        textOverflow: 'ellipsis',
+                        overflow: 'hidden',
+                      },
+                    }}
+                  />
+                </Box>
               </ListItemButton>
             </ListItem>
           ))}
@@ -57,16 +74,27 @@ const SidebarInfos = ({ data }) => {
           data.data.map(({ nome, apelido, avatar }) => (
             <ListItem key={apelido} disablePadding>
               <ListItemButton sx={{ paddingLeft: '0', gap: '0.5rem' }}>
-                <AvatarUser avatar={avatar} sx={{ width: '30px', height: '30px' }} />
-                <ListItemText
-                  primary={nome}
+                <Box
+                  component={Link}
+                  to={`/desafios/${apelido}`}
                   sx={{
-                    whiteSpace: 'nowrap',
-                    textOverflow: 'ellipsis',
-                    maxWidth: '15ch',
-                    overflow: 'hidden',
+                    display: 'flex',
+                    gap: '0.5rem',
+                    alignItems: 'center',
+                    width: '100%',
                   }}
-                />
+                >
+                  <AvatarUser avatar={avatar} sx={{ width: '30px', height: '30px' }} />
+                  <ListItemText
+                    primary={nome}
+                    sx={{
+                      whiteSpace: 'nowrap',
+                      textOverflow: 'ellipsis',
+                      maxWidth: '15ch',
+                      overflow: 'hidden',
+                    }}
+                  />
+                </Box>
               </ListItemButton>
             </ListItem>
           ))}

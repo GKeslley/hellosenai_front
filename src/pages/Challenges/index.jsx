@@ -12,15 +12,16 @@ import Challenge from '../Challenge';
 const Challenges = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const isMobile = useMediaQuery('(max-width: 768px)');
-  const { data, isLoading, error } = useQuery(
-    'teachers',
-    () => {
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['teachers'],
+    queryFn: () => {
       return axios
         .get('http://127.0.0.1:8000/api/v1/professor')
         .then((response) => response.data);
     },
-    { refetchOnWindowFocus: false },
-  );
+    refetchOnWindowFocus: false,
+  });
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);

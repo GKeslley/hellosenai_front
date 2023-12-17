@@ -1,32 +1,12 @@
 import { Box, Paper } from '@mui/material';
 import NavLinkActive from '../../../components/NavLink';
 import { Route, Routes, useParams } from 'react-router-dom';
-import axios from 'axios';
-import { useQuery } from 'react-query';
-import Loading from '../../../components/Helper/Loading';
-import ChallengePosted from './ChallengePosted';
 import ChallengesPerfomed from '../ChallengesPerfomed';
-
-const fetchChallengesByTeacher = async (username) => {
-  const response = await axios
-    .get(`http://127.0.0.1:8000/api/v1/professor/${username}/desafios`)
-    .then((response) => response.data);
-  return response.data;
-};
+import ChallengesContent from './ChallengesContent';
 
 const ChallengesPosted = () => {
   const params = useParams();
 
-  const { data, isLoading, error } = useQuery({
-    queryKey: ['challengesTeacher'],
-    queryFn: () => {
-      return fetchChallengesByTeacher(params.user);
-    },
-    refetchOnWindowFocus: false,
-  });
-
-  if (isLoading) return <Loading />;
-  if (error) return null;
   return (
     <Box
       component="section"
@@ -61,10 +41,7 @@ const ChallengesPosted = () => {
         </Paper>
 
         <Routes>
-          <Route
-            path="/"
-            element={<ChallengePosted data={data} user={params.user} />}
-          ></Route>
+          <Route path="/" element={<ChallengesContent username={params.user} />}></Route>
           <Route path="realizados" element={<ChallengesPerfomed />}></Route>
         </Routes>
       </Box>
