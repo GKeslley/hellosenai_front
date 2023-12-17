@@ -19,6 +19,8 @@ const Comment = ({
   setOpenReply,
   slug,
   queryClient,
+  replies,
+  isChild,
 }) => {
   const reply = useForm();
 
@@ -60,7 +62,13 @@ const Comment = ({
 
   return (
     <Box
-      sx={{ display: 'flex', flexDirection: 'column', gap: '0.125rem', ...sx }}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '0.125rem',
+        margin: isChild ? '10px 0px 10px 46px' : '0',
+        ...sx,
+      }}
       id={id}
     >
       <Box sx={{ display: 'flex', gap: '1rem', alignItems: 'start' }}>
@@ -131,6 +139,23 @@ const Comment = ({
           )}
         </Box>
       )}
+
+      {replies.length > 0 &&
+        replies.map(({ idcomentario, criadoEm, texto, usuario, resposta }) => (
+          <Comment
+            key={idcomentario}
+            id={idcomentario}
+            text={texto}
+            date={criadoEm}
+            user={usuario}
+            openReply={openReply}
+            setOpenReply={setOpenReply}
+            slug={slug}
+            queryClient={queryClient}
+            replies={resposta}
+            isChild={true}
+          />
+        ))}
     </Box>
   );
 };
@@ -147,6 +172,8 @@ Comment.propTypes = {
   setOpenReply: PropTypes.func,
   config: PropTypes.object,
   slug: PropTypes.string,
+  replies: PropTypes.array,
+  isChild: PropTypes.string,
 };
 
 export default Comment;
