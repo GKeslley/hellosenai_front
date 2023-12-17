@@ -1,4 +1,11 @@
-import { Box, Divider, FormControl, Typography } from '@mui/material';
+import {
+  Box,
+  Divider,
+  FormControl,
+  FormControlLabel,
+  ListItem,
+  Typography,
+} from '@mui/material';
 import Input from '../../Form/Input';
 import Title from '../../Title';
 import LockIcon from '@mui/icons-material/Lock';
@@ -11,14 +18,19 @@ import { useMutation } from 'react-query';
 import axios from 'axios';
 import { useNavigate } from 'react-router';
 import RequestError from '../../Helper/RequestError';
-import { useContext } from 'react';
+import { useContext, useRef, useState } from 'react';
 import { UserGlobalContext } from '../../../contexts/UserContext';
+import Checkbox from '@mui/material/Checkbox';
+import { Link } from 'react-router-dom';
+import ModalComponent from '../../Modal';
 
 const RegisterForm = () => {
+  const [openAgreement, setOpenAgreement] = useState(false);
   const { setToken } = useContext(UserGlobalContext);
   const name = useForm(true);
   const email = useForm('email');
   const password = useForm('password');
+  const agremeentRef = useRef();
   const navigate = useNavigate();
 
   const mutation = useMutation({
@@ -27,19 +39,30 @@ const RegisterForm = () => {
     },
     onSuccess: ({ data }) => {
       localStorage.setItem('token', data.plainTextToken);
+      localStorage.setItem('termos', true);
       setToken(data.plainTextToken);
       navigate('/');
     },
   });
 
   const registerUser = async () => {
-    if (name.validate() && email.validate() && password.validate()) {
+    if (
+      name.validate() &&
+      email.validate() &&
+      password.validate() &&
+      agremeentRef.current.checked
+    ) {
       mutation.mutate({
         nome: name.value,
         email: email.value,
         senha: password.value,
       });
     }
+  };
+
+  const handleOpenAgreement = (event) => {
+    event.preventDefault();
+    setOpenAgreement(true);
   };
 
   return (
@@ -113,7 +136,6 @@ const RegisterForm = () => {
           sx={{
             display: 'flex',
             alignItems: 'flex-end',
-            marginBottom: '1rem',
             position: 'relative',
           }}
         >
@@ -145,6 +167,17 @@ const RegisterForm = () => {
           />
         </Box>
 
+        <FormControlLabel
+          control={<Checkbox inputRef={agremeentRef} />}
+          label={
+            <Typography>
+              <Link onClick={handleOpenAgreement}>Eu aceito os termos e condições*</Link>
+            </Typography>
+          }
+          sx={{ textDecoration: 'underline' }}
+          co
+        />
+
         <ButtonComponent
           size="large"
           onClick={registerUser}
@@ -170,6 +203,59 @@ const RegisterForm = () => {
           Log In
         </LinkComponent>
       </Box>
+
+      {openAgreement && (
+        <ModalComponent openModal={openAgreement} setOpenModal={setOpenAgreement}>
+          <ListItem
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              textAlign: 'left',
+              alignItems: 'start',
+            }}
+          >
+            <Typography fontSize="1.2rem" fontWeight="500">
+              Diretrizes da plataforma:
+            </Typography>
+            <Typography>
+              Ao se cadastrar na plataforma você concorda com os termos a seguir:
+            </Typography>
+          </ListItem>
+          <ListItem>
+            <Typography>
+              1ª Em hipótese alguma compartilhar qualquer conteúdo considerado criminoso
+              ou sensível, ou seja, imagens que remetam a violência de qualquer natureza,
+              estando passível a banimento;
+            </Typography>
+          </ListItem>
+          <ListItem>
+            <Typography>
+              2ª Em caso de compartilhamento de dados pessoais como telefone, endereço e
+              outros, a plataforma estará isenta de qualquer responsabilidade, podendo a
+              qualquer momento deletar a postagem, ou comentário, ou até mesmo banir o
+              usuário em casos considerados extremos, isentando a administração da
+              plataforma de qualquer justificativa;
+            </Typography>
+          </ListItem>
+          <ListItem>
+            <Typography>
+              3ª Em hipótese alguma o usuário poderá utilizar os espaços da plataforma,
+              que tem seus objetivos específicos, como por exemplo: espaço de criação de
+              convite deverá ser utilizado único e exclusivamente para criar os convites
+              dos projetos para qualquer informação que fuja os objetivos delimitados;
+            </Typography>
+          </ListItem>
+          <ListItem>
+            <Typography>
+              4ª Os usuários devem agir de forma cordial com os demais. Evitando qualquer
+              tipo de violência verbal, ameaças e qualquer outro tipo de comportamento
+              violento. Constatado qualquer comportamento como o supracitado, o usuário
+              poderá ser banido e a administração da plataforma estará isenta de qualquer
+              justificativa.
+            </Typography>
+          </ListItem>
+        </ModalComponent>
+      )}
     </Box>
   );
 };
