@@ -355,7 +355,7 @@ const Project = () => {
             >
               {data.data.comentarios.length > 0 &&
                 data.data.comentarios.map(
-                  ({ idcomentario, criadoEm, resposta, texto, usuario }) => (
+                  ({ idcomentario, criadoEm, texto, usuario, resposta }) => (
                     <Box
                       key={idcomentario}
                       sx={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}
@@ -369,19 +369,8 @@ const Project = () => {
                         setOpenReply={setOpenReply}
                         slug={params.slug}
                         queryClient={queryClient}
+                        replies={resposta}
                       />
-                      {resposta && (
-                        <Comment
-                          id={resposta.idcomentario}
-                          text={resposta.texto}
-                          date={resposta.criadoEm}
-                          user={resposta.usuario}
-                          sx={{ margin: '10px 0px 10px 46px' }}
-                          isReply={true}
-                          slug={params.slug}
-                          queryClient={queryClient}
-                        />
-                      )}
                     </Box>
                   ),
                 )}
