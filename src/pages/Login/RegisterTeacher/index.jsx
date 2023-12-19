@@ -8,6 +8,7 @@ import { useMutation } from 'react-query';
 import axios from 'axios';
 import { useState } from 'react';
 import SnackbarRequest from '../../../components/SnackbarRequest';
+import RequestError from '../../../components/Helper/RequestError';
 
 const RegisterTeacher = () => {
   const [openSnackbar, setOpenSnackbar] = useState({
@@ -37,9 +38,6 @@ const RegisterTeacher = () => {
       });
     },
   });
-
-  console.log(openSnackbar);
-  console.log('dasdadsa');
 
   const sendMessage = () => {
     if (name.validate() && email.validate()) {
@@ -105,6 +103,8 @@ const RegisterTeacher = () => {
           >
             Enviar
           </ButtonComponent>
+
+          {mutation.error && <RequestError mutation={mutation} />}
         </FormControl>
         <HelperTeacher />
 

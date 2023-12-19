@@ -185,6 +185,7 @@ const RegisterForm = () => {
         >
           Registrar
         </ButtonComponent>
+        {mutation.error && <RequestError mutation={mutation} />}
       </FormControl>
 
       <Divider variant="inset" />

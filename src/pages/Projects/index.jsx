@@ -26,7 +26,11 @@ import useInfiniteScroll from '../../hooks/useInfiniteScroll';
 
 const Projects = () => {
   const [openModal, setOpenModal] = useState(false);
-  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [openSnackbar, setOpenSnackbar] = useState({
+    open: false,
+    message: '',
+    severity: '',
+  });
   const [challenge, setChallenge] = useState(null);
   const handleOpen = () => setOpenModal(true);
   const isMobile = useMediaQuery('(min-width: 768px)');
@@ -48,13 +52,17 @@ const Projects = () => {
 
       return axios.post('http://127.0.0.1:8000/api/v1/projeto', data, config);
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['projects'], type: 'active' });
+    onSuccess: ({ data }) => {
+      setOpenSnackbar({ open: true, message: data.message, severity: 'success' });
       setOpenModal(false);
-      setOpenSnackbar(true);
+      queryClient.invalidateQueries({ queryKey: ['projects'], type: 'active' });
     },
-    onError: () => {
-      setOpenSnackbar(true);
+    onError: (error) => {
+      setOpenSnackbar({
+        open: true,
+        message: error.response.data.message,
+        severity: 'error',
+      });
     },
   });
 
@@ -158,6 +166,7 @@ const Projects = () => {
               infinite={infinite}
               setInfinite={setInfinite}
               queryClient={queryClient}
+              setOpenSnackbar={setOpenSnackbar}
             />
           ))}
         </Paper>
@@ -173,16 +182,12 @@ const Projects = () => {
         />
       )}
 
-      {openSnackbar && (
+      {openSnackbar.open && (
         <SnackbarRequest
-          message={
-            mutation.isSuccess
-              ? mutation.data.data.message
-              : mutation.error.response.data.message
-          }
+          message={openSnackbar.message}
           open={openSnackbar}
-          onClose={() => setOpenSnackbar(false)}
-          severity={mutation.isSuccess ? 'success' : 'error'}
+          onClose={() => setOpenSnackbar({ open: false, message: '', severity: '' })}
+          severity={openSnackbar.severity}
         />
       )}
     </Container>

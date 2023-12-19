@@ -1,6 +1,7 @@
 import { Box, Grid } from '@mui/material';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import Image from '../../../../components/Helper/Image';
 
 const ProjectItem = ({ data }) => {
   return (
@@ -24,19 +25,25 @@ const ProjectItem = ({ data }) => {
           {typeof data.status === 'number' && (
             <>
               {data.status === 1 ? (
-                <Box
-                  component="img"
-                  sx={{ height: '100%', objectFit: 'cover', width: '100%' }}
+                <Image
                   src={`http://127.0.0.1:8000${data.imagem}`}
                   alt={data.imagem}
+                  sx={{
+                    objectFit: 'cover',
+                    width: '100%',
+                    height: '100%',
+                  }}
                 />
               ) : (
                 <Box sx={{ height: '100%' }}>
-                  <Box
-                    component="img"
-                    sx={{ height: '100%', objectFit: 'cover', width: '100%' }}
+                  <Image
                     src={`http://127.0.0.1:8000${data.imagem}`}
                     alt={data.imagem}
+                    sx={{
+                      objectFit: 'cover',
+                      width: '100%',
+                      height: '100%',
+                    }}
                   />
                   <Box
                     sx={{

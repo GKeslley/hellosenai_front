@@ -12,12 +12,16 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import AssignmentIcon from '@mui/icons-material/Assignment';
+import { useState } from 'react';
+import Dialog from '@mui/material/Dialog';
+import Error from '../Error';
 
 const Challenge = () => {
+  const [openImage, setOpenImage] = useState(false);
   const params = useParams();
   const isMobile = useMediaQuery('(max-width: 768px)');
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: ['challenge', params],
     queryFn: () => {
       return axios
@@ -27,6 +31,10 @@ const Challenge = () => {
   });
 
   if (isLoading) return <Loading />;
+  if (error)
+    return (
+      <Error message={error.response.data.message} statusCode={error.response.status} />
+    );
   return (
     <Container sx={{ marginTop: '2rem', marginBottom: '2rem' }}>
       {data && (
@@ -65,6 +73,38 @@ const Challenge = () => {
             <Typography sx={{ whiteSpace: 'pre-line' }}>
               {data.data.desafio.descricao}
             </Typography>
+
+            {data.data.desafio.imagem && (
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  border: '1px solid #eee',
+                  borderRadius: '0.5rem',
+                  maxWidth: 'max-content',
+                  width: 'calc(50% - 0.75rem)',
+                  marginTop: '1.5rem',
+                  cursor: 'pointer',
+                }}
+                onClick={() => setOpenImage(true)}
+              >
+                <Box component="figure" sx={{ height: '4.375rem', width: '6.5625rem' }}>
+                  <Box
+                    component="img"
+                    src={`http://127.0.0.1:8000${data.data.desafio.imagem}`}
+                    alt={data.data.desafio.imagem}
+                    sx={{
+                      height: '100%',
+                      width: '100%',
+                      objectFit: 'cover',
+                      borderRadius: '0.5rem',
+                    }}
+                  />
+                </Box>
+                <Divider orientation="vertical" flexItem />
+                <Typography sx={{ padding: '0 5rem 0 1rem' }}>Anexo</Typography>
+              </Box>
+            )}
           </Box>
 
           <Paper
@@ -87,6 +127,16 @@ const Challenge = () => {
             </Button>
           </Paper>
         </Box>
+      )}
+
+      {openImage && (
+        <Dialog onClose={() => setOpenImage(false)} open={openImage}>
+          <Box
+            component="img"
+            src={`http://127.0.0.1:8000${data.data.desafio.imagem}`}
+            alt={data.data.desafio.imagem}
+          />
+        </Dialog>
       )}
     </Container>
   );

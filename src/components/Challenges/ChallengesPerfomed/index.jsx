@@ -56,8 +56,6 @@ const ChallengesPerfomed = () => {
     { refetchOnWindowFocus: false },
   );
 
-  console.log(data);
-
   if (isLoading) return <Loading />;
   return (
     <Container

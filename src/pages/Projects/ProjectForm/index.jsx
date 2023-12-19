@@ -74,9 +74,10 @@ const ProjectForm = ({
       formData.append('github', github.value);
       formData.append('imagem', imagePreview.raw);
 
-      if (participants.length) {
-        formData.append('participantes', JSON.stringify(participants));
-      }
+      formData.append(
+        'participantes',
+        JSON.stringify(participants.length ? participants : []),
+      );
 
       if (challenge) {
         formData.append('desafio', challenge);
@@ -91,6 +92,7 @@ const ProjectForm = ({
     name.setValue(project.name);
     description.setValue(project.description);
     status.setValue(project.status.toLowerCase());
+    github.setValue(project.github);
     setParticipants(() => {
       if (!project.participants.length) return [];
       const values = project.participants.map(({ apelido }) => {

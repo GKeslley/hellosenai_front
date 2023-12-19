@@ -5,6 +5,7 @@ import Loading from '../../../../components/Helper/Loading';
 import Stylebreak from '../../../../components/Stylebreak';
 import ProjectItem from '../ProjectItem';
 import PropTypes from 'prop-types';
+import { useEffect } from 'react';
 
 const ProjectsContent = ({ page, infinite, setInfinite, username }) => {
   const { data, isLoading } = useQuery({
@@ -24,11 +25,11 @@ const ProjectsContent = ({ page, infinite, setInfinite, username }) => {
     refetchOnWindowFocus: false,
   });
 
-  console.log(data);
-
-  if (infinite && data && !data.links.next) {
-    setInfinite(false);
-  }
+  useEffect(() => {
+    if (infinite && data && !data.next_page_url) {
+      setInfinite(false);
+    }
+  }, [infinite, data, setInfinite]);
 
   if (isLoading) return <Loading />;
   return (
@@ -38,7 +39,10 @@ const ProjectsContent = ({ page, infinite, setInfinite, username }) => {
           {data.data.map(({ imagem, slug, status }) => (
             <ProjectItem key={slug} data={{ imagem, slug, status }} />
           ))}
-          <Stylebreak length={data.data.length > 0 ? data.data.length - 1 : 0} width="300px" />
+          <Stylebreak
+            length={data.data.length < 2 ? data.data.length : data.data.length - 1}
+            width="300px"
+          />
         </>
       ) : (
         <Typography>O usuário não possui projetos</Typography>

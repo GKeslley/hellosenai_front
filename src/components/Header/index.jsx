@@ -36,12 +36,14 @@ const Header = () => {
         } grid ${isOutOfHome ? '' : 'grid-rows-auto2'} gap-12`}
       >
         <div className="flex flex-1 flex-wrap justify-between h-max items-center p-8">
-          <Box
-            component="img"
-            src={Logo}
-            alt="Logo Hello Senai"
-            className="max-w-[5rem]"
-          />
+          <Link to="/">
+            <Box
+              component="img"
+              src={Logo}
+              alt="Logo Hello Senai"
+              className="max-w-[5rem]"
+            />
+          </Link>
           <nav>
             <ul className="flex gap-6 items-center">
               {!screenIsMobile && (

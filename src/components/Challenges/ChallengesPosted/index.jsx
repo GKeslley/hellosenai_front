@@ -3,6 +3,7 @@ import NavLinkActive from '../../../components/NavLink';
 import { Route, Routes, useParams } from 'react-router-dom';
 import ChallengesPerfomed from '../ChallengesPerfomed';
 import ChallengesContent from './ChallengesContent';
+import Error from '../../../pages/Error';
 
 const ChallengesPosted = () => {
   const params = useParams();
@@ -43,6 +44,10 @@ const ChallengesPosted = () => {
         <Routes>
           <Route path="/" element={<ChallengesContent username={params.user} />}></Route>
           <Route path="realizados" element={<ChallengesPerfomed />}></Route>
+          <Route
+            path="*"
+            element={<Error message="Página não encontrada" statusCode="400" />}
+          ></Route>
         </Routes>
       </Box>
     </Box>

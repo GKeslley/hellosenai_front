@@ -20,6 +20,7 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import axios from 'axios';
 import SnackbarRequest from '../../components/SnackbarRequest';
 import AvatarUser from '../../components/Avatar';
+import Error from '../Error';
 
 const Profile = () => {
   const isMobile = useMediaQuery('(min-width: 768px)');
@@ -237,6 +238,10 @@ const Profile = () => {
         <Routes>
           <Route path="/" element={<User />}></Route>
           <Route path="configuracoes" element={<Settings />}></Route>
+          <Route
+            path="*"
+            element={<Error message="Página não encontrada" statusCode="400" />}
+          ></Route>
         </Routes>
       </Box>
 

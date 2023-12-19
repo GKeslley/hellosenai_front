@@ -173,7 +173,7 @@ Comment.propTypes = {
   config: PropTypes.object,
   slug: PropTypes.string,
   replies: PropTypes.array,
-  isChild: PropTypes.string,
+  isChild: PropTypes.bool,
 };
 
 export default Comment;

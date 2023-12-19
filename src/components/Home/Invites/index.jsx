@@ -6,6 +6,7 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
+  Box,
 } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Link } from 'react-router-dom';
@@ -36,7 +37,7 @@ const Invites = () => {
       sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
     >
       {invites.map(({ autor, label }, i) => (
-        <>
+        <Box key={i}>
           <ListItem alignItems="flex-start">
             <ListItemAvatar>
               <AccountCircleIcon />
@@ -59,7 +60,7 @@ const Invites = () => {
             />
           </ListItem>
           {i != invites.length - 1 ? <Divider variant="inset" component="li" /> : ''}
-        </>
+        </Box>
       ))}
       <Link className="block text-end py-1 px-5 color-blue-header underline w-max justify-self-end">
         Mais Convites

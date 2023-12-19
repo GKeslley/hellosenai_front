@@ -13,9 +13,12 @@ import Loading from '../../components/Helper/Loading';
 import Subtitle from '../../components/Subtitle';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import ButtonComponent from '../../components/Button';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import Error from '../Error';
+import { UserGlobalContext } from '../../contexts/UserContext';
 
 const Teachers = () => {
+  const { data: dataUser, isLoading: loadingUser } = useContext(UserGlobalContext);
   const [id, setId] = useState(null);
   const queryClient = useQueryClient();
 
@@ -50,6 +53,9 @@ const Teachers = () => {
     mutation.mutate({ data: email, token });
   };
 
+  if (loadingUser) return <Loading />;
+  if (dataUser && dataUser.permissao !== 'adm')
+    return <Error message="Autorização negada" statusCode="401" />;
   if (isLoading) return <Loading />;
   return (
     <Container sx={{ marginTop: '2rem', marginBottom: '2rem' }}>

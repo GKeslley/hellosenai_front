@@ -13,7 +13,7 @@ const SnackbarRequest = ({ message, open, onClose, severity }) => {
 
 SnackbarRequest.propTypes = {
   message: PropTypes.string,
-  open: PropTypes.bool,
+  open: PropTypes.object,
   onClose: PropTypes.func,
   severity: PropTypes.string,
 };

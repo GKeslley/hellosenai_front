@@ -1,5 +1,5 @@
 import ModalComponent from '../../../components/Modal';
-import { Box, Divider, ListItem, Typography } from '@mui/material';
+import { Box, Divider, ListItem, Typography, useMediaQuery } from '@mui/material';
 import PropTypes from 'prop-types';
 import ButtonComponent from '../../../components/Button';
 import Input from '../../../components/Form/Input';
@@ -21,8 +21,7 @@ const ModalCreateInvite = ({
 }) => {
   const titleInput = useForm(true);
   const description = useForm(true);
-
-  console.log(localStorage.getItem('token'));
+  const isSmallSmarthphone = useMediaQuery('(max-width: 600px)');
 
   const mutation = useMutation({
     mutationFn: ({ data, token }) => {
@@ -132,7 +131,7 @@ const ModalCreateInvite = ({
             label="Descrição"
             variant="outlined"
             multiline
-            minRows={5}
+            minRows={isSmallSmarthphone ? 18 : 5}
             isError={description.error.isError}
             value={description.value}
             onChange={description.onChange}

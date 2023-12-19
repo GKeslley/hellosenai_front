@@ -7,8 +7,6 @@ import PropTypes from 'prop-types';
 const ChallengeCards = ({ data }) => {
   const isMobile = useMediaQuery('(max-width: 768px)');
 
-  console.log(data);
-
   return (
     <Box
       sx={{
@@ -40,7 +38,7 @@ const ChallengeCards = ({ data }) => {
 };
 
 ChallengeCards.propTypes = {
-  data: PropTypes.array,
+  data: PropTypes.object,
 };
 
 export default ChallengeCards;

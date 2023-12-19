@@ -5,10 +5,14 @@ import useForm from '../../../hooks/useForm';
 import ButtonComponent from '../../../components/Button';
 import { useMutation } from 'react-query';
 import axios from 'axios';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import SnackbarRequest from '../../../components/SnackbarRequest';
+import { UserGlobalContext } from '../../../contexts/UserContext';
+import Loading from '../../../components/Helper/Loading';
+import Error from '../../Error';
 
 const RegisterAdm = () => {
+  const { data, isLoading } = useContext(UserGlobalContext);
   const [openSnackbar, setOpenSnackbar] = useState({
     open: false,
     message: '',
@@ -53,6 +57,9 @@ const RegisterAdm = () => {
     }
   };
 
+  if (isLoading) return <Loading />;
+  if (data && data.permissao !== 'adm')
+    return <Error message="Autorização negada" statusCode="401" />;
   return (
     <Box sx={{ flexGrow: '1', position: 'relative' }}>
       <Container sx={{ marginTop: '2rem', marginBottom: '2rem' }}>

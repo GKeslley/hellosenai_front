@@ -1,4 +1,12 @@
-import { Card, CardContent, CardActionArea, CardActions, Box, Grid, Avatar } from '@mui/material';
+import {
+  Card,
+  CardContent,
+  CardActionArea,
+  CardActions,
+  Box,
+  Grid,
+  Avatar,
+} from '@mui/material';
 import Typography from '@mui/material/Typography';
 import './styles.css';
 import ButtonComponent from '../../../Button';
@@ -19,9 +27,7 @@ const Invite = ({
   participantes,
   setDataInvite,
 }) => {
-  const [openParticipants, setOpenParticipants] = useState(false)
-
-  console.log(participantes);
+  const [openParticipants, setOpenParticipants] = useState(false);
 
   const handleClick = () => {
     setDataInvite({
@@ -47,16 +53,31 @@ const Invite = ({
     >
       <CardActionArea>
         <CardContent>
-          <Box sx={{display: 'flex', alignItems: 'center', marginBottom: '0.85rem', justifyContent: "space-between"}}>
-            <Box sx={{display: 'flex', alignItems: 'center', gap: '0.85rem'}}>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              marginBottom: '0.85rem',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
               <AvatarUser avatar={author.avatar} sx={{ width: '30px', height: '30px' }} />
               <Link to={`/usuario/${author.apelido}`}>{author.nome}</Link>
             </Box>
 
-            {participantes && 
-            <Typography sx={{textDecoration: 'underline'}} onClick={() => setOpenParticipants(true)}>
-              {participantes.length ? `${participantes.length} ${participantes.length > 1 ? 'participantes' : 'participante'}` : '0 participantes'}
-            </Typography>}
+            {participantes && (
+              <Typography
+                sx={{ textDecoration: 'underline' }}
+                onClick={() => setOpenParticipants(true)}
+              >
+                {participantes.length
+                  ? `${participantes.length} ${
+                      participantes.length > 1 ? 'participantes' : 'participante'
+                    }`
+                  : '0 participantes'}
+              </Typography>
+            )}
           </Box>
           <Typography gutterBottom fontSize="1.2rem" fontWeight="500">
             {title}
@@ -75,8 +96,13 @@ const Invite = ({
         </ButtonComponent>
       </CardActions>
 
-      {openParticipants && participantes && participantes.length > 0 && 
-        <InviteParticipants participants={participantes} handleClose={() => setOpenParticipants(false)} open={openParticipants} />}
+      {openParticipants && participantes && participantes.length > 0 && (
+        <InviteParticipants
+          participants={participantes}
+          handleClose={() => setOpenParticipants(false)}
+          open={openParticipants}
+        />
+      )}
     </Grid>
   );
 };

@@ -62,7 +62,7 @@ NavLinkActive.propTypes = {
   background: PropTypes.string,
   fontWeight: PropTypes.string,
   after: PropTypes.object,
-  top: PropTypes.bool,
+  top: PropTypes.string,
   sx: PropTypes.object,
 };
 

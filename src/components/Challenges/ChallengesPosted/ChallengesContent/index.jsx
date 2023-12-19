@@ -36,9 +36,9 @@ const ChallengesContent = ({ username }) => {
       >
         <Box sx={{ alignSelf: 'end', color: '#fff', padding: '1rem 2rem' }}>
           <Title sx={{ color: '#fff' }}>Desafios</Title>
-          <Link to={`/usuario/${author.name}`} marginLeft="2px">
+          <Box component={Link} to={`/usuario/${author.name}`} sx={{ marginLeft: '2px' }}>
             {author.username}
-          </Link>
+          </Box>
         </Box>
       </Box>
 

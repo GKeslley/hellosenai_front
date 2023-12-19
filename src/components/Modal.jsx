@@ -19,7 +19,7 @@ const ModalComponent = ({ children, openModal, setOpenModal }) => {
           '& .MuiDialog-container': {
             '& .MuiPaper-root': {
               minWidth: !isSmallSmartphone ? '100vw' : '85vw',
-              minHeight: !isSmallSmartphone ? '100vh' : 'auto',
+              minHeight: !isSmallSmartphone ? '80vh' : 'auto',
             },
           },
         }}

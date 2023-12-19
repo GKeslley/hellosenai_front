@@ -8,6 +8,7 @@ import ChallengeCards from '../../components/Challenges/ChallengesCards';
 import { Route, Routes } from 'react-router';
 import ChallengesPosted from '../../components/Challenges/ChallengesPosted';
 import Challenge from '../Challenge';
+import Error from '../Error';
 
 const Challenges = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -49,6 +50,10 @@ const Challenges = () => {
         <Route path="/" element={<ChallengeCards data={data} />}></Route>
         <Route path=":user/*" element={<ChallengesPosted />}></Route>
         <Route path="desafio/:slug" element={<Challenge />}></Route>
+        <Route
+          path="*"
+          element={<Error message="Página não encontrada" statusCode="400" />}
+        ></Route>
       </Routes>
     </Box>
   );

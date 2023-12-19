@@ -17,8 +17,6 @@ const Notifications = () => {
       .then((response) => response.data);
   });
 
-  console.log(data);
-
   if (isLoading) <Loading />;
   return (
     <Container sx={{ marginTop: '2rem', marginBottom: '2rem' }}>

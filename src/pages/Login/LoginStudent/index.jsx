@@ -3,6 +3,7 @@ import studentsImage from '../../../assets/login/students.png';
 import LoginForm from '../../../components/Login/LoginForm';
 import RegisterForm from '../../../components/Login/RegisterForm';
 import { Route, Routes } from 'react-router-dom';
+import Error from '../../Error';
 
 const LoginStudent = () => {
   const isMobile = useMediaQuery('(min-width: 768px)');
@@ -27,6 +28,10 @@ const LoginStudent = () => {
       <Routes>
         <Route path="/" element={<LoginForm />} />
         <Route path="registro" element={<RegisterForm />} />
+        <Route
+          path="*"
+          element={<Error message="Página não encontrada" statusCode="400" />}
+        ></Route>
       </Routes>
     </Container>
   );

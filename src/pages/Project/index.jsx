@@ -93,6 +93,7 @@ const Project = () => {
       setOpenDialog(false);
       setAnchorEl(false);
       navigate(`/projetos/${data.data.slug}`);
+      queryClient.invalidateQueries({ queryKey: ['project'], type: 'active' });
     },
   });
 
@@ -180,20 +181,25 @@ const Project = () => {
     );
   return (
     <Container sx={{ marginBottom: '2rem', marginTop: '2rem' }}>
-      <Box component='figure' 
+      <Box
+        component="figure"
         sx={{
-            height: '20rem',
+          height: '20rem',
+          width: '100%',
+          marginBottom: '1.5rem',
+        }}
+      >
+        <Image
+          src={`http://127.0.0.1:8000${data.data.imagem}`}
+          alt="facebook"
+          sx={{
+            objectFit: 'cover',
             width: '100%',
-            marginBottom: '1.5rem',
-        }}>
-          <Image src={`http://127.0.0.1:8000${data.data.imagem}`} alt='facebook' sx={{
-              objectFit: 'cover',
-              width: '100%',
-              height: '100%',
-            }}  
-          />
+            height: '100%',
+          }}
+        />
       </Box>
-      
+
       <Container>
         <Box
           sx={{
@@ -231,7 +237,7 @@ const Project = () => {
                   Editar
                 </MenuItem>
                 {data.data.status === 1 ? (
-                  <>
+                  <Box>
                     {mutationDisableProject.isLoading ? (
                       <MenuItem sx={{ gap: '0.5rem' }}>
                         <DeleteIcon />
@@ -243,9 +249,9 @@ const Project = () => {
                         Desativar
                       </MenuItem>
                     )}
-                  </>
+                  </Box>
                 ) : (
-                  <>
+                  <Box>
                     {mutationRestoreProject.isLoading ? (
                       <MenuItem sx={{ gap: '0.5rem' }}>
                         <RestoreIcon />
@@ -257,7 +263,7 @@ const Project = () => {
                         Ativar
                       </MenuItem>
                     )}
-                  </>
+                  </Box>
                 )}
               </Menu>
             </Box>
@@ -277,7 +283,12 @@ const Project = () => {
               <Subtitle sx={{ marginBottom: '1rem' }}>Participantes</Subtitle>
               <Box sx={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 {data.data.participantes.map(({ nome, apelido, avatar }) => (
-                  <>
+                  <Box
+                    key={apelido}
+                    sx={{
+                      maxWidth: 'max-content',
+                    }}
+                  >
                     <LinkComponent to={`/usuario/${apelido}`} animation={false}>
                       <Box sx={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                         <AvatarUser
@@ -287,7 +298,7 @@ const Project = () => {
                         {nome}
                       </Box>
                     </LinkComponent>
-                  </>
+                  </Box>
                 ))}
               </Box>
             </Box>
@@ -301,17 +312,20 @@ const Project = () => {
             </Box>
           </Box>
 
-          {data.data.desafio && 
+          {data.data.desafio && (
             <Box component="li">
               <Subtitle sx={{ marginBottom: '1rem' }}>Desafio</Subtitle>
               <Box sx={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
                 <FlagIcon />
-                <Typography component={Link} to={`/desafios/desafio/${data.data.desafio.slug}`}>
+                <Typography
+                  component={Link}
+                  to={`/desafios/desafio/${data.data.desafio.slug}`}
+                >
                   {data.data.desafio.titulo}
                 </Typography>
               </Box>
             </Box>
-          }
+          )}
 
           <Box component="li">
             <Subtitle sx={{ marginBottom: '1rem' }}>Sobre</Subtitle>
@@ -402,6 +416,7 @@ const Project = () => {
             name: data.data.nomeProjeto,
             description: data.data.descricao,
             participants: data.data.participantes,
+            github: data.data.github,
             status: data.data.projetoStatus,
             image: data.data.imagem,
             slug: data.data.slug,

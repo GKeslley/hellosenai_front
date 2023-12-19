@@ -23,8 +23,6 @@ const ProfileProjects = () => {
     refetchOnWindowFocus: false,
   });
 
-  console.log(data.data.length);
-
   if (isLoading) return <Loading />;
   return (
     <Box component="article" sx={{ display: 'flex', flexWrap: 'wrap' }}>
@@ -45,7 +43,7 @@ const ProfileProjects = () => {
             ),
           )}
 
-          { <Stylebreak length={data.data.length} width="250px" />}
+          {<Stylebreak length={data.data.length} width="250px" />}
         </>
       )}
     </Box>

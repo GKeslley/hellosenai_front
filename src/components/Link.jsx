@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 const LinkComponent = ({
   children,
   to,
-  end = false,
+  end = 'false',
   color = '#fff',
   decoration = 'none',
   animation = true,
@@ -48,7 +48,7 @@ const LinkComponent = ({
 };
 
 LinkComponent.propTypes = {
-  children: PropTypes.string,
+  children: PropTypes.object,
   to: PropTypes.string,
   end: PropTypes.bool,
   color: PropTypes.string,

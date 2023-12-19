@@ -71,7 +71,7 @@ ChallengePosted.propTypes = {
   setChallenge: PropTypes.func,
   setOpenDialog: PropTypes.func,
   dataUser: PropTypes.object,
-  openSnackbar: PropTypes.bool,
+  openSnackbar: PropTypes.object,
   setOpenSnackbar: PropTypes.func,
 };
 

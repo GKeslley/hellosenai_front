@@ -10,6 +10,7 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import Loading from '../../components/Helper/Loading';
 import Subtitle from '../../components/Subtitle';
 import AvatarUser from '../../components/Avatar';
+import Error from '../Error';
 
 const User = () => {
   const params = useParams();
@@ -20,10 +21,11 @@ const User = () => {
       .then((response) => response.data);
   });
 
-  console.log(params);
-
   if (isLoading) return <Loading />;
-  if (error) return null;
+  if (error)
+    return (
+      <Error message={error.response.data.message} statusCode={error.response.status} />
+    );
   return (
     <Box component="section" sx={{ display: 'grid', gridTemplateRows: 'auto 1fr' }}>
       <Box sx={{ position: 'relative' }}>
@@ -115,6 +117,10 @@ const User = () => {
                   <Route
                     path="convites"
                     element={<UserInvites username={params.user} />}
+                  ></Route>
+                  <Route
+                    path="*"
+                    element={<Error message="Página não encontrada" statusCode="400" />}
                   ></Route>
                 </Routes>
               </>

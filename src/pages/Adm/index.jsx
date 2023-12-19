@@ -4,8 +4,17 @@ import warningImage from '../../assets/teste2.png';
 import adm from '../../assets/login/sla.png';
 import Title from '../../components/Title';
 import { Link } from 'react-router-dom';
+import { useContext } from 'react';
+import { UserGlobalContext } from '../../contexts/UserContext';
+import Error from '../Error/index';
+import Loading from '../../components/Helper/Loading';
 
 const Adm = () => {
+  const { data, isLoading } = useContext(UserGlobalContext);
+
+  if (isLoading) return <Loading />;
+  if (data && data.permissao !== 'adm')
+    return <Error message="Autorização negada" statusCode="401" />;
   return (
     <Container
       sx={{

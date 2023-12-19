@@ -21,7 +21,6 @@ const ChallengeItem = ({
 
   const mutation = useMutation({
     mutationFn: ({ slug, token }) => {
-      console.log(token);
       const config = {
         headers: { Authorization: `Bearer ${token}` },
       };
@@ -55,7 +54,6 @@ const ChallengeItem = ({
 
   const handleDeleteChallenge = (slug) => {
     const token = localStorage.getItem('token');
-    console.log('dsadsasa', token);
     if (confirm('Realmente deseja deletar o desafio?') === true) {
       setAnchorEl(false);
       mutation.mutate({ slug, token });

@@ -28,8 +28,6 @@ const Denounces = () => {
     headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
   };
 
-  console.log(denounce);
-
   const { data, isLoading } = useQuery('denounces', () => {
     return axios
       .get('http://127.0.0.1:8000/api/v1/denuncia', config)
@@ -40,7 +38,6 @@ const Denounces = () => {
     setDenounce(data);
     setOpenModal(true);
   };
-  console.log(data);
 
   if (isLoading) return <Loading />;
   return (

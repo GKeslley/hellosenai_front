@@ -15,6 +15,8 @@ import Adm from './pages/Adm';
 import Denounces from './components/Denounces';
 import Teachers from './pages/Teachers';
 import RegisterAdm from './pages/Adm/Register';
+import ProtectedRoute from './components/Helper/ProtectedRoute';
+import Error from './pages/Error';
 
 const CreateRoutes = () => {
   return (
@@ -28,13 +30,59 @@ const CreateRoutes = () => {
       <Route path="/projetos/:slug" element={<Project />}></Route>
       <Route path="/convites" element={<Invites />}></Route>
       <Route path="/desafios/*" element={<Challenges />}></Route>
-      <Route path="/perfil/*" element={<Profile />}></Route>
+      <Route
+        path="/perfil/*"
+        element={
+          <ProtectedRoute>
+            <Profile />
+          </ProtectedRoute>
+        }
+      ></Route>
       <Route path="/usuario/:user/*" element={<User />}></Route>
-      <Route path="/adm" element={<Adm />}></Route>
-      <Route path="/adm/professor" element={<Teachers />}></Route>
-      <Route path="/adm/denuncias" element={<Denounces />}></Route>
-      <Route path="/adm/registrar" element={<RegisterAdm />}></Route>
-      <Route path="/notificacoes" element={<Notifications />}></Route>
+      <Route
+        path="/adm"
+        element={
+          <ProtectedRoute>
+            <Adm />
+          </ProtectedRoute>
+        }
+      ></Route>
+      <Route
+        path="/adm/professor"
+        element={
+          <ProtectedRoute>
+            <Teachers />
+          </ProtectedRoute>
+        }
+      ></Route>
+      <Route
+        path="/adm/denuncias"
+        element={
+          <ProtectedRoute>
+            <Denounces />
+          </ProtectedRoute>
+        }
+      ></Route>
+      <Route
+        path="/adm/registrar"
+        element={
+          <ProtectedRoute>
+            <RegisterAdm />
+          </ProtectedRoute>
+        }
+      ></Route>
+      <Route
+        path="/notificacoes"
+        element={
+          <ProtectedRoute>
+            <Notifications />
+          </ProtectedRoute>
+        }
+      ></Route>
+      <Route
+        path="*"
+        element={<Error message="Página não encontrada" statusCode="400" />}
+      ></Route>
     </Routes>
   );
 };
