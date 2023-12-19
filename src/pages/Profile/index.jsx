@@ -16,7 +16,7 @@ import { useContext, useState } from 'react';
 import { UserGlobalContext } from '../../contexts/UserContext';
 import Loading from '../../components/Helper/Loading';
 import Settings from './Settings';
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import axios from 'axios';
 import SnackbarRequest from '../../components/SnackbarRequest';
 import AvatarUser from '../../components/Avatar';
@@ -24,7 +24,7 @@ import AvatarUser from '../../components/Avatar';
 const Profile = () => {
   const isMobile = useMediaQuery('(min-width: 768px)');
   const queryClient = useQueryClient();
-  const { data, isLoading } = useContext(UserGlobalContext);
+  const { data, isLoading, token } = useContext(UserGlobalContext);
   const [openSnackbar, setOpenSnackbar] = useState({
     open: false,
     message: '',
@@ -53,14 +53,28 @@ const Profile = () => {
     },
   });
 
+  const { data: totalInvitesProjects } = useQuery({
+    queryKey: ['totalInvitesProjects'],
+    queryFn: () => {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      return axios
+        .get('http://127.0.0.1:8000/api/v1/usuario/convites-projetos/total', config)
+        .then((response) => response.data);
+    },
+    refetchOnWindowFocus: false,
+  });
+
   const changeAvatar = ({ target }) => {
     const token = localStorage.getItem('token');
     const formData = new FormData();
     formData.append('avatar', target.files[0]);
     mutation.mutate({ data: formData, token });
   };
-
-  console.log(data);
 
   if (isLoading) return <Loading />;
   return (
@@ -165,7 +179,9 @@ const Profile = () => {
               }}
             >
               <Typography fontSize="1.1rem">Projetos</Typography>
-              <Typography component="span">13</Typography>
+              <Typography component="span">
+                {totalInvitesProjects && totalInvitesProjects.projetos}
+              </Typography>
             </Box>
 
             <Box
@@ -177,7 +193,9 @@ const Profile = () => {
               }}
             >
               <Typography fontSize="1.1rem">Convites</Typography>
-              <Typography component="span">15</Typography>
+              <Typography component="span">
+                {totalInvitesProjects && totalInvitesProjects.convites}
+              </Typography>
             </Box>
           </ListItem>
         </Paper>

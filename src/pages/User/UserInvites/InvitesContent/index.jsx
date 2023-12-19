@@ -45,7 +45,7 @@ const InvitesContent = ({ page, username, infinite, setInfinite }) => {
             />
           ))}
 
-          <Stylebreak length={data.data.length - 1} width="300px" />
+          <Stylebreak length={data.data.length > 0 ? data.data.length - 1 : 0} width="300px" />
         </>
       ) : (
         <Typography>O usuário não tem convites</Typography>

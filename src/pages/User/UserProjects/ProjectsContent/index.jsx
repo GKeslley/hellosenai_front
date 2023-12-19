@@ -38,7 +38,7 @@ const ProjectsContent = ({ page, infinite, setInfinite, username }) => {
           {data.data.map(({ imagem, slug, status }) => (
             <ProjectItem key={slug} data={{ imagem, slug, status }} />
           ))}
-          <Stylebreak length={data.data.length - 1} width="300px" />
+          <Stylebreak length={data.data.length > 0 ? data.data.length - 1 : 0} width="300px" />
         </>
       ) : (
         <Typography>O usuário não possui projetos</Typography>

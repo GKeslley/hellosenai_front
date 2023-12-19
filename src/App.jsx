@@ -6,6 +6,7 @@ import Footer from './components/Footer';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import UserContext from './contexts/UserContext';
 import { Box } from '@mui/material';
+import ScrollToTop from './components/Helper/ScrollToTop';
 
 const queryClient = new QueryClient();
 
@@ -13,6 +14,7 @@ function App() {
   return (
     <>
       <BrowserRouter>
+        <ScrollToTop />
         <QueryClientProvider client={queryClient}>
           <UserContext>
             <Header />

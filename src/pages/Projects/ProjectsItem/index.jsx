@@ -89,6 +89,8 @@ const ProjectsItem = ({ params, url, page, infinite, setInfinite, queryClient })
                     </Typography>
 
                     <Typography
+                    component={Link}
+                    to={`/usuario/${autor.apelido}`}
                       className="text-gray-400"
                       sx={{
                         whiteSpace: 'nowrap',
@@ -114,7 +116,10 @@ const ProjectsItem = ({ params, url, page, infinite, setInfinite, queryClient })
                     </Typography>
 
                     <Options
-                      sx={{ flexGrow: '1', textAlign: 'end' }}
+                      sx={{ flexGrow: '1', textAlign: 'end', 
+                    '& .MuiButtonBase-root': {
+                      padding: '0'
+                    } }}
                       slugProject={slugProject}
                       getSlugProject={() => getSlugProject(slug)}
                       setSlugProject={setSlugProject}

@@ -31,7 +31,7 @@ const UserContext = ({ children }) => {
   });
 
   return (
-    <UserGlobalContext.Provider value={{ data, isLoading, error, logout, setToken }}>
+    <UserGlobalContext.Provider value={{ data, isLoading, error, logout, token, setToken }}>
       {children}
     </UserGlobalContext.Provider>
   );

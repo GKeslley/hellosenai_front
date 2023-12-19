@@ -22,6 +22,8 @@ const LoginForm = () => {
     return axios.post('http://127.0.0.1:8000/api/auth/login', dataLoginUser);
   });
 
+  console.log(mutation);
+
   const userLogin = () => {
     if (email.validate() && password.validate()) {
       mutation.mutate({

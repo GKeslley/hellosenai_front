@@ -12,7 +12,7 @@ import Subtitle from '../../components/Subtitle';
 import Accordion from '../../components/Accordion';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import Comment from '../../components/Comment';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import axios from 'axios';
 import Loading from '../../components/Helper/Loading';
@@ -30,6 +30,8 @@ import ProjectForm from '../Projects/ProjectForm';
 import Error from '../Error';
 import AvatarUser from '../../components/Avatar';
 import RestoreIcon from '@mui/icons-material/Restore';
+import FlagIcon from '@mui/icons-material/Flag';
+import Image from '../../components/Helper/Image';
 
 const Project = () => {
   const { data: dataUser } = useContext(UserGlobalContext);
@@ -178,17 +180,20 @@ const Project = () => {
     );
   return (
     <Container sx={{ marginBottom: '2rem', marginTop: '2rem' }}>
-      <Box
-        component="img"
-        src={`http://127.0.0.1:8000${data.data.imagem}`}
-        alt="facebook"
+      <Box component='figure' 
         sx={{
-          maxHeight: '20rem',
-          objectFit: 'cover',
-          width: '100%',
-          marginBottom: '1.5rem',
-        }}
-      />
+            height: '20rem',
+            width: '100%',
+            marginBottom: '1.5rem',
+        }}>
+          <Image src={`http://127.0.0.1:8000${data.data.imagem}`} alt='facebook' sx={{
+              objectFit: 'cover',
+              width: '100%',
+              height: '100%',
+            }}  
+          />
+      </Box>
+      
       <Container>
         <Box
           sx={{
@@ -295,6 +300,18 @@ const Project = () => {
               <Typography>{data.data.projetoStatus}</Typography>
             </Box>
           </Box>
+
+          {data.data.desafio && 
+            <Box component="li">
+              <Subtitle sx={{ marginBottom: '1rem' }}>Desafio</Subtitle>
+              <Box sx={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                <FlagIcon />
+                <Typography component={Link} to={`/desafios/desafio/${data.data.desafio.slug}`}>
+                  {data.data.desafio.titulo}
+                </Typography>
+              </Box>
+            </Box>
+          }
 
           <Box component="li">
             <Subtitle sx={{ marginBottom: '1rem' }}>Sobre</Subtitle>
