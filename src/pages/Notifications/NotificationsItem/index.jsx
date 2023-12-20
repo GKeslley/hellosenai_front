@@ -41,7 +41,14 @@ const NotificationsItem = ({ data }) => {
             >
               {data.remetente.nome}
             </Box>
-            <Typography>Aceitou seu convite</Typography>
+            <Typography>{data.mensagem}</Typography>
+
+            {data.destinatario && (
+              <Box component={Link} to={`/usuario/${data.destinatario.apelido}`}>
+                Criador do convite: {data.destinatario.nome}
+              </Box>
+            )}
+
             <Typography component="time">Enviado em: {data.enviadoEm}</Typography>
           </Box>
         </Box>

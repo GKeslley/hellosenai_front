@@ -5,6 +5,7 @@ import Loading from '../../components/Helper/Loading';
 import Title from '../../components/Title';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { Container } from '@mui/material';
+import Error from '../Error';
 
 const Notifications = () => {
   const config = {
@@ -17,7 +18,11 @@ const Notifications = () => {
       .then((response) => response.data);
   });
 
-  if (isLoading) <Loading />;
+  if (isLoading) return <Loading />;
+  if (error)
+    return (
+      <Error message={error.response.data.message} statusCode={error.response.status} />
+    );
   return (
     <Container sx={{ marginTop: '2rem', marginBottom: '2rem' }}>
       <Title sx={{ marginBottom: '1rem' }}>
@@ -27,8 +32,11 @@ const Notifications = () => {
         />
       </Title>
       {data &&
-        data.data.map(({ mensagem, enviadoEm, remetente }, i) => (
-          <NotificationsItem key={i} data={{ mensagem, enviadoEm, remetente }} />
+        data.data.map(({ mensagem, enviadoEm, remetente, destinatario }, i) => (
+          <NotificationsItem
+            key={i}
+            data={{ mensagem, enviadoEm, remetente, destinatario }}
+          />
         ))}
     </Container>
   );
