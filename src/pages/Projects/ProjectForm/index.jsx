@@ -148,7 +148,7 @@ const ProjectForm = ({
               required={true}
               label="Descrição"
               multiline
-              rows={4}
+              rows={10}
               sx={{ width: '100%' }}
               error={description.error.isError}
               value={description.value}
