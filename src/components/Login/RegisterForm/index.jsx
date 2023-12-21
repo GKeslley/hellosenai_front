@@ -122,7 +122,7 @@ const RegisterForm = () => {
             value={email.value}
             onChange={email.onChange}
             onBlur={email.onBlur}
-            helperText={name.error.isError && name.error.message}
+            helperText={email.error.isError && email.error.message}
             label="Email"
             variant="standard"
             sx={{
@@ -156,7 +156,7 @@ const RegisterForm = () => {
             value={password.value}
             onChange={password.onChange}
             onBlur={password.onBlur}
-            helperText={name.error.isError && name.error.message}
+            helperText={password.error.isError && password.error.message}
             label="Senha"
             variant="standard"
             type="password"

@@ -7,6 +7,7 @@ import useForm from '../../../hooks/useForm';
 import { useMutation } from 'react-query';
 import axios from 'axios';
 import { useEffect } from 'react';
+import RequestError from '../../../components/Helper/RequestError';
 
 const ModalCreateInvite = ({
   openModal,
@@ -149,6 +150,7 @@ const ModalCreateInvite = ({
         >
           {buttonTitle}
         </ButtonComponent>
+        <RequestError mutation={inviteTitle ? mutationUpdate : mutation} />
       </Box>
     </ModalComponent>
   );

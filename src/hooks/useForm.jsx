@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 const types = {
   email: {
-    regex: /[^\s@]+@[^\s@]+\.[^\s@]+/,
+    regex: /[^\s@]+@ba.estudante.senai\.br/,
     message: 'Digite um email válido',
   },
   password: {

@@ -101,7 +101,7 @@ const LoginForm = () => {
             value={password.value}
             onChange={password.onChange}
             onBlur={password.onBlur}
-            helperText={email.error.isError && email.error.message}
+            helperText={password.error.isError && password.error.message}
             label="Senha"
             variant="standard"
             type="password"
@@ -115,7 +115,7 @@ const LoginForm = () => {
         <ButtonComponent size="large" onClick={userLogin} isLoading={mutation.isLoading}>
           Log In
         </ButtonComponent>
-        <RequestError mutation={mutation} />
+        {mutation.error && <RequestError mutation={mutation} />}
       </FormControl>
 
       <Divider variant="inset" />
