@@ -22,7 +22,7 @@ const LoginTeacher = () => {
         </Box>
       )}
 
-      <LoginForm />
+      <LoginForm isTeacher={true} />
     </Container>
   );
 };

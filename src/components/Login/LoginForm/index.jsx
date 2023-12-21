@@ -13,9 +13,9 @@ import { Navigate } from 'react-router-dom';
 import { useContext } from 'react';
 import { UserGlobalContext } from '../../../contexts/UserContext';
 
-const LoginForm = () => {
+const LoginForm = ({ isTeacher }) => {
   const { setToken } = useContext(UserGlobalContext);
-  const email = useForm('email');
+  const email = useForm(isTeacher ? true : 'email');
   const password = useForm('password');
 
   const mutation = useMutation((dataLoginUser) => {
