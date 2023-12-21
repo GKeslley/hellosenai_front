@@ -18,6 +18,7 @@ import { useDebounce } from 'use-debounce';
 import PropTypes from 'prop-types';
 import { useQuery } from 'react-query';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 const fetchParticipants = async (username) => {
   const response = await axios
@@ -125,7 +126,9 @@ const ProjectForm = ({
           <Typography variant="h4" fontWeight="500">
             {title}
           </Typography>
-          {challenge && <Typography>Desafio: {challenge}</Typography>}
+          {challenge && (
+            <Link to={`/desafios/desafio/${challenge}`}>Desafio: {challenge}</Link>
+          )}
         </ListItem>
 
         <Divider />
