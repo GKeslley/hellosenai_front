@@ -24,6 +24,9 @@ const ChallengesContent = ({ username }) => {
     severity: '',
   });
 
+  console.log(dataUser);
+  console.log(username);
+
   return (
     <Container sx={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
       <Box
@@ -43,9 +46,8 @@ const ChallengesContent = ({ username }) => {
       </Box>
 
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-        {dataUser &&
-          dataUser.permissao === 'professor' &&
-          dataUser.apelido === username && (
+        {(dataUser && dataUser.permissao === 'professor') ||
+          ('adm' && dataUser.apelido === username && (
             <Paper
               sx={{
                 display: 'flex',
@@ -62,7 +64,7 @@ const ChallengesContent = ({ username }) => {
                 Criar Desafio
               </ButtonComponent>
             </Paper>
-          )}
+          ))}
 
         {pages.map((page) => (
           <ChallengePosted
