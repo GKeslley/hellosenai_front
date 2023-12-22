@@ -19,7 +19,7 @@ const RegisterAdm = () => {
     severity: '',
   });
   const name = useForm(true);
-  const email = useForm('email');
+  const email = useForm(true);
   const password = useForm('password');
 
   const mutation = useMutation({

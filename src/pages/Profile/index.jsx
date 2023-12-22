@@ -236,7 +236,7 @@ const Profile = () => {
         </List>
 
         <Routes>
-          <Route path="/" element={<User />}></Route>
+          <Route path="/" element={<User setOpenSnackbar={setOpenSnackbar} />}></Route>
           <Route path="configuracoes" element={<Settings />}></Route>
           <Route
             path="*"

@@ -35,12 +35,16 @@ const Teachers = () => {
   });
 
   const mutation = useMutation({
-    mutationFn: ({ data, token }) => {
+    mutationFn: ({ email, token }) => {
       const config = {
         headers: { Authorization: `Bearer ${token}` },
       };
 
-      return axios.put(`http://127.0.0.1:8000/api/v1/professor/autenticar`, data, config);
+      return axios.put(
+        `http://127.0.0.1:8000/api/v1/professor/autenticar`,
+        { email: email },
+        config,
+      );
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['invalidTeachers'], type: 'active' });
@@ -50,7 +54,7 @@ const Teachers = () => {
   const authorizeTeacher = (email, i) => {
     const token = localStorage.getItem('token');
     setId(i);
-    mutation.mutate({ data: email, token });
+    mutation.mutate({ email, token });
   };
 
   if (loadingUser) return <Loading />;

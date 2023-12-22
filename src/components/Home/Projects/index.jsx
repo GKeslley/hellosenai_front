@@ -4,6 +4,10 @@ import teste from '../../../assets/logo.png';
 import teste2 from '../../../assets/logo2.png';
 import { Box, Container, useMediaQuery } from '@mui/material';
 import PropTypes from 'prop-types';
+import { useQuery } from 'react-query';
+import axios from 'axios';
+import Loading from '../../Helper/Loading';
+import Image from '../../Helper/Image';
 
 const styleImageTransition = {
   transition: 'transform .5s ease',
@@ -13,6 +17,19 @@ const styleImageTransition = {
 const Projects = ({ refProject }) => {
   const isSmallSmartphone = useMediaQuery('(min-width: 400px)');
 
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['projectsHome'],
+    queryFn: () => {
+      return axios
+        .get(`http://127.0.0.1:8000/api/v1/projeto?limit=3`)
+        .then((response) => response.data);
+    },
+    refetchOnWindowFocus: false,
+  });
+
+  console.log(data);
+
+  if (isLoading) return <Loading />;
   return (
     <Container ref={refProject}>
       <Subtitle>Projetos Recentes</Subtitle>
@@ -23,26 +40,39 @@ const Projects = ({ refProject }) => {
           sx={{ minWidth: !isSmallSmartphone ? '10rem' : '20rem' }}
         >
           <Box className="grid overflow-hidden md:min-h-[65%]">
-            <Box
-              component="img"
-              src={teste}
-              alt="teste"
-              className="mb-2 object-cover h-full min-h-full max-h-40 min-w-full rounded-md md:max-h-full"
-              sx={styleImageTransition}
+            <Image
+              src={`http://127.0.0.1:8000${data.data[0].imagem}`}
+              alt={data.data[0].imagem}
+              sx={{
+                marginBottom: '8px',
+                objectFit: 'cover',
+                height: '100%',
+                minHeight: '100%',
+                maxHeight: '10rem',
+                width: '100%',
+                borderRadius: '0.375rem',
+                '@media (min-width:768px)': {
+                  maxHeight: '100%',
+                },
+                ...styleImageTransition,
+              }}
             />
           </Box>
           <Typography
             fontSize={!isSmallSmartphone ? '1.5rem' : '2rem'}
             fontWeight="600"
-            marginBottom="0.325rem"
-            marginTop="0.325rem"
             className="text-color-pattern"
+            sx={{
+              overflow: 'hidden',
+              whiteSpace: 'nowrap',
+              textOverflow: 'ellipsis',
+              paddingBottom: '0.5rem',
+            }}
           >
-            Projeto e-commerce
+            {data.data[0].nomeProjeto}
           </Typography>
           <Typography fontWeight="300" className="text-color-pattern-400">
-            Lorem ipsum dolor sit amet, cons ectetur adipiscing elit. Integer vel
-            laoreet...
+            {data.data[0].descricao.slice(0, 200)}...
           </Typography>
         </Box>
 
@@ -52,55 +82,87 @@ const Projects = ({ refProject }) => {
           sx={{ minWidth: !isSmallSmartphone ? '10rem' : '20rem' }}
         >
           <Box className="grid overflow-hidden">
-            <Box
-              component="img"
-              src={teste2}
-              alt="teste"
-              className="mb-2 object-cover min-h-[10rem] max-h-40 rounded-md min-w-full"
-              sx={styleImageTransition}
+            <Image
+              src={`http://127.0.0.1:8000${data.data[1].imagem}`}
+              alt={data.data[1].imagem}
+              sx={{
+                marginBottom: '8px',
+                objectFit: 'cover',
+                height: '100%',
+                maxHeight: '10rem',
+                width: '100%',
+                borderRadius: '0.375rem',
+                '@media (min-width:768px)': {
+                  maxHeight: '100%',
+                },
+                minHeight: '10rem',
+                ...styleImageTransition,
+              }}
             />
           </Box>
 
           <Typography
             fontSize={!isSmallSmartphone ? '1.5rem' : '2rem'}
             fontWeight="600"
-            marginBottom="0.325rem"
             className="text-color-pattern mb-3"
+            sx={{
+              overflow: 'hidden',
+              whiteSpace: 'nowrap',
+              textOverflow: 'ellipsis',
+              paddingBottom: '0.5rem',
+            }}
           >
-            Projeto dots
+            {data.data[1].nomeProjeto}
           </Typography>
           <Typography fontWeight="300" className="text-color-pattern-400">
-            Lorem ipsum dolor sit amet, cons ectetur adipiscing elit. Integer vel
-            laoreet...
+            {data.data[1].descricao.slice(0, 50)}...
           </Typography>
         </Box>
 
         <Box
           component="li"
           className="col-column-1-7 row-start-4 lg:row-start-2 lg:col-column-9-13"
-          sx={{ minWidth: !isSmallSmartphone ? '10rem' : '20rem' }}
+          sx={{
+            minWidth: !isSmallSmartphone ? '10rem' : '20rem',
+            display: 'flex',
+            flexDirection: 'column',
+          }}
         >
-          <Box className="grid overflow-hidden">
-            <Box
-              component="img"
-              src={teste}
-              alt="teste"
-              className="mb-2 object-cover min-h-[10rem] rounded-md max-h-40 min-w-full"
-              sx={styleImageTransition}
+          <Box className="grid overflow-hidden" sx={{ height: '100%' }}>
+            <Image
+              src={`http://127.0.0.1:8000${data.data[2].imagem}`}
+              alt={data.data[2].imagem}
+              sx={{
+                marginBottom: '8px',
+                objectFit: 'cover',
+                height: '100%',
+                maxHeight: '10rem',
+                width: '100%',
+                borderRadius: '0.375rem',
+                '@media (min-width:768px)': {
+                  maxHeight: '100%',
+                },
+                minHeight: '10rem',
+                ...styleImageTransition,
+              }}
             />
           </Box>
 
           <Typography
             fontSize={!isSmallSmartphone ? '1.5rem' : '2rem'}
             fontWeight="600"
-            marginBottom="0.325rem"
             className="text-color-pattern mb-3"
+            sx={{
+              overflow: 'hidden',
+              whiteSpace: 'nowrap',
+              textOverflow: 'ellipsis',
+              paddingBottom: '0.5rem',
+            }}
           >
-            Criação game
+            {data.data[2].nomeProjeto}
           </Typography>
           <Typography fontWeight="300" className="text-color-pattern-400">
-            Lorem ipsum dolor sit amet, cons ectetur adipiscing elit. Integer vel
-            laoreet...
+            {data.data[2].descricao.slice(0, 50)}...
           </Typography>
         </Box>
       </Box>

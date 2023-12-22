@@ -5,26 +5,41 @@ import { useContext } from 'react';
 import useForm from '../../../hooks/useForm';
 import { useState } from 'react';
 import Input from '../../../components/Form/Input';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import axios from 'axios';
 import RequestError from '../../../components/Helper/RequestError';
+import PropTypes from 'prop-types';
 
-const User = () => {
+const User = ({ setOpenSnackbar }) => {
   const { data } = useContext(UserGlobalContext);
+  const queryClient = useQueryClient();
   const name = useForm(true);
   const username = useForm(true);
   const email = useForm('email');
 
-  const mutation = useMutation(({ data, token }) => {
-    const config = {
-      headers: { Authorization: `Bearer ${token}` },
-    };
+  const mutation = useMutation({
+    mutationFn: ({ data, token }) => {
+      const config = {
+        headers: { Authorization: `Bearer ${token}` },
+      };
 
-    return axios.put(
-      `http://127.0.0.1:8000/api/v1/usuario/${data.apelido}`,
-      data,
-      config,
-    );
+      return axios.put(
+        `http://127.0.0.1:8000/api/v1/usuario/${data.apelido}`,
+        data,
+        config,
+      );
+    },
+    onSuccess: ({ data }) => {
+      setOpenSnackbar({ open: true, message: data.message, severity: 'success' });
+      queryClient.invalidateQueries({ queryKey: ['user'], type: 'active' });
+    },
+    onError: (error) => {
+      setOpenSnackbar({
+        open: true,
+        message: error.response.data.message,
+        severity: 'error',
+      });
+    },
   });
 
   const updateUserData = () => {
@@ -102,6 +117,10 @@ const User = () => {
       </FormControl>
     </Box>
   );
+};
+
+User.propTypes = {
+  setOpenSnackbar: PropTypes.func,
 };
 
 export default User;
