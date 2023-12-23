@@ -18,6 +18,7 @@
 <h2 style="center" id="sobre">💻 Sobre o projeto</h2>
 
 <p style="center">O Hello Senai é um sistema construído para alunos do curso de Desenvolvimento de Sistemas do Senai.</p>
+<p style="center">O sistema utiliza o Laravel como uma REST API, sendo necessário para a funcionalidade do sistema: https://github.com/GKeslley/hello_senai.</p>
 <p style="center">Alunos podem:</p>
 
 - Cadastrar o nome, email e senha.
@@ -40,7 +41,7 @@ Antes de começar, você vai precisar ter instalado em sua máquina as seguintes
   <li>PHP ^7.0</li>
   <li>MySQL (10.4.^-MariaDB)</li>
 </ul> 
-Além disto é necessário importar e executar o script do banco dedados, sendo também importante um editor para trabalhar com o código como o VSCode.
+Além disto é necessário importar e executar o script do banco de dados, sendo também importante um editor para trabalhar com o código como o VSCode.
 <br>
 
 ```
