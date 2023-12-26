@@ -38,7 +38,7 @@ Antes de começar, você vai precisar ter instalado em sua máquina as seguintes
   <li>Git</li>
   <li>Node.js</li>
   <li>Composer</li>
-  <li>PHP ^7.0</li>
+  <li>PHP ^7.4</li>
   <li>MySQL (10.4.^-MariaDB)</li>
 </ul> 
 Além disto é necessário importar e executar o script do banco de dados, sendo também importante um editor para trabalhar com o código como o VSCode.
